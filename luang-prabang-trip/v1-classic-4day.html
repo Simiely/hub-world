@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>琅勃拉邦 4 日慢游计划 · 2026 年 6 月 · 4 人定制</title>
+<style>
+  :root {
+    --gold: #C8963E;
+    --gold-light: #F5E6C8;
+    --teal: #1A6B5A;
+    --teal-light: #E8F4F1;
+    --cream: #FAF7F2;
+    --warm-grey: #6B5E53;
+    --dark: #2C2416;
+    --white: #FFFFFF;
+    --red: #C0392B;
+    --blue: #2980B9;
+    --shadow: 0 2px 12px rgba(44,36,22,0.08);
+    --radius: 12px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    line-height: 1.7;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #1A6B5A 0%, #2C8B6E 40%, #C8963E 100%);
+    color: white;
+    text-align: center;
+    padding: 60px 20px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.08) 0%, transparent 60%);
+  }
+  .hero h1 { font-size: 2.5em; font-weight: 800; position: relative; letter-spacing: 0.02em; }
+  .hero .sub { font-size: 1.15em; opacity: 0.9; margin-top: 8px; position: relative; }
+  .hero .meta { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin-top: 20px; position: relative; }
+  .hero .tag {
+    background: rgba(255,255,255,0.18); backdrop-filter: blur(6px);
+    padding: 6px 18px; border-radius: 20px; font-size: 0.92em;
+  }
+
+  /* CONTAINER */
+  .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+
+  /* SECTION CARDS */
+  .section { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); margin: 28px 0; overflow: hidden; }
+  .section-header {
+    background: var(--teal-light); padding: 16px 24px; font-size: 1.2em; font-weight: 700;
+    color: var(--teal); border-bottom: 1px solid #DDEBE8; display: flex; align-items: center; gap: 10px;
+  }
+  .section-header .icon { font-size: 1.3em; }
+  .section-body { padding: 24px; }
+
+  /* WEATHER */
+  .weather-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 16px; }
+  .weather-card { text-align: center; padding: 18px 10px; background: var(--cream); border-radius: 10px; }
+  .weather-card .val { font-size: 2em; font-weight: 800; color: var(--teal); }
+  .weather-card .lbl { font-size: 0.85em; color: var(--warm-grey); margin-top: 4px; }
+
+  /* TAB NAV */
+  .tab-nav { display: flex; gap: 0; margin-bottom: 0; border-radius: var(--radius) var(--radius) 0 0; overflow: hidden; }
+  .tab-btn {
+    flex: 1; padding: 14px 8px; border: none; cursor: pointer; font-size: 0.95em; font-weight: 700;
+    background: #E8E2D8; color: var(--warm-grey); transition: all 0.25s; font-family: inherit;
+  }
+  .tab-btn:hover { background: #DDD6C8; }
+  .tab-btn.active { background: var(--white); color: var(--teal); box-shadow: inset 0 -3px 0 var(--teal); }
+  .tab-content { display: none; padding: 24px; }
+  .tab-content.active { display: block; }
+
+  /* PLAN HEADER */
+  .plan-intro { margin-bottom: 20px; }
+  .plan-intro h3 { font-size: 1.4em; color: var(--teal); margin-bottom: 6px; }
+  .plan-intro .tagline { color: var(--gold); font-weight: 600; font-size: 0.95em; }
+  .plan-intro .desc { color: var(--warm-grey); margin-top: 8px; font-size: 0.93em; }
+
+  /* DAY CARD */
+  .day { background: var(--cream); border-radius: 10px; padding: 20px; margin-bottom: 16px; border-left: 4px solid var(--teal); }
+  .day.alt { border-left-color: var(--gold); }
+  .day-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .day-num { font-weight: 800; font-size: 1.05em; color: var(--teal); }
+  .day.alt .day-num { color: var(--gold); }
+  .day-date { font-size: 0.85em; color: var(--warm-grey); }
+  .day-theme { font-size: 0.88em; color: var(--teal); font-weight: 600; }
+  .day.alt .day-theme { color: var(--gold); }
+
+  /* TIMELINE */
+  .tl { list-style: none; }
+  .tl li { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px dashed #E0D8C8; align-items: flex-start; }
+  .tl li:last-child { border-bottom: none; }
+  .tl .time { min-width: 55px; font-weight: 700; font-size: 0.88em; color: var(--teal); padding-top: 2px; }
+  .tl .act { flex:1; }
+  .tl .act strong { color: var(--dark); }
+  .tl .act .note { display: block; font-size: 0.82em; color: var(--warm-grey); margin-top: 2px; }
+  .tl .act .price { display: inline-block; background: var(--teal-light); color: var(--teal); padding: 1px 8px; border-radius: 10px; font-size: 0.78em; font-weight: 600; margin-left: 4px; }
+
+  .highlight-box { background: #FFF9ED; border: 1px solid var(--gold-light); border-radius: 8px; padding: 14px 18px; margin-top: 14px; font-size: 0.9em; }
+  .highlight-box strong { color: var(--gold); }
+  .rain-plan { background: #EDF4FC; border: 1px solid #B8D4F0; border-radius: 8px; padding: 12px 16px; margin-top: 10px; font-size: 0.88em; color: #2C5F8A; }
+
+  /* TIPS */
+  .tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 16px; }
+  .tip-card { background: var(--cream); border-radius: 10px; padding: 18px; }
+  .tip-card h4 { color: var(--teal); margin-bottom: 8px; font-size: 1em; }
+  .tip-card ul { list-style: none; padding: 0; }
+  .tip-card li { padding: 5px 0; font-size: 0.9em; border-bottom: 1px dotted #E0D8C8; }
+  .tip-card li:last-child { border-bottom: none; }
+  .tip-card li::before { content: '▸ '; color: var(--gold); }
+
+  /* BUDGET TABLE */
+  .budget-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+  .budget-table th { background: var(--teal); color: white; padding: 12px 14px; text-align: left; }
+  .budget-table th:first-child { border-radius: 8px 0 0 0; }
+  .budget-table th:last-child { border-radius: 0 8px 0 0; }
+  .budget-table td { padding: 10px 14px; border-bottom: 1px solid #E8E2D8; }
+  .budget-table tr:last-child td { font-weight: 800; background: var(--teal-light); }
+  .budget-table .plan-col { text-align: center; }
+  .budget-table tr:hover td { background: #FAF7F2; }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; }
+  .checklist li { padding: 6px 0; font-size: 0.9em; }
+  .checklist li::before { content: '☐ '; color: var(--teal); font-weight: 700; margin-right: 6px; }
+
+  /* COMPARE */
+  .compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 16px; }
+  .compare-card { background: var(--cream); border-radius: 10px; padding: 20px; text-align: center; }
+  .compare-card h4 { color: var(--teal); font-size: 1.1em; margin-bottom: 6px; }
+  .compare-card .emoji { font-size: 2.5em; margin-bottom: 8px; }
+  .compare-card .suit { font-size: 0.85em; color: var(--warm-grey); margin-top: 8px; }
+
+  .footer { text-align: center; color: var(--warm-grey); font-size: 0.85em; padding: 30px 20px; }
+  .footer a { color: var(--teal); }
+
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 1.7em; }
+    .tab-btn { font-size: 0.8em; padding: 12px 4px; }
+    .tl li { flex-direction: column; gap: 2px; }
+  }
+
+  @media print {
+    body { background: white; }
+    .section { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+    .tab-content { display: block !important; }
+    .tab-nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <h1>🌴 琅勃拉邦 4 日慢游计划</h1>
+  <div class="sub">Luang Prabang · 老挝 · UNESCO 世界遗产古城</div>
+  <div class="meta">
+    <span class="tag">📅 2026.06.18 – 06.22</span>
+    <span class="tag">👥 4 人出行</span>
+    <span class="tag">🚄 D83/D86 中老铁路</span>
+    <span class="tag">💰 3 套方案可选</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ===== 行程框架 ===== -->
+<div class="section">
+  <div class="section-header"><span class="icon">📋</span> 行程框架 & 天气</div>
+  <div class="section-body">
+    <table class="budget-table" style="margin-bottom:20px;">
+      <tr><th style="width:25%">日期</th><th>行程</th><th>住宿</th></tr>
+      <tr><td><strong>6/18 周四</strong></td><td>🚄 D83 版纳 14:30 → 琅勃拉邦 19:07<br>抵达入住，夜市初探</td><td>琅勃拉邦</td></tr>
+      <tr><td><strong>6/19 周五</strong></td><td>全天游玩（核心日）</td><td>琅勃拉邦</td></tr>
+      <tr><td><strong>6/20 周六</strong></td><td>全天游玩（探索日）</td><td>琅勃拉邦</td></tr>
+      <tr><td><strong>6/21 周日</strong></td><td>全天游玩（深度日）</td><td>琅勃拉邦</td></tr>
+      <tr><td><strong>6/22 周一</strong></td><td>上午自由，🚄 D86 14:35 返回版纳</td><td>—</td></tr>
+    </table>
+
+    <h4 style="color:var(--teal);margin-bottom:12px;">🌦️ 6 月天气速览</h4>
+    <div class="weather-grid">
+      <div class="weather-card"><div class="val">24-34°</div><div class="lbl">气温区间</div></div>
+      <div class="weather-card"><div class="val">~15 天</div><div class="lbl">月均降雨日</div></div>
+      <div class="weather-card"><div class="val">177mm</div><div class="lbl">月降水量</div></div>
+      <div class="weather-card"><div class="val">高湿</div><div class="lbl">体感闷热</div></div>
+    </div>
+    <p style="margin-top:14px;font-size:0.9em;color:var(--warm-grey);">
+      ⚡ <strong>雨季特点</strong>：多为午后短时暴雨（1-2小时），很少全天降雨。清晨和上午通常是晴天。
+      最佳户外时间：<strong>06:00-12:00</strong> 和 <strong>16:00 之后</strong>。每个方案均标注了雨天备选。
+    </p>
+  </div>
+</div>
+
+<!-- ===== 三套方案 ===== -->
+<div class="section">
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('planA')">🏛️ Plan A · 经典人文</button>
+    <button class="tab-btn" onclick="switchTab('planB')">🌿 Plan B · 自然野趣</button>
+    <button class="tab-btn" onclick="switchTab('planC')">☕ Plan C · 慢享疗愈</button>
+  </div>
+
+  <!-- ========== PLAN A ========== -->
+  <div id="planA" class="tab-content active">
+    <div class="plan-intro">
+      <h3>🏛️ Plan A · 经典人文深度游</h3>
+      <div class="tagline">适合：第一次来琅勃拉邦、喜欢文化与历史、不想太累</div>
+      <div class="desc">覆盖古城最精华的人文体验——布施仪式、皇家寺庙、传统工艺、老挝烹饪课。节奏从容，每处停留够久。记忆点密集，是"来过琅勃拉邦"的标准答案。</div>
+    </div>
+
+    <!-- Day 1 -->
+    <div class="day">
+      <div class="day-header"><span class="day-num">Day 1</span><span class="day-date">6/19 周五</span></div>
+      <div class="day-theme">🎯 主题：古城人文精华 · 从晨曦到夜市</div>
+      <ul class="tl">
+        <li><span class="time">05:30</span><span class="act"><strong>布施仪式 Tak Bat</strong><span class="price">免费</span><span class="note">📍 Sisavangvong 路 / Sakkaline 路。提前 10 分钟到，安静旁观，不要用闪光灯。若想参与布施，可在街边买糯米饭篮（约 20,000 LAK），但务必遵守礼仪：赤足、低于僧侣视线、不触碰</span></span></li>
+        <li><span class="time">06:30</span><span class="act"><strong>古城早市 Kitsalat Morning Market</strong><span class="price">人均 ~¥15</span><span class="note">当地人的早餐食堂：竹筒糯米饭、烤河鱼、老挝油条 (patongo)、热带水果。比夜市真实百倍</span></span></li>
+        <li><span class="time">08:00</span><span class="act"><strong>香通寺 Wat Xieng Thong</strong><span class="price">门票 20,000 LAK (~¥8)</span><span class="note">琅勃拉邦最美寺庙，建於 1560 年。重点是后墙「生命之树」马赛克壁画——清晨光线斜照时色彩最鲜艳。记得请看守打开后方皇家灵车殿</span></span></li>
+        <li><span class="time">10:00</span><span class="act"><strong>皇宫博物馆 Royal Palace Museum</strong><span class="price">门票 30,000 LAK (~¥11)</span><span class="note">末代国王行宫，藏有 Prabang 金佛。需脱鞋、寄存背包、禁止拍照。建议请导游讲解（约 50,000 LAK）</span></span></li>
+        <li><span class="time">12:00</span><span class="act"><strong>午餐 · Tamarind 餐厅</strong><span class="price">人均 ~¥50-70</span><span class="note">琅勃拉邦最正宗的老挝菜餐厅。推荐：湄公河苔藓 (khai paen)、柠檬草烤鸡、老挝 tasting platter。靠河边座位最好提前约</span></span></li>
+        <li><span class="time">14:00</span><span class="act"><strong>传统艺术与民族学中心 TAEC</strong><span class="price">门票 25,000 LAK (~¥9)</span><span class="note">小而精的博物馆，了解老挝 49 个民族的服饰、手工艺和生活。有空调！雨天避暑完美选择</span></span></li>
+        <li><span class="time">15:30</span><span class="act"><strong>迈佛寺 Wat Mai</strong><span class="price">门票 10,000 LAK (~¥4)</span><span class="note">五层鎏金浮雕外立面，下午光线正好。就在皇宫隔壁，顺便逛</span></span></li>
+        <li><span class="time">16:30</span><span class="act"><strong>普西山 Mount Phousi 日落</strong><span class="price">门票 20,000 LAK (~¥8)</span><span class="note">328 级台阶，15 分钟登顶。提前 40 分钟到占好位置。日落时分俯瞰湄公河与南康河交汇，古城全景尽收</span></span></li>
+        <li><span class="time">18:30</span><span class="act"><strong>夜市 Night Market</strong><span class="price">自由消费</span><span class="note">Sisavangvong 路封路变成步行街。手工艺品、老挝咖啡豆、丝绸围巾、椰子碗。一定要吃夜市自助素食 buffet（15,000 LAK 随便装一盘！）</span></span></li>
+        <li><span class="time">20:00</span><span class="act"><strong>晚餐 · 夜市小吃 + 老挝啤酒 Beerlao</strong><span class="price">人均 ~¥20-30</span><span class="note">烤鱼配糯米饭 + 一瓶冰 Beerlao，就是琅勃拉邦的幸福感</span></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>清晨布施的寂静 → 香通寺生命之树 → 普西山金色日落 → 夜市人间烟火。一天之内走完琅勃拉邦最完整的"仪式感弧线"。</div>
+      <div class="rain-plan">🌧️ <strong>雨天备选：</strong>TAEC 博物馆多待一会儿 → 换去 UXO Lao 游客中心（免费，地雷受害者教育）→ Le Banneton 法式面包房下午茶</div>
+    </div>
+
+    <!-- Day 2 -->
+    <div class="day alt">
+      <div class="day-header"><span class="day-num">Day 2</span><span class="day-date">6/20 周六</span></div>
+      <div class="day-theme">🎯 主题：手工艺村 + 老挝厨房</div>
+      <ul class="tl">
+        <li><span class="time">08:30</span><span class="act"><strong>租自行车出发</strong><span class="price">20,000-40,000 LAK/天 (~¥8-14)</span><span class="note">古城随处可见租车铺，押护照或 ¥100 押金。沿湄公河岸骑行，清晨非常舒适</span></span></li>
+        <li><span class="time">09:00</span><span class="act"><strong>班桑孔织造村 Ban Xang Khong</strong><span class="price">免费参观</span><span class="note">3km 北行，沿湄公河岸骑行约 30 分钟。看桑皮纸 (saa paper) 制作、手工丝织。直接从手艺人手里买，比夜市便宜一半以上。几乎没有旅行团来</span></span></li>
+        <li><span class="time">11:30</span><span class="act"><strong>返回古城，午餐 · Saffron Coffee</strong><span class="price">人均 ~¥30-45</span><span class="note">河畔咖啡馆，老挝咖啡 + 牛角包三明治。二楼露台可看湄公河</span></span></li>
+        <li><span class="time">13:00</span><span class="act"><strong>午休/自由时间</strong><span class="note">回住处小憩，避开正午高温</span></span></li>
+        <li><span class="time">15:00</span><span class="act"><strong>老挝烹饪课 Cooking Class</strong><span class="price">约 $25-35/人 (~¥180-250)</span><span class="note">推荐 Tamarind Cooking School 或 Bamboo Tree。3 小时课程：逛菜市场认识食材 → 学做 3-4 道经典老挝菜（Laap 肉碎沙拉、Mok Pa 蕉叶蒸鱼、绿咖喱、糯米饭）→ 吃自己做的晚餐。需要提前 1 天预约！</span></span></li>
+        <li><span class="time">19:00</span><span class="act"><strong>享用自己做的晚餐</strong><span class="price">含在课程费中</span><span class="note">最满足的一顿饭——亲手做的老挝菜配上花园烛光</span></span></li>
+        <li><span class="time">20:30</span><span class="act"><strong>散步至湄公河与南康河交汇处</strong><span class="note">深夜的半岛北端几乎无人。两条大河在黑暗中流淌，寺庙剪影，零星渔火——这是琅勃拉邦最安静的时刻</span></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>骑行湄公河岸的风 → 手艺人家里买到的桑皮纸画 → 自己亲手做的 Laap → 深夜两条大河的沉默交汇</div>
+      <div class="rain-plan">🌧️ <strong>雨天备选：</strong>烹饪课本身在室内进行不受影响。骑行改乘 tuk-tuk。上午下雨则先去 Ock Pop Tok 手工艺中心（室内）代替骑行村</div>
+    </div>
+
+    <!-- Day 3 -->
+    <div class="day">
+      <div class="day-header"><span class="day-num">Day 3</span><span class="day-date">6/21 周日</span></div>
+      <div class="day-theme">🎯 主题：千佛洞 + 湄公河慢船</div>
+      <ul class="tl">
+        <li><span class="time">06:00</span><span class="act"><strong>包长尾慢船前往千佛洞 Pak Ou Caves</strong><span class="price">船费 ~$25-35/船 (4人分摊 ~¥45-60/人)</span><span class="note">前一天傍晚到码头谈好船家。清晨出发，看湄公河苏醒——渔民撒网、孩子在岸边洗澡、晨雾中的石灰岩山峰。慢船 2 小时，这是琅勃拉邦最美的水上旅程</span></span></li>
+        <li><span class="time">08:00</span><span class="act"><strong>千佛洞 Pak Ou Caves</strong><span class="price">门票 20,000 LAK (~¥8)</span><span class="note">两个洞穴藏有 4000 多尊佛像。上洞需要爬台阶，视野开阔。清晨到达可以独享洞穴，避开 10 点后的旅行团大部队</span></span></li>
+        <li><span class="time">10:00</span><span class="act"><strong>威士忌村 Ban Xang Hai</strong><span class="price">免费</span><span class="note">回程顺路停靠。可以品尝 Lao Lao 米酒和蛇酒、蝎子酒（拍照就好）。买手工织布作为伴手礼</span></span></li>
+        <li><span class="time">12:30</span><span class="act"><strong>午餐 · Dyen Sabai 河畔餐厅</strong><span class="price">人均 ~¥40-60</span><span class="note">南康河畔的吊脚楼餐厅，需过竹桥或坐小船到达。推荐：老挝火锅 sin dat、椰子咖喱。躺在靠垫上喝椰子，一下午都不想走</span></span></li>
+        <li><span class="time">15:00</span><span class="act"><strong>UXO Lao 游客中心</strong><span class="price">免费（建议捐款）</span><span class="note">了解越南战争遗留的未爆弹问题。沉重但重要的历史教育，30 分钟</span></span></li>
+        <li><span class="time">16:30</span><span class="act"><strong>湄公河日落游船</strong><span class="price">~$10-15/人 (~¥70-110)</span><span class="note">1 小时日落巡航。和清晨的慢船是不同的体验——金色夕阳洒在河面上，喝一杯鸡尾酒，看群山渐暗</span></span></li>
+        <li><span class="time">19:00</span><span class="act"><strong>告别晚餐 · Manda de Laos 莲花池餐厅</strong><span class="price">人均 ~¥100-150</span><span class="note">三个荷花池环绕的庭院餐厅，琅勃拉邦最有仪式感的晚餐。推荐：蕉叶蒸鱼、柠檬草牛肉。需要提前预订！最后一晚值得稍微奢侈一下</span></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>清晨慢船上的湄公河日出 → 独享千佛洞的寂静 → Dyen Sabai 的椰子吊床 → Manda de Laos 荷花池晚宴</div>
+      <div class="rain-plan">🌧️ <strong>雨天备选：</strong>如果大雨取消游船 → 改为上午 TAEC 博物馆 + 传统 SPA（老挝按摩 1 小时约 ¥35-50）→ 下午 Ock Pop Tok 手工艺工坊（织布体验）</div>
+    </div>
+
+    <!-- Day 4 -->
+    <div class="day alt">
+      <div class="day-header"><span class="day-num">Day 4</span><span class="day-date">6/22 周一</span></div>
+      <div class="day-theme">🎯 主题：最后的清晨 · 告别</div>
+      <ul class="tl">
+        <li><span class="time">06:00</span><span class="act"><strong>普西山日出 (可选)</strong><span class="price">20,000 LAK</span><span class="note">如果第一天没看够，清晨的普西山无人，晨雾中的古城更仙</span></span></li>
+        <li><span class="time">07:00</span><span class="act"><strong>早市最后的早餐</strong><span class="price">人均 ~¥10-15</span><span class="note">再吃一次竹筒糯米饭和 patongo，买老挝咖啡豆带回家</span></span></li>
+        <li><span class="time">09:00</span><span class="act"><strong>古城最后的散步</strong><span class="note">逛逛还没去过的小巷，拍最后的照片。可以在 Le Banneton 买可颂带上火车</span></span></li>
+        <li><span class="time">11:30</span><span class="act"><strong>午餐简餐</strong><span class="note">早一点吃，预留充足时间去火车站</span></span></li>
+        <li><span class="time">13:00</span><span class="act"><strong>前往琅勃拉邦火车站</strong><span class="note">古城到火车站 tuk-tuk 约 15-20 分钟，¥20-30</span></span></li>
+        <li><span class="time">14:35</span><span class="act"><strong>🚄 D86 返回西双版纳</strong><span class="note">约 5 小时，19:27 抵达版纳</span></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>最后一个琅勃拉邦清晨——早市的咖啡香、街角的僧侣身影、湄公河上的晨雾</div>
+    </div>
+  </div>
+
+  <!-- ========== PLAN B ========== -->
+  <div id="planB" class="tab-content">
+    <div class="plan-intro">
+      <h3>🌿 Plan B · 自然野趣探险游</h3>
+      <div class="tagline">适合：喜欢户外、爱玩水的年轻人、追求照片出片率</div>
+      <div class="desc">围绕琅勃拉邦的自然奇观展开：瀑布跳水、丛林大象、皮划艇穿越、湄公河慢船。每天都有一项"高光"户外体验。拍摄素材丰富，朋友圈素材管够。</div>
+    </div>
+
+    <div class="day">
+      <div class="day-header"><span class="day-num">Day 1</span><span class="day-date">6/19 周五</span></div>
+      <div class="day-theme">🎯 主题：光西瀑布全天 · 跳水 + 蝴蝶 + 黑熊</div>
+      <ul class="tl">
+        <li><span class="time">07:00</span><span class="act"><strong>出发去光西瀑布 Kuang Si Falls</strong><span class="price">包车往返 ~¥100-150/车 (4人分摊 ~¥25-38/人)</span><span class="note">早出发！赶在 8 点开门时到达，独享钙化池的果冻蓝。古城拼车 tuk-tuk 约 40 分钟</span></span></li>
+        <li><span class="time">08:00</span><span class="act"><strong>蝴蝶公园 Butterfly Park</strong><span class="price">门票 ~$4 (~¥28)</span><span class="note">在瀑布入口处。清晨蝴蝶最活跃，东南亚最大蝴蝶种类之一。30-45 分钟</span></span></li>
+        <li><span class="time">08:45</span><span class="act"><strong>黑熊救助中心 Bear Rescue Center</strong><span class="price">免费（含在瀑布门票内）</span><span class="note">从老挝各地救助的亚洲黑熊，在丛林中玩耍。晨间喂食时段最有趣</span></span></li>
+        <li><span class="time">09:30</span><span class="act"><strong>光西瀑布 · 游泳 & 跳水！</strong><span class="price">门票 20,000 LAK (~¥8)</span><span class="note">沿着木栈道往上走，依次经过多个钙化池。最上方的池子人最少。主瀑布下的池子可以跳水！别忘了带泳衣和毛巾。水是冰凉的，6 月正好消暑</span></span></li>
+        <li><span class="time">12:00</span><span class="act"><strong>瀑布区午餐</strong><span class="price">人均 ~¥20-30</span><span class="note">景区内的简餐：椰子糯米饭、烤鸡翅、鲜榨果汁。坐在瀑布声中的午餐</span></span></li>
+        <li><span class="time">13:00</span><span class="act"><strong>攀登瀑布顶端</strong><span class="note">有台阶可爬到瀑布顶端，俯瞰整个瀑布群和丛林。往返约 1 小时，比较陡，量力而行。顶上还有隐秘的小水池</span></span></li>
+        <li><span class="time">15:00</span><span class="act"><strong>返回古城，休整</strong></span></li>
+        <li><span class="time">17:00</span><span class="act"><strong>普西山日落</strong><span class="price">门票 20,000 LAK (~¥8)</span><span class="note">328 级台阶，15 分钟登顶</span></span></li>
+        <li><span class="time">18:30</span><span class="act"><strong>夜市 + 晚餐</strong><span class="price">人均 ~¥30</span><span class="note">夜市自助素食 buffet (15,000 LAK) + 烤鱼 + Beerlao</span></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>果冻蓝色的钙化池跳水！黑熊在丛林中玩耍 → 瀑布顶端俯瞰丛林 → 普西山金色日落</div>
+      <div class="rain-plan">🌧️ <strong>雨天备选：</strong>下雨瀑布水量更大更壮观！但跳水需注意安全（水流急时禁止下水）。如遇暴雨则改为下午去，上午在古城 Ock Pop Tok 做扎染工坊体验</div>
+    </div>
+
+    <div class="day alt">
+      <div class="day-header"><span class="day-num">Day 2</span><span class="day-date">6/20 周六</span></div>
+      <div class="day-theme">🎯 主题：大象庇护所 + 南康河皮划艇</div>
+      <ul class="tl">
+        <li><span class="time">07:30</span><span class="act"><strong>MandaLao 大象庇护所 · 半日体验</strong><span class="price">约 $50-60/人 (~¥350-430)</span><span class="note">琅勃拉邦最推荐的伦理大象体验——不骑大象、不看表演。给大象喂食香蕉和甘蔗、陪大象散步穿过丛林到河边、看大象洗澡。半日行程含接送和简餐。需要提前预订！</span></span></li>
+        <li><span class="time">12:30</span><span class="act"><strong>午餐 · Tangor 餐厅</strong><span class="price">人均 ~¥50-70</span><span class="note">法国-老挝融合菜，在半岛北端。安静优雅，适合午餐</span></span></li>
+        <li><span class="time">14:00</span><span class="act"><strong>午休</strong></span></li>
+        <li><span class="time">15:30</span><span class="act"><strong>南康河皮划艇 Nam Khan Kayaking</strong><span class="price">约 $5-10/人 (~¥35-70)</span><span class="note">从 Dyen Sabai 附近的河段下水，向西划行。南康河窄而幽静，两岸是丛林和石灰岩山。黄昏时分水面金光粼粼，顺流返回毫不费力。最治愈的 2 小时</span></span></li>
+        <li><span class="time">18:00</span><span class="act"><strong>Dyen Sabai 晚餐</strong><span class="price">人均 ~¥40-60</span><span class="note">划完皮划艇直接上岸吃饭，最完美的衔接</span></span></li>
+        <li><span class="time">20:00</span><span class="act"><strong>夜市闲逛</strong></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>大象鼻子卷走你手里的香蕉 → 丛林徒步中大象在你前面悠然漫步 → 皮划艇上的金色黄昏</div>
+      <div class="rain-plan">🌧️ <strong>雨天备选：</strong>小雨不影响大象体验（穿雨衣即可）。如遇大雨取消皮划艇 → 改为古城咖啡馆巡礼 + Lao Red Cross 传统桑拿（¥15/人，非常本地体验）</div>
+    </div>
+
+    <div class="day">
+      <div class="day-header"><span class="day-num">Day 3</span><span class="day-date">6/21 周日</span></div>
+      <div class="day-theme">🎯 主题：千佛洞日出慢船 + 塔德赛瀑布</div>
+      <ul class="tl">
+        <li><span class="time">05:30</span><span class="act"><strong>布施仪式（去一次也好）</strong><span class="note">至少看一次，出发前顺路</span></span></li>
+        <li><span class="time">06:30</span><span class="act"><strong>包船前往千佛洞 Pak Ou Caves</strong><span class="price">~$25-35/船 (4人分摊 ~¥45-60/人)</span><span class="note">日出慢船，理由同 Plan A——这是琅勃拉邦最美的水上旅程</span></span></li>
+        <li><span class="time">08:30</span><span class="act"><strong>千佛洞</strong><span class="price">20,000 LAK (~¥8)</span></span></li>
+        <li><span class="time">10:30</span><span class="act"><strong>威士忌村</strong><span class="note">回程停靠</span></span></li>
+        <li><span class="time">12:00</span><span class="act"><strong>午餐 · 古城简餐</strong><span class="price">人均 ~¥25</span></span></li>
+        <li><span class="time">14:00</span><span class="act"><strong>塔德赛瀑布 Tad Sae Waterfall</strong><span class="price">门票 ~15,000 LAK (~¥6)</span><span class="note">光西瀑布的"小众妹妹"。雨季水量充沛时非常壮观，游客少得多。可以游泳！从古城 tuk-tuk 约 20 分钟。如果光西瀑布没玩够，这里再来一轮</span></span></li>
+        <li><span class="time">17:00</span><span class="act"><strong>返回古城</strong></span></li>
+        <li><span class="time">18:30</span><span class="act"><strong>告别晚餐 · L'Elephant 法餐厅</strong><span class="price">人均 ~¥120-180</span><span class="note">琅勃拉邦最经典的法餐厅，殖民风格建筑。推荐：鸭胸肉、红酒炖牛肉。需要预订！</span></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>慢船上看到的湄公河日出 → 塔德赛瀑布的隐秘泳池 → L'Elephant 的法式告别晚宴</div>
+      <div class="rain-plan">🌧️ <strong>雨天备选：</strong>大雨不去 Tad Sae → 改为古城寺庙巡礼（Wat Sensoukharam / Wat Aham / Wat Visoun）+ 老挝传统桑拿 + SPA</div>
+    </div>
+
+    <div class="day alt">
+      <div class="day-header"><span class="day-num">Day 4</span><span class="day-date">6/22 周一</span></div>
+      <div class="day-theme">🎯 主题：最后的晨光</div>
+      <ul class="tl">
+        <li><span class="time">06:00</span><span class="act"><strong>租自行车去班帕农织造村 Ban Phanom</strong><span class="price">自行车 ¥8-14</span><span class="note">沿南康河岸骑行 3km，穿过稻田和香蕉林。村里织工在织布机前工作，完全没有旅游气息</span></span></li>
+        <li><span class="time">08:30</span><span class="act"><strong>普帕奥金塔 Wat Phou Phao</strong><span class="price">免费</span><span class="note">山上的金色佛塔，可以俯瞰整个琅勃拉邦。顺路去</span></span></li>
+        <li><span class="time">10:00</span><span class="act"><strong>归还自行车，早午餐</strong></span></li>
+        <li><span class="time">11:30</span><span class="act"><strong>自由时间 / 最后的购物</strong></span></li>
+        <li><span class="time">13:00</span><span class="act"><strong>前往火车站</strong></span></li>
+        <li><span class="time">14:35</span><span class="act"><strong>🚄 D86 返回</strong></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>晨间骑行穿过稻田的凉风 → 织布村织娘手指间的丝线 → 金色佛塔俯瞰古城最后一眼</div>
+    </div>
+  </div>
+
+  <!-- ========== PLAN C ========== -->
+  <div id="planC" class="tab-content">
+    <div class="plan-intro">
+      <h3>☕ Plan C · 慢享小城疗愈游</h3>
+      <div class="tagline">适合：不想赶行程、喜欢咖啡馆和 SPA、追求松弛感</div>
+      <div class="desc">把琅勃拉邦当作一个"可以发呆的地方"来对待。每天睡到自然醒，用一杯老挝咖啡开启一天。穿插 SPA、河边吊床、咖啡馆巡礼。重要的不是打卡多少景点，而是内心的节律慢下来。</div>
+    </div>
+
+    <div class="day">
+      <div class="day-header"><span class="day-num">Day 1</span><span class="day-date">6/19 周五</span></div>
+      <div class="day-theme">🎯 主题：古城偶遇 · 没有计划是最好的计划</div>
+      <ul class="tl">
+        <li><span class="time">09:00</span><span class="act"><strong>自然醒，早午餐 @ Le Banneton</strong><span class="price">人均 ~¥35</span><span class="note">琅勃拉邦最好的法式面包房。可颂 + 老挝咖啡，坐在街边看古城醒来。老板是法国人，烘焙水准一流</span></span></li>
+        <li><span class="time">10:30</span><span class="act"><strong>漫无目的地走古城小巷</strong><span class="note">不需要地图。琅勃拉邦半岛很小，随便走都能遇到美的角落：一扇蓝色的百叶窗、一株盛开的三角梅、一个安静的寺庙庭院。沿路串 3-4 个小寺：Wat Sensoukharam → Wat Aham → Wat Visoun → Wat That</span></span></li>
+        <li><span class="time">12:30</span><span class="act"><strong>午餐 · Café Toui</strong><span class="price">人均 ~¥30-40</span><span class="note">本地人爱去的家庭餐馆，推荐椰子咖喱和木瓜沙拉</span></span></li>
+        <li><span class="time">14:00</span><span class="act"><strong>老挝传统按摩 / SPA</strong><span class="price">1 小时 ~¥35-80</span><span class="note">推荐：Spa Garden（花园环境）或 Lao Red Cross Sauna（本地草药桑拿，¥15/次，超级本地化体验）。正好避开午后高温</span></span></li>
+        <li><span class="time">15:30</span><span class="act"><strong>Dao Coffee 下午茶</strong><span class="price">人均 ~¥15-20</span><span class="note">琅勃拉邦最好喝的咖啡之一。榛子拿铁是招牌。二楼窗口位看街景</span></span></li>
+        <li><span class="time">16:30</span><span class="act"><strong>普西山日落</strong><span class="price">20,000 LAK (~¥8)</span><span class="note">慢慢爬，不赶时间</span></span></li>
+        <li><span class="time">18:30</span><span class="act"><strong>夜市漫步 + 晚餐</strong><span class="price">人均 ~¥30</span></span></li>
+        <li><span class="time">20:00</span><span class="act"><strong>河边酒吧 · Icon Klub</strong><span class="price">人均 ~¥30-50</span><span class="note">或 Utopia 酒吧（河畔 zen 风格，躺垫上喝鸡尾酒）</span></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>Le Banneton 的可颂在嘴里酥开的声音 → 无名小巷里一树三角梅 → 按摩后全身松软的慵懒感 → 普西山上和陌生人一起等待日落的默契</div>
+      <div class="rain-plan">🌧️ <strong>雨天备选：</strong>正好！咖啡馆坐一下午本来就是计划内的事。加一场 SPA，或去 Ock Pop Tok 的手工艺中心逛逛</div>
+    </div>
+
+    <div class="day alt">
+      <div class="day-header"><span class="day-num">Day 2</span><span class="day-date">6/20 周六</span></div>
+      <div class="day-theme">🎯 主题：光西瀑布 · 不急不忙版</div>
+      <ul class="tl">
+        <li><span class="time">05:30</span><span class="act"><strong>布施仪式 (optional)</strong><span class="note">如果起得来就看，起不来就跳过。琅勃拉邦不要求你打卡任何东西</span></span></li>
+        <li><span class="time">08:30</span><span class="act"><strong>早市早餐</strong><span class="price">人均 ~¥15</span></span></li>
+        <li><span class="time">09:30</span><span class="act"><strong>出发去光西瀑布</strong><span class="price">tuk-tuk 拼车 ¥15-20/人</span><span class="note">不用赶第一班。9:30 出发人也不多，上午的光线照进钙化池最蓝</span></span></li>
+        <li><span class="time">10:30</span><span class="act"><strong>光西瀑布 · 慢慢逛</strong><span class="price">门票 ¥8</span><span class="note">不赶时间，每个池子都坐一会儿。想游泳就下水，不想游泳就坐在池边泡脚。看黑熊，逛蝴蝶园。带本书可以在瀑布声里读一小时</span></span></li>
+        <li><span class="time">13:00</span><span class="act"><strong>瀑布区午餐</strong><span class="price">人均 ~¥25</span></span></li>
+        <li><span class="time">15:00</span><span class="act"><strong>返回古城，回住处休息</strong></span></li>
+        <li><span class="time">17:00</span><span class="act"><strong>Saffron Coffee 河畔下午茶</strong><span class="price">人均 ~¥25</span><span class="note">二楼露台，看湄公河上的船来来往往</span></span></li>
+        <li><span class="time">18:00</span><span class="act"><strong>湄公河日落游船</strong><span class="price">~¥70-110/人</span><span class="note">1 小时，带一杯鸡尾酒上船</span></span></li>
+        <li><span class="time">19:30</span><span class="act"><strong>晚餐 · 3 Nagas 餐厅</strong><span class="price">人均 ~¥80-120</span><span class="note">殖民风格建筑里的精致老挝菜。推荐老挝 tasting menu</span></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>在光西瀑布的池边读半小时书 → 午后回住处睡了一觉 → 日落游船上被河风吹起的头发 → 3 Nagas 庭院里的烛光晚餐</div>
+      <div class="rain-plan">🌧️ <strong>雨天备选：</strong>改天去瀑布（可以和其他天互换）。雨天安排：SPA → 咖啡馆 → TAEC 博物馆 → 书店 → 再做一次 SPA</div>
+    </div>
+
+    <div class="day">
+      <div class="day-header"><span class="day-num">Day 3</span><span class="day-date">6/21 周日</span></div>
+      <div class="day-theme">🎯 主题：手工艺 + 烹饪 + 河畔发呆</div>
+      <ul class="tl">
+        <li><span class="time">08:30</span><span class="act"><strong>Ock Pop Tok 手工艺中心</strong><span class="price">免费参观，工作坊另付</span><span class="note">河畔的纺织工坊，可以看织工现场织布，有讲解。小咖啡馆也很棒。可选：1 小时天然染色工作坊 ($20)</span></span></li>
+        <li><span class="time">11:00</span><span class="act"><strong>午餐 · Ock Pop Tok 咖啡馆</strong><span class="price">人均 ~¥35-50</span><span class="note">就在手工艺中心，河景午餐</span></span></li>
+        <li><span class="time">13:00</span><span class="act"><strong>午休 / 自由探索</strong></span></li>
+        <li><span class="time">15:00</span><span class="act"><strong>老挝烹饪课</strong><span class="price">~¥180-250/人</span><span class="note">傍晚课程，和 Plan A 一样的体验。逛菜市场认识食材 → 学做 3-4 道菜 → 享用自己做的晚餐。这是琅勃拉邦最有获得感的半日活动</span></span></li>
+        <li><span class="time">19:00</span><span class="act"><strong>享用自己做的晚餐</strong></span></li>
+        <li><span class="time">20:30</span><span class="act"><strong>最后的河畔散步 · 半岛北端</strong><span class="note">两条大河交汇处的深夜寂静——琅勃拉邦最动人的样子</span></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>织布机上梭子穿梭的韵律 → 菜市场里闻到的柠檬草和罗勒香 → 自己做的 Laap 比任何餐厅都好吃 → 深夜大河交汇处的万籁俱寂</div>
+      <div class="rain-plan">🌧️ <strong>雨天备选：</strong>烹饪课室内进行不受影响。Ock Pop Tok 也有遮雨区域。完美的雨天行程</div>
+    </div>
+
+    <div class="day alt">
+      <div class="day-header"><span class="day-num">Day 4</span><span class="day-date">6/22 周一</span></div>
+      <div class="day-theme">🎯 主题：把节奏留到最后一刻</div>
+      <ul class="tl">
+        <li><span class="time">08:00</span><span class="act"><strong>自然醒，Le Banneton 或 Saffron 最后的早餐</strong></span></li>
+        <li><span class="time">09:30</span><span class="act"><strong>早市最后的采购</strong><span class="note">买老挝咖啡豆、手工皂、桑皮纸笔记本。给朋友带点琅勃拉邦的味道回去</span></span></li>
+        <li><span class="time">10:30</span><span class="act"><strong>随便再走一遍最喜欢的那条街</strong><span class="note">可能是 Sakkaline 路的某个拐角，可能是湄公河岸的那排棕榈树。拍下最后一张照片</span></span></li>
+        <li><span class="time">12:00</span><span class="act"><strong>午餐</strong></span></li>
+        <li><span class="time">13:00</span><span class="act"><strong>前往火车站</strong></span></li>
+        <li><span class="time">14:35</span><span class="act"><strong>🚄 D86 返回西双版纳</strong></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>最后一杯老挝咖啡 → 行李箱里多出来的一包咖啡豆 → 火车窗外渐渐远去的湄公河</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 三案对比 ===== -->
+<div class="section">
+  <div class="section-header"><span class="icon">⚖️</span> 三案速览 · 选哪个？</div>
+  <div class="section-body">
+    <div class="compare-grid">
+      <div class="compare-card">
+        <div class="emoji">🏛️</div>
+        <h4>Plan A · 经典人文</h4>
+        <p style="font-size:0.9em;color:var(--warm-grey);">布施 + 香通寺 + 织造村 + 烹饪课 + 千佛洞 + 日落游船</p>
+        <div class="suit">✅ 第一次来琅勃拉邦<br>✅ 喜欢文化与历史<br>✅ 想要"经典"体验</div>
+      </div>
+      <div class="compare-card">
+        <div class="emoji">🌿</div>
+        <h4>Plan B · 自然野趣</h4>
+        <p style="font-size:0.9em;color:var(--warm-grey);">光西跳水 + 大象庇护所 + 皮划艇 + Tad Sae + 千佛洞慢船</p>
+        <div class="suit">✅ 喜欢户外和玩水<br>✅ 想要出片率高<br>✅ 年轻人/活力型</div>
+      </div>
+      <div class="compare-card">
+        <div class="emoji">☕</div>
+        <h4>Plan C · 慢享疗愈</h4>
+        <p style="font-size:0.9em;color:var(--warm-grey);">咖啡馆 ×3 + SPA ×2 + 烹饪课 + 瀑布悠闲版 + 日落游船</p>
+        <div class="suit">✅ 不想赶行程<br>✅ 喜欢松弛感<br>✅ 咖啡/SPA 爱好者</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 预算对比 ===== -->
+<div class="section">
+  <div class="section-header"><span class="icon">💰</span> 琅勃拉邦 4 日预算对比（人均，不含城际交通）</div>
+  <div class="section-body" style="overflow-x:auto;">
+    <table class="budget-table">
+      <tr><th>类别</th><th class="plan-col">Plan A</th><th class="plan-col">Plan B</th><th class="plan-col">Plan C</th></tr>
+      <tr><td>🏨 住宿 (4晚)</td><td class="plan-col">¥400-800</td><td class="plan-col">¥400-800</td><td class="plan-col">¥600-1200</td></tr>
+      <tr><td>🍜 餐饮</td><td class="plan-col">¥350-500</td><td class="plan-col">¥300-450</td><td class="plan-col">¥400-600</td></tr>
+      <tr><td>🎫 门票 & 活动</td><td class="plan-col">¥300-450</td><td class="plan-col">¥500-700</td><td class="plan-col">¥300-500</td></tr>
+      <tr><td>🚕 市内交通</td><td class="plan-col">¥100-180</td><td class="plan-col">¥120-200</td><td class="plan-col">¥80-150</td></tr>
+      <tr><td>💆 SPA/按摩</td><td class="plan-col">¥0-80</td><td class="plan-col">¥0-50</td><td class="plan-col">¥80-200</td></tr>
+      <tr><td>🎁 购物/其他</td><td class="plan-col">¥100-200</td><td class="plan-col">¥100-200</td><td class="plan-col">¥150-250</td></tr>
+      <tr><td><strong>💰 人均总计</strong></td><td class="plan-col"><strong>¥1,250-2,210</strong></td><td class="plan-col"><strong>¥1,420-2,400</strong></td><td class="plan-col"><strong>¥1,610-2,900</strong></td></tr>
+      <tr><td><strong>💰 4 人合计</strong></td><td class="plan-col"><strong>¥5,000-8,840</strong></td><td class="plan-col"><strong>¥5,680-9,600</strong></td><td class="plan-col"><strong>¥6,440-11,600</strong></td></tr>
+    </table>
+    <p style="margin-top:12px;font-size:0.85em;color:var(--warm-grey);">
+      * 住宿按中档精品客栈估算（¥100-300/晚/人），高端度假村价格更高。<br>
+      * 以上价格供参考，以实际预订和汇率（1 CNY ≈ 3,000 LAK）为准。
+    </p>
+  </div>
+</div>
+
+<!-- ===== 住宿推荐 ===== -->
+<div class="section">
+  <div class="section-header"><span class="icon">🏨</span> 住宿推荐</div>
+  <div class="section-body">
+    <table class="budget-table">
+      <tr><th>档位</th><th>推荐</th><th>区位</th><th>参考价/晚/人</th><th>特点</th></tr>
+      <tr><td>💰 经济</td><td>Villa Chitdara / Cold River Guesthouse</td><td>古城中心</td><td>¥80-150</td><td>家庭旅馆，干净舒适，位置好</td></tr>
+      <tr><td>⭐ 中档</td><td>Mekong Charm River View / Villa Maydou</td><td>湄公河岸 / 古城</td><td>¥150-300</td><td>精品客栈，河景/庭院，含早餐</td></tr>
+      <tr><td>👑 高端</td><td>Rosewood Luang Prabang / 3 Nagas</td><td>近郊 / 古城</td><td>¥500-1500+</td><td>世界级设计师酒店/殖民遗产</td></tr>
+      <tr><td>🏡 民宿</td><td>Airbnb 古城独立 villa</td><td>古城/河畔</td><td>¥200-400 (整套)</td><td>4 人住整套 villa，性价比高</td></tr>
+    </table>
+    <p style="margin-top:12px;font-size:0.85em;color:var(--warm-grey);">💡 4 人建议：Airbnb 整套 villa 或 2 间中档客栈双人房，人均每晚 ¥100-200 就很不错了。</p>
+  </div>
+</div>
+
+<!-- ===== 实用清单 ===== -->
+<div class="section">
+  <div class="section-header"><span class="icon">📋</span> 行前必读清单</div>
+  <div class="section-body">
+    <div class="tips-grid">
+      <div class="tip-card">
+        <h4>🚨 必须预约</h4>
+        <ul class="checklist">
+          <li>MandaLao 大象庇护所（提前 3-7 天）</li>
+          <li>Tamarind / Bamboo Tree 烹饪课（提前 1-2 天）</li>
+          <li>Manda de Laos / L'Elephant 晚餐（提前 1-3 天）</li>
+          <li>千佛洞慢船（提前 1 天傍晚到码头谈价）</li>
+          <li>住宿（旺季建议提前 1-2 周）</li>
+        </ul>
+      </div>
+      <div class="tip-card">
+        <h4>🎒 行前物品</h4>
+        <ul class="checklist">
+          <li>护照（有效期 6 个月以上，空白页）</li>
+          <li>2 寸照片 ×2（落地签用）</li>
+          <li>泳衣 & 速干毛巾（瀑布游泳）</li>
+          <li>轻薄雨衣 / 折叠伞（雨季必备）</li>
+          <li>防水袋（保护手机相机）</li>
+          <li>防晒霜 + 驱蚊液（热带必备）</li>
+          <li>现金美元（落地签 $20，部分店收美元）</li>
+          <li>运动凉鞋（寺庙脱鞋方便）</li>
+          <li>薄长裤/长裙（寺庙需遮膝）</li>
+        </ul>
+      </div>
+      <div class="tip-card">
+        <h4>⚠️ 避坑 & 安全</h4>
+        <ul class="checklist">
+          <li>布施时不用闪光灯、不触碰僧侣</li>
+          <li>tuk-tuk 先谈价再上车（古城内一般 20,000-30,000 LAK）</li>
+          <li>换汇去正规兑换点，汇率比酒店好</li>
+          <li>不要喝自来水，买瓶装水（¥2/瓶）</li>
+          <li>雨季瀑布水流急时不要跳水和游泳</li>
+          <li>夜市大胆砍价但保持微笑（通常 7-8 折）</li>
+          <li>竹桥雨季可能被冲毁，过桥前确认</li>
+        </ul>
+      </div>
+      <div class="tip-card">
+        <h4>📱 必备 App & 信息</h4>
+        <ul class="checklist">
+          <li>Google Maps（离线地图提前下载）</li>
+          <li>Google Translate（老挝语离线包）</li>
+          <li>Grab（打车，琅勃拉邦可用）</li>
+          <li>WhatsApp（联系酒店/向导）</li>
+          <li>Currency 换算 App</li>
+          <li>老挝紧急电话：警察 1191 / 急救 1195</li>
+          <li>中国驻老挝使馆：+856-21-315100</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 签证 ===== -->
+<div class="section">
+  <div class="section-header"><span class="icon">🛂</span> 签证 & 入境</div>
+  <div class="section-body">
+    <table class="budget-table">
+      <tr><td><strong>签证方式</strong></td><td>落地签 (Visa on Arrival)</td></tr>
+      <tr><td><strong>费用</strong></td><td>$20 美元（约 ¥140），只收美元现金</td></tr>
+      <tr><td><strong>所需材料</strong></td><td>护照（6 个月以上有效期）+ 2 寸白底照片 ×1-2 + 入境卡（火车上发放）</td></tr>
+      <tr><td><strong>停留期</strong></td><td>30 天</td></tr>
+      <tr><td><strong>铁路口岸</strong></td><td>磨丁口岸（老挝侧），火车上完成出入境手续，非常方便</td></tr>
+      <tr><td><strong>注意事项</strong></td><td>准备好美元零钱，口岸可能不找零。护照空白页至少 2 页。落地签排队约 15-30 分钟</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ===== 餐厅速查 ===== -->
+<div class="section">
+  <div class="section-header"><span class="icon">🍽️</span> 餐厅速查表</div>
+  <div class="section-body" style="overflow-x:auto;">
+    <table class="budget-table">
+      <tr><th>餐厅</th><th>类型</th><th>人均 ¥</th><th>推荐菜</th><th>备注</th></tr>
+      <tr><td>Tamarind</td><td>老挝菜</td><td>50-70</td><td>Tasting platter、湄公河苔藓</td><td>河边座位需预约</td></tr>
+      <tr><td>Manda de Laos</td><td>老挝精致</td><td>100-150</td><td>蕉叶蒸鱼、柠檬草牛肉</td><td>荷花池，需预约</td></tr>
+      <tr><td>L'Elephant</td><td>法餐</td><td>120-180</td><td>鸭胸肉、红酒炖牛肉</td><td>殖民建筑，需预约</td></tr>
+      <tr><td>Dyen Sabai</td><td>老挝/河畔</td><td>40-60</td><td>Sin dat 老挝火锅</td><td>吊脚楼，躺垫上吃饭</td></tr>
+      <tr><td>Tangor</td><td>融合菜</td><td>50-70</td><td>法老融合 tasting</td><td>半岛北端，安静</td></tr>
+      <tr><td>3 Nagas</td><td>老挝精致</td><td>80-120</td><td>Tasting menu</td><td>殖民庭院</td></tr>
+      <tr><td>Saffron Coffee</td><td>咖啡馆</td><td>25-45</td><td>老挝咖啡、牛角包三明治</td><td>河景露台</td></tr>
+      <tr><td>Le Banneton</td><td>法式面包</td><td>20-35</td><td>可颂、法棍三明治</td><td>早餐首选</td></tr>
+      <tr><td>Dao Coffee</td><td>咖啡馆</td><td>15-20</td><td>榛子拿铁</td><td>琅勃拉邦最好喝的咖啡</td></tr>
+      <tr><td>夜市自助</td><td>素食 buffet</td><td>~6</td><td>15,000 LAK 一盘子随便装</td><td>性价比之王</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div class="footer">
+  <p>🌴 以上信息基于 2025-2026 年公开攻略整理，实际价格、营业时间以当地情况为准。</p>
+  <p style="margin-top:4px;">琅勃拉邦最好的打开方式，不是打卡清单，而是放慢脚步 —— 愿你找到它的节奏。</p>
+  <p style="margin-top:16px;font-size:0.8em;">路小鲜 (Leo) · AI 旅行管家 · 2026 年 6 月</p>
+</div>
+
+</div>
+
+<script>
+function switchTab(planId) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById(planId).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>

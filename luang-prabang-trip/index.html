@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>琅勃拉邦 5 日慢游计划 · 2026 年 6 月 · 4 人双酒店定制</title>
+<style>
+  :root {
+    --gold: #C8963E;
+    --gold-light: #F5E6C8;
+    --teal: #1A6B5A;
+    --teal-light: #E8F4F1;
+    --cream: #FAF7F2;
+    --warm-grey: #6B5E53;
+    --dark: #2C2416;
+    --white: #FFFFFF;
+    --red: #C0392B;
+    --blue: #2980B9;
+    --shadow: 0 2px 12px rgba(44,36,22,0.08);
+    --radius: 12px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    line-height: 1.7;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #1A6B5A 0%, #2C8B6E 40%, #C8963E 100%);
+    color: white; text-align: center; padding: 60px 20px 50px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.08) 0%, transparent 60%);
+  }
+  .hero h1 { font-size: 2.5em; font-weight: 800; position: relative; letter-spacing: 0.02em; }
+  .hero .sub { font-size: 1.15em; opacity: 0.9; margin-top: 8px; position: relative; }
+  .hero .meta { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin-top: 20px; position: relative; }
+  .hero .tag { background: rgba(255,255,255,0.18); backdrop-filter: blur(6px); padding: 6px 18px; border-radius: 20px; font-size: 0.92em; }
+
+  .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+
+  .section { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); margin: 28px 0; overflow: hidden; }
+  .section-header { background: var(--teal-light); padding: 16px 24px; font-size: 1.2em; font-weight: 700; color: var(--teal); border-bottom: 1px solid #DDEBE8; display: flex; align-items: center; gap: 10px; }
+  .section-header .icon { font-size: 1.3em; }
+  .section-body { padding: 24px; }
+
+  .weather-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 16px; }
+  .weather-card { text-align: center; padding: 18px 10px; background: var(--cream); border-radius: 10px; }
+  .weather-card .val { font-size: 2em; font-weight: 800; color: var(--teal); }
+  .weather-card .lbl { font-size: 0.85em; color: var(--warm-grey); margin-top: 4px; }
+
+  .tab-nav { display: flex; gap: 0; margin-bottom: 0; border-radius: var(--radius) var(--radius) 0 0; overflow: hidden; }
+  .tab-btn { flex: 1; padding: 14px 8px; border: none; cursor: pointer; font-size: 0.95em; font-weight: 700; background: #E8E2D8; color: var(--warm-grey); transition: all 0.25s; font-family: inherit; }
+  .tab-btn:hover { background: #DDD6C8; }
+  .tab-btn.active { background: var(--white); color: var(--teal); box-shadow: inset 0 -3px 0 var(--teal); }
+  .tab-content { display: none; padding: 24px; }
+  .tab-content.active { display: block; }
+
+  .plan-intro { margin-bottom: 20px; }
+  .plan-intro h3 { font-size: 1.4em; color: var(--teal); margin-bottom: 6px; }
+  .plan-intro .tagline { color: var(--gold); font-weight: 600; font-size: 0.95em; }
+  .plan-intro .desc { color: var(--warm-grey); margin-top: 8px; font-size: 0.93em; }
+
+  .day { background: var(--cream); border-radius: 10px; padding: 20px; margin-bottom: 16px; border-left: 4px solid var(--teal); }
+  .day.alt { border-left-color: var(--gold); }
+  .day-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .day-num { font-weight: 800; font-size: 1.05em; color: var(--teal); }
+  .day.alt .day-num { color: var(--gold); }
+  .day-date { font-size: 0.85em; color: var(--warm-grey); }
+  .day-theme { font-size: 0.88em; color: var(--teal); font-weight: 600; }
+  .day.alt .day-theme { color: var(--gold); }
+  .day-location { display: inline-block; background: var(--teal); color: white; padding: 2px 12px; border-radius: 12px; font-size: 0.78em; margin-left: 8px; font-weight: 600; }
+  .day.alt .day-location { background: var(--gold); }
+
+  .tl { list-style: none; }
+  .tl li { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px dashed #E0D8C8; align-items: flex-start; }
+  .tl li:last-child { border-bottom: none; }
+  .tl .time { min-width: 55px; font-weight: 700; font-size: 0.88em; color: var(--teal); padding-top: 2px; }
+  .tl .act { flex:1; }
+  .tl .act strong { color: var(--dark); }
+  .tl .act .note { display: block; font-size: 0.82em; color: var(--warm-grey); margin-top: 2px; }
+  .tl .act .price { display: inline-block; background: var(--teal-light); color: var(--teal); padding: 1px 8px; border-radius: 10px; font-size: 0.78em; font-weight: 600; margin-left: 4px; }
+  .tl .act .walk { display: inline-block; background: #E8F0FE; color: var(--blue); padding: 1px 8px; border-radius: 10px; font-size: 0.75em; font-weight: 600; margin-left: 4px; }
+
+  .highlight-box { background: #FFF9ED; border: 1px solid var(--gold-light); border-radius: 8px; padding: 14px 18px; margin-top: 14px; font-size: 0.9em; }
+  .highlight-box strong { color: var(--gold); }
+  .rain-plan { background: #EDF4FC; border: 1px solid #B8D4F0; border-radius: 8px; padding: 12px 16px; margin-top: 10px; font-size: 0.88em; color: #2C5F8A; }
+  .switch-box { background: #FDEBD0; border: 1px solid var(--gold); border-radius: 8px; padding: 12px 16px; margin-top: 10px; font-size: 0.88em; }
+
+  .tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 16px; }
+  .tip-card { background: var(--cream); border-radius: 10px; padding: 18px; }
+  .tip-card h4 { color: var(--teal); margin-bottom: 8px; font-size: 1em; }
+  .tip-card ul { list-style: none; padding: 0; }
+  .tip-card li { padding: 5px 0; font-size: 0.9em; border-bottom: 1px dotted #E0D8C8; }
+  .tip-card li:last-child { border-bottom: none; }
+  .tip-card li::before { content: '▸ '; color: var(--gold); }
+
+  .budget-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+  .budget-table th { background: var(--teal); color: white; padding: 12px 14px; text-align: left; }
+  .budget-table th:first-child { border-radius: 8px 0 0 0; }
+  .budget-table th:last-child { border-radius: 0 8px 0 0; }
+  .budget-table td { padding: 10px 14px; border-bottom: 1px solid #E8E2D8; }
+  .budget-table tr:last-child td { font-weight: 800; background: var(--teal-light); }
+  .budget-table .plan-col { text-align: center; }
+  .budget-table tr:hover td { background: #FAF7F2; }
+
+  .checklist { list-style: none; }
+  .checklist li { padding: 6px 0; font-size: 0.9em; }
+  .checklist li::before { content: '☐ '; color: var(--teal); font-weight: 700; margin-right: 6px; }
+
+  .compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 16px; }
+  .compare-card { background: var(--cream); border-radius: 10px; padding: 20px; text-align: center; }
+  .compare-card h4 { color: var(--teal); font-size: 1.1em; margin-bottom: 6px; }
+  .compare-card .emoji { font-size: 2.5em; margin-bottom: 8px; }
+  .compare-card .suit { font-size: 0.85em; color: var(--warm-grey); margin-top: 8px; }
+  .compare-card.highlight { border: 2px solid var(--gold); background: #FFFCF5; }
+
+  .hotel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px,1fr)); gap: 20px; }
+  .hotel-card { background: var(--cream); border-radius: 10px; padding: 20px; border-top: 4px solid var(--teal); }
+  .hotel-card.second { border-top-color: var(--gold); }
+  .hotel-card h4 { font-size: 1.1em; margin-bottom: 8px; }
+  .hotel-card .addr { font-size: 0.85em; color: var(--warm-grey); margin-bottom: 10px; }
+  .hotel-card .features { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .hotel-card .features span { background: var(--teal-light); color: var(--teal); padding: 3px 12px; border-radius: 14px; font-size: 0.8em; }
+  .hotel-card.second .features span { background: var(--gold-light); color: #8B6914; }
+
+  .radius-map { display: flex; flex-direction: column; gap: 6px; margin-top: 14px; }
+  .radius-item { display: flex; justify-content: space-between; align-items: center; background: var(--white); border-radius: 8px; padding: 10px 14px; border: 1px solid #E0D8C8; }
+  .radius-item .dest { font-size: 0.9em; }
+  .radius-item .dist { font-weight: 800; font-size: 0.85em; padding: 3px 12px; border-radius: 12px; white-space: nowrap; flex-shrink: 0; }
+  .radius-item .dist.walk { background: #E8F0FE; color: var(--blue); }
+  .radius-item .dist.tuktuk { background: #FDEBD0; color: #8B6914; }
+
+  .footer { text-align: center; color: var(--warm-grey); font-size: 0.85em; padding: 30px 20px; }
+  .footer a { color: var(--teal); }
+
+  /* ===== PLAN BOTTOM NAV ===== */
+  .plan-bottom-nav {
+    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+    padding: 18px 0 6px; margin-top: 4px;
+    border-top: 1px dashed #E0D8C8;
+  }
+  .plan-bottom-nav .hint {
+    width: 100%; text-align: center; font-size: 0.85em; color: var(--warm-grey); margin-bottom: 4px;
+  }
+  .plan-bottom-btn {
+    padding: 10px 18px; border-radius: 20px; border: 1.5px solid var(--teal);
+    background: var(--white); color: var(--teal); font-weight: 700;
+    font-size: 0.88em; cursor: pointer; font-family: inherit;
+    transition: all 0.25s; min-height: 44px;
+  }
+  .plan-bottom-btn:hover { background: var(--teal); color: white; transform: translateY(-2px); box-shadow: var(--shadow); }
+
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 1.7em; }
+    .tab-btn { font-size: 0.8em; padding: 12px 4px; }
+    .tl li { flex-direction: column; gap: 2px; }
+    .plan-bottom-btn { font-size: 0.8em; padding: 8px 14px; }
+  }
+
+  @media print {
+    body { background: white; }
+    .section { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+    .tab-content { display: block !important; }
+    .tab-nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🌴 琅勃拉邦 5 日慢游计划</h1>
+  <div class="sub">Luang Prabang · 老挝 · UNESCO 世界遗产古城 · 双酒店体验</div>
+  <div class="meta">
+    <span class="tag">📅 2026.06.18 – 06.22</span>
+    <span class="tag">👥 4 人出行</span>
+    <span class="tag">🚄 D83/D86 中老铁路</span>
+    <span class="tag">🏨 双酒店 · 3+1 晚</span>
+    <span class="tag">💰 3 套方案可选</span>
+    <span class="tag">🗺️ 按酒店区位优化</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ===== 酒店信息（含区位地图） ===== -->
+<div class="section">
+  <div class="section-header"><span class="icon">🏨</span> 已预订住宿 · 行程时间线 & 步行辐射圈</div>
+  <div class="section-body">
+    <table class="budget-table" style="margin-bottom:0;">
+      <tr><th style="width:10%">日期</th><th style="width:24%">住宿</th><th style="width:18%">地址</th><th>亮点</th></tr>
+      <tr>
+        <td><strong>6/18-21</strong><br><span style="font-size:0.8em;color:var(--warm-grey);">3 晚</span></td>
+        <td><strong>🏊 The Jam Boutique Hotel</strong><br><span style="font-size:0.82em;color:var(--warm-grey);">⭐ 4.5 · 89 条评价 · 2025 开业</span></td>
+        <td>Ban Viengkeo, Alley 2<br><span style="font-size:0.8em;color:var(--warm-grey);">古城西南 · 莲花池畔</span></td>
+        <td>无边际泳池 · 莲花池景观 · 亲子友好</td>
+      </tr>
+    </table>
+    <div style="background:var(--gold-light);border-radius:0 0 8px 8px;padding:8px 16px;font-size:0.88em;margin-bottom:14px;">
+      🏊 <strong style="color:#8B6914;">The Jam</strong> ▶ 18 日下午抵达直接入住 · 21 日中午退房
+    </div>
+    <table class="budget-table" style="margin-bottom:0;">
+      <tr>
+        <td style="width:10%"><strong>6/21-22</strong><br><span style="font-size:0.8em;color:var(--warm-grey);">1 晚</span></td>
+        <td style="width:24%"><strong>🏡 My BanLao Hotel</strong><br><span style="font-size:0.82em;color:var(--warm-grey);">滿家乐酒店</span></td>
+        <td style="width:18%">Thammikalath Rd<br>Ban Mano Rd<br><span style="font-size:0.8em;color:var(--warm-grey);">古城东南 · 池景三人房</span></td>
+        <td>池景房 44m² · 1.81m+0.8m 床 · SPA · 租车</td>
+      </tr>
+    </table>
+    <div style="background:var(--gold-light);border-radius:0 0 8px 8px;padding:8px 16px;font-size:0.88em;margin-bottom:14px;">
+      🏡 <strong style="color:#8B6914;">My BanLao</strong> ▶ 21 日 14:00 入住 · 22 日 11:30 前退房 → 出发
+    </div>
+    <table class="budget-table">
+      <tr>
+        <td style="width:10%"><strong>6/22</strong></td>
+        <td colspan="3">🚄 上午自由 → 退房 → 前往火车站 → D86 返回西双版纳</td>
+      </tr>
+    </table>
+
+    <p style="font-size:0.95em;font-weight:700;color:var(--teal);margin-bottom:10px;">🗺️ 两家酒店的"步行辐射圈" — 决定什么先玩、什么后玩</p>
+
+    <div class="hotel-grid">
+      <div class="hotel-card">
+        <h4>🏊 The Jam Boutique · Ban Viengkeo（古城西南）</h4>
+        <p style="font-size:0.85em;color:var(--warm-grey);margin-bottom:12px;">6/18-21 的基地 · 所有活动以此为中心</p>
+        <div class="radius-map">
+          <div class="radius-item"><span class="dest">维苏纳拉特寺 Wat Wisunalat</span><span class="dist walk">🚶 4min</span></div>
+          <div class="radius-item"><span class="dest">UXO Lao 游客中心</span><span class="dist walk">🚶 4min</span></div>
+          <div class="radius-item"><span class="dest">TAEC 传统艺术中心</span><span class="dist walk">🚶 5min</span></div>
+          <div class="radius-item"><span class="dest">布施主路 Sakkaline Rd</span><span class="dist walk">🚶 8min</span></div>
+          <div class="radius-item"><span class="dest">夜市 / 洋人街</span><span class="dist walk">🚶 10min</span></div>
+          <div class="radius-item"><span class="dest">普西山 Mount Phousi</span><span class="dist walk">🚶 15min</span></div>
+          <div class="radius-item"><span class="dest">香通寺（北端）</span><span class="dist tuktuk">🛺 5min</span></div>
+          <div class="radius-item"><span class="dest">慢船码头</span><span class="dist tuktuk">🛺 5min</span></div>
+        </div>
+      </div>
+      <div class="hotel-card second">
+        <h4>🏡 My BanLao · Ban Mano（古城东南）</h4>
+        <p style="font-size:0.85em;color:var(--warm-grey);margin-bottom:12px;">6/21-22 的基地 · 安静收官</p>
+        <div class="radius-map">
+          <div class="radius-item"><span class="dest">Wat Mano 小寺庙</span><span class="dist walk">🚶 3min</span></div>
+          <div class="radius-item"><span class="dest">夜市 / 洋人街 / 早市</span><span class="dist walk">🚶 4min</span></div>
+          <div class="radius-item"><span class="dest">湄公河岸步道</span><span class="dist walk">🚶 5min</span></div>
+          <div class="radius-item"><span class="dest">布施主路 Sakkaline Rd</span><span class="dist walk">🚶 6min</span></div>
+          <div class="radius-item"><span class="dest">Manda de Laos 荷花池</span><span class="dist walk">🚶 6min</span></div>
+          <div class="radius-item"><span class="dest">皇宫博物馆</span><span class="dist walk">🚶 7min</span></div>
+          <div class="radius-item"><span class="dest">普西山 Mount Phousi</span><span class="dist walk">🚶 10min</span></div>
+          <div class="radius-item"><span class="dest">慢船码头</span><span class="dist tuktuk">🛺 5min</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="switch-box" style="margin-top:16px;">
+      <strong>🔄 换酒店日（6/21）设计原则：</strong><br>
+      上午：从 The Jam 出发，完成需要交通接驳的活动（慢船/瀑布）→ 中午退房 The Jam →<br>
+      下午：入住 My BanLao 后，新酒店周边步行探索 → 无需再坐 tuk-tuk。<br>
+      两家酒店直线距离约 1km，步行 15min / tuk-tuk 3min，换酒店不耽误行程。
+    </div>
+  </div>
+</div>
+
+<!-- ===== 天气 ===== -->
+<div class="section">
+  <div class="section-header"><span class="icon">🌦️</span> 6 月天气速览</div>
+  <div class="section-body">
+    <div class="weather-grid">
+      <div class="weather-card"><div class="val">24-34°</div><div class="lbl">气温区间</div></div>
+      <div class="weather-card"><div class="val">~15 天</div><div class="lbl">月均降雨日</div></div>
+      <div class="weather-card"><div class="val">177mm</div><div class="lbl">月降水量</div></div>
+      <div class="weather-card"><div class="val">高湿</div><div class="lbl">体感闷热</div></div>
+    </div>
+    <p style="margin-top:14px;font-size:0.9em;color:var(--warm-grey);">
+      ⚡ <strong>雨季特点</strong>：多为午后短时暴雨（1-2小时），很少全天降雨。清晨和上午通常是晴天。最佳户外时间：<strong>06:00-12:00</strong> 和 <strong>16:00 之后</strong>。每个方案均标注了雨天备选。
+    </p>
+  </div>
+</div>
+
+<!-- ===== 三案对比 ===== -->
+<div class="section">
+  <div class="section-header"><span class="icon">⚖️</span> 三案速览 · 选哪个？</div>
+  <div class="section-body">
+    <div class="compare-grid">
+      <div class="compare-card">
+        <div class="emoji">🏛️</div>
+        <h4>Plan A · 经典人文</h4>
+        <p style="font-size:0.9em;color:var(--warm-grey);">布施 + 香通寺 + 皇宫 + 织造村 + 烹饪课 + 千佛洞慢船 + 日落游船</p>
+        <div class="suit">✅ 第一次来琅勃拉邦<br>✅ 喜欢文化与历史<br>✅ 想要"经典"记忆<br>🗺️ The Jam(3天) + My BanLao(1天)</div>
+      </div>
+      <div class="compare-card">
+        <div class="emoji">🌿</div>
+        <h4>Plan B · 自然野趣</h4>
+        <p style="font-size:0.9em;color:var(--warm-grey);">光西瀑布跳水 + 大象庇护所 + 皮划艇 + Tad Sae + 千佛洞慢船</p>
+        <div class="suit">✅ 喜欢户外和玩水<br>✅ 想要出片率高<br>✅ 活力型体验<br>🗺️ The Jam(3天) + My BanLao(1天)</div>
+      </div>
+      <div class="compare-card highlight">
+        <div class="emoji">🎯</div>
+        <h4>Plan D · 双酒店轻奢 ⭐ 推荐</h4>
+        <p style="font-size:0.9em;color:var(--warm-grey);">The Jam 泳池日 + My BanLao 池景夜 + 烹饪课 + 布施 + 瀑布精选</p>
+        <div class="suit">✅ 充分利用双酒店设施<br>✅ 每个酒店周边步行深度探索<br>✅ 每个酒店都有专属记忆<br>🗺️ 两酒店步行圈各安排独立日程</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 三套方案 ===== -->
+<div class="section">
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('planA')">🏛️ Plan A · 经典人文</button>
+    <button class="tab-btn" onclick="switchTab('planB')">🌿 Plan B · 自然野趣</button>
+    <button class="tab-btn" onclick="switchTab('planD')">🎯 Plan D · 双酒店轻奢 ⭐</button>
+  </div>
+
+  <!-- ========== PLAN A ========== -->
+  <div id="planA" class="tab-content active">
+    <div class="plan-intro">
+      <h3>🏛️ Plan A · 经典人文深度游</h3>
+      <div class="tagline">适合：第一次来琅勃拉邦、喜欢文化历史、追求"仪式感记忆"</div>
+      <div class="desc">覆盖古城最精华的人文体验。The Jam 时期重点攻克北线（香通寺-皇宫）和西南本地（维苏纳拉特寺-TAEC）；换到 My BanLao 后，慢船、荷花池晚餐等收官体验全部在步行范围内。</div>
+    </div>
+
+    <!-- A Day 1 -->
+    <div class="day">
+      <div class="day-header"><span class="day-num">Day 1</span><span class="day-date">6/18 周四</span><span class="day-location">🏊 The Jam 基地</span></div>
+      <div class="day-theme">🎯 主题：抵达 · 从泳池开始的琅勃拉邦</div>
+      <ul class="tl">
+        <li><span class="time">14:30</span><span class="act"><strong>🚄 抵达琅勃拉邦站</strong><span class="note">D83 到达。出站后 tuk-tuk 到 The Jam Boutique Hotel，约 15-20 分钟，¥20-30/车</span></span></li>
+        <li><span class="time">15:15</span><span class="act"><strong>🏨 入住 The Jam</strong><span class="note">Ban Viengkeo, Alley 2。放下行李，在无边际泳池边喝一杯欢迎饮品</span></span></li>
+        <li><span class="time">16:30</span><span class="act"><strong>维苏纳拉特寺 Wat Wisunalat</strong> <span class="walk">🚶 4min</span><span class="price">门票 ¥4</span><span class="note">16 世纪古寺，西瓜形佛塔和巨大的坐佛。从酒店出门就到，游客极少，完美的第一站</span></span></li>
+        <li><span class="time">17:30</span><span class="act"><strong>普西山日落（第一天就看！）</strong> <span class="walk">🚶 15min</span><span class="price">门票 ¥8</span><span class="note">328 级台阶。如果太累就换第二天，但第一天就看日落，后面几天压力小很多</span></span></li>
+        <li><span class="time">18:30</span><span class="act"><strong>夜市初体验</strong> <span class="walk">🚶 10min 从山脚</span><span class="price">自由消费</span><span class="note">Sisavangvong 路封路变步行街。先逛一圈感受氛围，不急着买。必吃素食 buffet：¥6 随便装一盘</span></span></li>
+        <li><span class="time">20:00</span><span class="act"><strong>烤鱼 + Beerlao</strong> <span class="walk">🚶 10min 回 The Jam</span><span class="price">人均 ¥25-35</span><span class="note">夜市边小摊，一条湄公河烤鱼配冰 Beerlao——琅勃拉邦的欢迎仪式。吃完走回酒店 10 分钟刚好消食</span></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>火车穿过热带雨林 → The Jam 泳池第一口冰咖啡 → 步行 4min 就到的古寺 → 普西山金色日落 → 夜市烟火气</div>
+    </div>
+
+    <!-- A Day 2 -->
+    <div class="day alt">
+      <div class="day-header"><span class="day-num">Day 2</span><span class="day-date">6/19 周五</span><span class="day-location">🏊 The Jam 基地</span></div>
+      <div class="day-theme">🎯 主题：古城人文精华 · 从布施到日落 · 北线一日</div>
+      <ul class="tl">
+        <li><span class="time">05:30</span><span class="act"><strong>布施仪式 Tak Bat</strong> <span class="walk">🚶 8min</span><span class="price">免费</span><span class="note">Sakkaline 路。安静旁观，不用闪光灯。想参与布施可买糯米饭篮 (~¥8)，务必赤足、低于僧侣视线</span></span></li>
+        <li><span class="time">06:30</span><span class="act"><strong>早市 Kitsalat Market 早餐</strong> <span class="walk">🚶 5min</span><span class="price">人均 ¥15</span><span class="note">竹筒糯米饭、老挝油条 patongo、烤河鱼、现开椰子。比夜市真实百倍</span></span></li>
+        <li><span class="time">07:30</span><span class="act"><strong>香通寺 Wat Xieng Thong</strong> <span class="walk">🛺 5min / 🚶 25min</span><span class="price">门票 ¥8</span><span class="note">1560 年建，琅勃拉邦最美寺庙。清晨光线斜照「生命之树」马赛克壁画时色彩最鲜艳。叫 tuk-tuk 去（古城内 20,000 LAK），看完走回来一路逛其他寺庙，不走回头路</span></span></li>
+        <li><span class="time">09:30</span><span class="act"><strong>沿半岛往回走：Wat Sensoukharam → 皇宫方向</strong><span class="note">这段是古城最精华的漫步路线。红色庙墙、鸡蛋花树、偶尔路过的僧侣——慢慢走，拍一路</span></span></li>
+        <li><span class="time">10:30</span><span class="act"><strong>皇宫博物馆 Royal Palace Museum</strong> <span class="walk">🚶 12min 回程中</span><span class="price">门票 ¥11</span><span class="note">末代国王行宫，Prabang 金佛。需脱鞋、寄存背包、禁止拍照</span></span></li>
+        <li><span class="time">12:00</span><span class="act"><strong>午餐 · Tamarind 餐厅</strong> <span class="walk">🚶 8min 从皇宫</span><span class="price">人均 ¥50-70</span><span class="note">最正宗老挝菜。推荐：湄公河苔藓、柠檬草烤鸡、老挝 tasting platter。河边座位需提前约</span></span></li>
+        <li><span class="time">14:00</span><span class="act"><strong>🏊 回 The Jam 泳池午休</strong> <span class="walk">🚶 10min</span><span class="note">避开正午高温。无边际泳池泡一会儿，俯瞰古城</span></span></li>
+        <li><span class="time">16:00</span><span class="act"><strong>TAEC 传统艺术与民族学中心</strong> <span class="walk">🚶 5min</span><span class="price">门票 ¥9</span><span class="note">了解老挝 49 个民族的服饰与手工艺。有空调！离酒店走路就到，下雨也不怕</span></span></li>
+        <li><span class="time">17:15</span><span class="act"><strong>迈佛寺 Wat Mai</strong> <span class="walk">🚶 10min</span><span class="price">门票 ¥4</span><span class="note">五层鎏金浮雕外立面，下午光线正合适</span></span></li>
+        <li><span class="time">18:30</span><span class="act"><strong>夜市漫步 + 晚餐</strong> <span class="walk">🚶 8min</span><span class="price">人均 ¥30</span><span class="note">昨晚逛过了，今晚认真淘货：老挝咖啡豆、丝绸围巾、桑皮纸画</span></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>清晨橙色僧袍流淌过街道 → 香通寺生命之树的晨光 → 半岛漫步的寺庙剪影 → The Jam 泳池午后的慵懒 → 夜市淘到的第一件宝贝</div>
+      <div class="rain-plan">🌧️ <strong>雨天备选：</strong>TAEC + UXO Lao 游客中心（都在 The Jam 步行 5min 内！）→ 回酒店泳池边喝咖啡赏雨</div>
+    </div>
+
+    <!-- A Day 3 -->
+    <div class="day">
+      <div class="day-header"><span class="day-num">Day 3</span><span class="day-date">6/20 周六</span><span class="day-location">🏊 The Jam 基地</span></div>
+      <div class="day-theme">🎯 主题：手工艺 + 老挝厨房 · The Jam 最后一晚</div>
+      <ul class="tl">
+        <li><span class="time">08:00</span><span class="act"><strong>🏊 The Jam 泳池晨泳</strong><span class="note">早餐后在无边际泳池泡一泡，享受 The Jam 最后一天（明天就要换酒店了）</span></span></li>
+        <li><span class="time">09:30</span><span class="act"><strong>租自行车 → 班桑孔织造村 Ban Xang Khong</strong> <span class="price">自行车 ¥8-14/天</span><span class="note">沿湄公河岸向北骑行 3km，约 30 分钟。看桑皮纸制作、手工丝织。直接从手艺人手里买，比夜市便宜一半。注意：The Jam 在西南侧，出门右转沿河往北一路骑就行，路线很直</span></span></li>
+        <li><span class="time">12:00</span><span class="act"><strong>午餐 · Saffron Coffee 河景</strong> <span class="walk">🚶 10min 归还自行车后</span><span class="price">人均 ¥30-45</span><span class="note">河畔咖啡馆，老挝咖啡 + 牛角包三明治，二楼露台看湄公河</span></span></li>
+        <li><span class="time">13:30</span><span class="act"><strong>午休</strong> <span class="walk">🚶 10min 回 The Jam</span></span></li>
+        <li><span class="time">15:00</span><span class="act"><strong>老挝烹饪课 Cooking Class</strong> <span class="price">约 ¥180-250/人</span><span class="note">推荐 Tamarind Cooking School 或 Bamboo Tree。3 小时：逛菜市场认食材 → 学做 Laap 肉碎沙拉、Mok Pa 蕉叶蒸鱼、绿咖喱、糯米饭 → 吃自己做的晚餐。提前 1 天预约！（tuk-tuk 从 The Jam 出发约 5min）</span></span></li>
+        <li><span class="time">19:00</span><span class="act"><strong>享用自己做的晚餐</strong><span class="price">含在课程费中</span><span class="note">亲手做的老挝菜配花园烛光——没有比这更有获得感的晚餐了</span></span></li>
+        <li><span class="time">20:30</span><span class="act"><strong>散步到湄公河与南康河交汇处</strong> <span class="note">半岛北端深夜几乎无人。两条大河在黑暗中流淌，寺庙剪影，零星渔火。从 The Jam 慢慢走约 15min</span></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>The Jam 最后一早的泳池时光 → 手艺人家里买到的桑皮纸画 → 自己亲手做的 Laap → 深夜大河交汇处的万籁俱寂</div>
+      <div class="rain-plan">🌧️ <strong>雨天备选：</strong>烹饪课本就在室内不受影响。骑行改 tuk-tuk。上午可去 Ock Pop Tok 手工艺中心（室内）替代织造村</div>
+    </div>
+
+    <!-- A Day 4 -->
+    <div class="day alt">
+      <div class="day-header"><span class="day-num">Day 4</span><span class="day-date">6/21 周日 · 🔄 换酒店日</span><span class="day-location">🏊 The Jam → 🏡 My BanLao</span></div>
+      <div class="day-theme">🎯 主题：千佛洞慢船 → 入住新酒店 → My BanLao 周边步行收官</div>
+      <ul class="tl">
+        <li><span class="time">06:30</span><span class="act"><strong>包慢船前往千佛洞 Pak Ou Caves</strong> <span class="walk">🛺 码头 5min</span><span class="price">船费 ~¥45-60/人</span><span class="note">前一天傍晚到码头谈好船家。清晨出发，看湄公河苏醒——晨雾中的石灰岩山峰。慢船 2 小时。这是从 The Jam 出发最后的远距离活动</span></span></li>
+        <li><span class="time">08:30</span><span class="act"><strong>千佛洞 Pak Ou Caves</strong><span class="price">门票 ¥8</span><span class="note">两个洞穴 4000+ 佛像。清晨独享，避开 10 点后旅行团</span></span></li>
+        <li><span class="time">10:00</span><span class="act"><strong>威士忌村 Ban Xang Hai 回程停靠</strong><span class="price">免费</span><span class="note">品尝 Lao Lao 米酒，买手工织布做伴手礼</span></span></li>
+        <li><span class="time">12:00</span><span class="act"><strong>退房 The Jam · 告别莲花池</strong><span class="note">取行李，告别这家住了三晚的精品酒店</span></span></li>
+        <li><span class="time">12:30</span><span class="act"><strong>午餐 · Dyen Sabai 河畔餐厅</strong> <span class="walk">🛺 5min</span><span class="price">人均 ¥40-60</span><span class="note">南康河吊脚楼餐厅，需过竹桥或小船到达。推荐老挝火锅 sin dat。躺在靠垫上喝椰子，慢慢等入住</span></span></li>
+        <li><span class="time">14:00</span><span class="act"><strong>🏨 入住 My BanLao Hotel</strong> <span class="walk">🛺 或 🚶 15min 从 The Jam</span><span class="note">池景三人房 44m²。放下行李——从现在开始，所有活动都在新酒店步行圈内</span></span></li>
+        <li><span class="time">15:30</span><span class="act"><strong>Ban Mano 区探索 + Wat Mano</strong> <span class="walk">🚶 3min</span><span class="note">My BanLao 出门就是 Ban Mano 区，几乎没有游客。Wat Mano 是藏在居民区的小寺庙，安静到只能听到鸟叫</span></span></li>
+        <li><span class="time">17:00</span><span class="act"><strong>湄公河日落游船</strong> <span class="walk">🚶 5min 到河边</span><span class="price">~¥70-110/人</span><span class="note">1 小时日落巡航。金色夕阳洒在河面上，喝一杯鸡尾酒</span></span></li>
+        <li><span class="time">19:00</span><span class="act"><strong>告别晚餐 · Manda de Laos 荷花池</strong> <span class="walk">🚶 6min</span><span class="price">人均 ¥100-150</span><span class="note">三个荷花池环绕的庭院餐厅，琅勃拉邦最有仪式感的晚餐。蕉叶蒸鱼、柠檬草牛肉。提前预订！从 My BanLao 走路就到——完美的区位优势</span></span></li>
+        <li><span class="time">21:00</span><span class="act"><strong>🏊 回到 My BanLao · 池景夜</strong> <span class="walk">🚶 6min 走回</span><span class="note">窗外泳池的反光透过窗帘。泡一杯老挝茶，最后一夜的静谧</span></span></li>
+      </ul>
+      <div class="switch-box">
+        <strong>🔄 换酒店节奏：</strong>上午从 The Jam 出发慢船（需交通工具的活动放上午）→ 中午退房 → 下午入住 My BanLao 后，所有活动（探索、游船、晚餐）全部步行可达。一天之内从"交通工具模式"切换到"步行模式"。
+      </div>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>慢船上湄公河晨雾 → 独享千佛洞 → 从 The Jam 到 My BanLao 的"搬家"仪式感 → 步行 3min 探索无游客的 Ban Mano → 走路去荷花池吃告别宴 → 池景房窗外泳池的反光</div>
+      <div class="rain-plan">🌧️ <strong>雨天备选：</strong>大雨取消慢船 → 上午 Ock Pop Tok 手工艺工坊 → 退房后去 My BanLao → 下午 SPA（酒店内有）→ 晚餐 Manda de Laos 照常（走路就到）</div>
+    </div>
+
+    <!-- A Day 5 -->
+    <div class="day">
+      <div class="day-header"><span class="day-num">Day 5</span><span class="day-date">6/22 周一 · 👋 告别</span><span class="day-location">🏡 My BanLao 基地</span></div>
+      <div class="day-theme">🎯 主题：最后的清晨 · 全部步行搞定</div>
+      <ul class="tl">
+        <li><span class="time">06:30</span><span class="act"><strong>最后一次布施（可选）</strong> <span class="walk">🚶 6min</span><span class="note">从 My BanLao 走到 Sakkaline 路很近。如果想再看一次，比 The Jam 还方便</span></span></li>
+        <li><span class="time">08:00</span><span class="act"><strong>My BanLao 最后的早餐</strong><span class="note">在池边慢慢吃完最后一顿早餐</span></span></li>
+        <li><span class="time">09:30</span><span class="act"><strong>早市最后的采购</strong> <span class="walk">🚶 4min</span><span class="price">人均 ¥10-15</span><span class="note">老挝咖啡豆 ×4 包、手工皂、桑皮纸笔记本。My BanLao 离早市走路就到，不急</span></span></li>
+        <li><span class="time">10:30</span><span class="act"><strong>古城最后的散步</strong> <span class="walk">🚶 出门就是</span><span class="note">再走一遍 Sakkaline 路的拐角，湄公河岸那排棕榈树。拍最后一张照片</span></span></li>
+        <li><span class="time">11:00</span><span class="act"><strong>退房 My BanLao</strong></span></li>
+        <li><span class="time">12:00</span><span class="act"><strong>Le Banneton 可颂外带</strong> <span class="walk">🚶 5min</span><span class="price">人均 ¥30</span><span class="note">带上火车吃</span></span></li>
+        <li><span class="time">13:00</span><span class="act"><strong>前往火车站 → 🚄 D86 返回</strong></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>最后一个琅勃拉邦清晨——布施、早市、可颂，全在步行 6 分钟内 → 咖啡豆塞进行李箱 → 火车窗外远去的湄公河</div>
+    </div>
+
+    <div class="plan-bottom-nav">
+      <span class="hint">看完 Plan A 了？</span>
+      <button class="plan-bottom-btn" onclick="switchTab('planB')">🌿 查看 Plan B · 自然野趣 →</button>
+      <button class="plan-bottom-btn" onclick="switchTab('planD')">🎯 查看 Plan D · 双酒店轻奢 →</button>
+    </div>
+  </div>
+
+  <!-- ========== PLAN B ========== -->
+  <div id="planB" class="tab-content">
+    <div class="plan-intro">
+      <h3>🌿 Plan B · 自然野趣探险游</h3>
+      <div class="tagline">适合：喜欢户外、爱玩水的年轻人、追求照片出片率</div>
+      <div class="desc">围绕琅勃拉邦的自然奇观展开——瀑布跳水、丛林大象、皮划艇、湄公河慢船。The Jam 时期集中体力活动（光西瀑布全天 + 大象 + 皮划艇），换到 My BanLao 后在步行圈内收官（Tad Sae 瀑布 + 法餐告别宴）。</div>
+    </div>
+
+    <!-- B Day 1 -->
+    <div class="day">
+      <div class="day-header"><span class="day-num">Day 1</span><span class="day-date">6/18 周四</span><span class="day-location">🏊 The Jam 基地</span></div>
+      <div class="day-theme">🎯 主题：抵达 · 泳池 + 夜市</div>
+      <ul class="tl">
+        <li><span class="time">14:30</span><span class="act"><strong>🚄 抵达 → 入住 The Jam</strong><span class="note">放行李，无边际泳池边喝欢迎饮品</span></span></li>
+        <li><span class="time">16:00</span><span class="act"><strong>🏊 The Jam 泳池时光</strong><span class="note">不下水也值得在池边躺椅上发呆。拍一组泳池景观照——你的琅勃拉邦第一组大片</span></span></li>
+        <li><span class="time">17:30</span><span class="act"><strong>维苏纳拉特寺</strong> <span class="walk">🚶 4min</span><span class="price">门票 ¥4</span><span class="note">出门就到，随意逛逛。西瓜形佛塔很出片</span></span></li>
+        <li><span class="time">18:30</span><span class="act"><strong>夜市初体验 + 晚餐</strong> <span class="walk">🚶 10min</span><span class="price">人均 ¥30</span><span class="note">素食 buffet + 烤鱼 + Beerlao</span></span></li>
+        <li><span class="time">20:30</span><span class="act"><strong>The Jam 池畔小酌</strong> <span class="walk">🚶 10min 走回</span><span class="note">泳池在夜色中反光，琅勃拉邦的夜很安静</span></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>The Jam 泳池的第一眼 → 步行 4min 的古寺 → 夜市烟火气 → 池畔夜色</div>
+    </div>
+
+    <!-- B Day 2 -->
+    <div class="day alt">
+      <div class="day-header"><span class="day-num">Day 2</span><span class="day-date">6/19 周五</span><span class="day-location">🏊 The Jam 基地</span></div>
+      <div class="day-theme">🎯 主题：光西瀑布全天 · 跳水 + 蝴蝶 + 黑熊 + 双泳池日</div>
+      <ul class="tl">
+        <li><span class="time">07:00</span><span class="act"><strong>出发去光西瀑布 Kuang Si Falls</strong> <span class="walk">🛺 包车 40min</span><span class="price">包车 ~¥25-38/人</span><span class="note">早出发赶 8 点开门，独享果冻蓝钙化池</span></span></li>
+        <li><span class="time">08:00</span><span class="act"><strong>蝴蝶公园 + 黑熊救助中心</strong><span class="price">蝴蝶园 ~¥28；黑熊含在瀑布门票内</span><span class="note">清晨蝴蝶最活跃；晨间喂食时段黑熊最有趣</span></span></li>
+        <li><span class="time">09:30</span><span class="act"><strong>光西瀑布 · 游泳 & 跳水！</strong><span class="price">门票 ¥8</span><span class="note">沿木栈道往上走，依次经过多个钙化池。主瀑布下的池子可以跳水！带泳衣和毛巾，水是冰凉的</span></span></li>
+        <li><span class="time">12:00</span><span class="act"><strong>瀑布区午餐</strong><span class="price">人均 ¥20-30</span><span class="note">椰子糯米饭、烤鸡翅、鲜榨果汁</span></span></li>
+        <li><span class="time">13:00</span><span class="act"><strong>攀登瀑布顶端</strong><span class="note">台阶到顶俯瞰整个瀑布群，顶上还有隐秘小水池。往返约 1 小时，比较陡，量力而行</span></span></li>
+        <li><span class="time">15:30</span><span class="act"><strong>返回 The Jam · 泳池恢复</strong> <span class="note">游了一天瀑布再泡一次无边际泳池——完美的"双泳池日"</span></span></li>
+        <li><span class="time">18:30</span><span class="act"><strong>夜市 + 晚餐</strong> <span class="walk">🚶 10min</span><span class="price">人均 ¥30</span></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>果冻蓝钙化池的第一次跳水 → 黑熊在丛林里玩耍 → 瀑布顶端俯瞰丛林 → The Jam 泳池"双泳池"的奢侈感</div>
+      <div class="rain-plan">🌧️ <strong>雨天备选：</strong>下雨瀑布水量更大更壮观！但跳水注意安全（水流急时禁止下水）。暴雨则改为下午去，上午在 The Jam 周边步行 5min 内的 TAEC + UXO 中心</div>
+    </div>
+
+    <!-- B Day 3 -->
+    <div class="day">
+      <div class="day-header"><span class="day-num">Day 3</span><span class="day-date">6/20 周六</span><span class="day-location">🏊 The Jam 基地</span></div>
+      <div class="day-theme">🎯 主题：大象庇护所 + 南康河皮划艇 · The Jam 最后一晚</div>
+      <ul class="tl">
+        <li><span class="time">07:30</span><span class="act"><strong>MandaLao 大象庇护所 · 半日</strong> <span class="walk">🛺 含接送</span><span class="price">约 ¥350-430/人</span><span class="note">不骑大象、不看表演。喂香蕉、陪大象散步穿过丛林到河边、看大象洗澡。含接送和简餐。提前 3-7 天预订！</span></span></li>
+        <li><span class="time">12:30</span><span class="act"><strong>午餐 · Tangor 餐厅</strong> <span class="walk">🛺 回古城</span><span class="price">人均 ¥50-70</span><span class="note">法国-老挝融合菜，半岛北端安静优雅</span></span></li>
+        <li><span class="time">14:00</span><span class="act"><strong>🏊 The Jam 最后的泳池午休</strong> <span class="note">明天就要换酒店了，好好享受</span></span></li>
+        <li><span class="time">15:30</span><span class="act"><strong>南康河皮划艇 Nam Khan Kayaking</strong> <span class="walk">🚶 12min 到下水点</span><span class="price">约 ¥35-70/人</span><span class="note">从 Dyen Sabai 附近下水，顺流划向西。窄而幽静的河道，黄昏水面金光粼粼</span></span></li>
+        <li><span class="time">18:00</span><span class="act"><strong>Dyen Sabai 晚餐</strong><span class="price">人均 ¥40-60</span><span class="note">划完直接上岸吃饭，最完美的衔接</span></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>大象鼻子卷走香蕉的触感 → 皮划艇上南康河的金色黄昏 → The Jam 最后一晚</div>
+      <div class="rain-plan">🌧️ <strong>雨天备选：</strong>小雨不影响大象体验。大雨取消皮划艇 → The Jam 步行 5min 内 TAEC + UXO 中心 → 老挝传统桑拿（¥15/人）</div>
+    </div>
+
+    <!-- B Day 4 -->
+    <div class="day alt">
+      <div class="day-header"><span class="day-num">Day 4</span><span class="day-date">6/21 周日 · 🔄 换酒店日</span><span class="day-location">🏊 The Jam → 🏡 My BanLao</span></div>
+      <div class="day-theme">🎯 主题：布施 + 慢船千佛洞 → 换酒店 → Tad Sae + 法餐告别</div>
+      <ul class="tl">
+        <li><span class="time">05:30</span><span class="act"><strong>布施仪式</strong> <span class="walk">🚶 8min</span><span class="note">至少看一次——这是琅勃拉邦的灵魂</span></span></li>
+        <li><span class="time">06:30</span><span class="act"><strong>包慢船 → 千佛洞 Pak Ou Caves</strong> <span class="walk">🛺 码头 5min</span><span class="price">~¥45-60/人</span><span class="note">清晨慢船看湄公河苏醒</span></span></li>
+        <li><span class="time">08:30</span><span class="act"><strong>千佛洞</strong><span class="price">¥8</span></span></li>
+        <li><span class="time">10:00</span><span class="act"><strong>威士忌村回程停靠</strong></span></li>
+        <li><span class="time">12:00</span><span class="act"><strong>退房 The Jam · 午餐简餐</strong><span class="price">人均 ¥25</span></span></li>
+        <li><span class="time">14:00</span><span class="act"><strong>🏨 入住 My BanLao</strong><span class="note">池景三人房。从现在起所有活动都在步行圈内</span></span></li>
+        <li><span class="time">15:00</span><span class="act"><strong>塔德赛瀑布 Tad Sae Waterfall</strong> <span class="walk">🛺 20min</span><span class="price">门票 ~¥6</span><span class="note">光西瀑布的"小众妹妹"。雨季水量充沛，游客少得多。可以游泳！</span></span></li>
+        <li><span class="time">17:30</span><span class="act"><strong>🏊 回 My BanLao 泳池放松</strong><span class="note">一天两场水——上午湄公河、下午 Tad Sae、晚上池景。My BanLao 的泳池比 The Jam 更大</span></span></li>
+        <li><span class="time">19:00</span><span class="act"><strong>告别晚餐 · L'Elephant 法餐厅</strong> <span class="walk">🚶 10min</span><span class="price">人均 ¥120-180</span><span class="note">琅勃拉邦最经典法餐厅，殖民风格建筑。鸭胸肉、红酒炖牛肉。需预订！从 My BanLao 走路就到</span></span></li>
+      </ul>
+      <div class="switch-box">
+        <strong>🔄 换酒店节奏：</strong>上午布施（The Jam 步行 8min）+ 慢船（远距离活动）→ 退房 → 入住 My BanLao 后 Tad Sae（短途 tuk-tuk）+ 泳池放松 + 走路去法餐。一天之内玩水×3，野趣拉满。
+      </div>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>慢船上的日出 → Tad Sae 隐秘池 → My BanLao 池景房 → 走路去 L'Elephant 法式告别宴</div>
+      <div class="rain-plan">🌧️ <strong>雨天备选：</strong>大雨取消 Tad Sae → My BanLao SPA + 泳池（下雨泳池别有风味）→ 晚餐照常</div>
+    </div>
+
+    <!-- B Day 5 -->
+    <div class="day">
+      <div class="day-header"><span class="day-num">Day 5</span><span class="day-date">6/22 周一 · 👋 告别</span><span class="day-location">🏡 My BanLao 基地</span></div>
+      <div class="day-theme">🎯 主题：最后的晨光骑行 · 全部步行/骑行搞定</div>
+      <ul class="tl">
+        <li><span class="time">06:30</span><span class="act"><strong>租自行车 → 班帕农织造村 Ban Phanom</strong> <span class="walk">🚴 My BanLao 可租车</span><span class="price">自行车 ¥8-14</span><span class="note">My BanLao 提供电瓶车/自行车租赁。沿南康河岸骑行 3km，穿过稻田和香蕉林。织工在织布机前工作，几乎没有旅游气息</span></span></li>
+        <li><span class="time">08:30</span><span class="act"><strong>普帕奥金塔 Wat Phou Phao</strong><span class="price">免费</span><span class="note">山上金色佛塔，俯瞰琅勃拉邦全景。回程顺路</span></span></li>
+        <li><span class="time">10:00</span><span class="act"><strong>归还自行车 · My BanLao 最后的早餐</strong></span></li>
+        <li><span class="time">11:00</span><span class="act"><strong>退房 My BanLao</strong></span></li>
+        <li><span class="time">13:00</span><span class="act"><strong>前往火车站 → 🚄 D86 返回</strong></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>晨间骑行穿过稻田的凉风 → 织布村织娘手指间的丝线 → 金色佛塔俯瞰古城的最后一眼</div>
+    </div>
+
+    <div class="plan-bottom-nav">
+      <span class="hint">看完 Plan B 了？</span>
+      <button class="plan-bottom-btn" onclick="switchTab('planA')">🏛️ 查看 Plan A · 经典人文 →</button>
+      <button class="plan-bottom-btn" onclick="switchTab('planD')">🎯 查看 Plan D · 双酒店轻奢 →</button>
+    </div>
+  </div>
+
+  <!-- ========== PLAN D ========== -->
+  <div id="planD" class="tab-content">
+    <div class="plan-intro">
+      <h3>🎯 Plan D · 双酒店轻奢体验 ⭐ 推荐</h3>
+      <div class="tagline">适合：想充分利用两家酒店设施、平衡人文与放松、追求"每个酒店都有专属记忆"</div>
+      <div class="desc">核心逻辑：The Jam（古城西南，3 天）→ 以泳池为锚点，辐射维苏纳拉特寺-TAEC-夜市-北线香通寺；My BanLao（古城东南，1 天）→ 以池景房为锚点，步行圈内收官：Ban Mano 探索-日落游船-Manda de Laos 晚餐。换酒店前后的体验泾渭分明——前半段"探索"，后半段"沉浸"。</div>
+    </div>
+
+    <!-- D Day 1 -->
+    <div class="day">
+      <div class="day-header"><span class="day-num">Day 1</span><span class="day-date">6/18 周四</span><span class="day-location">🏊 The Jam 基地</span></div>
+      <div class="day-theme">🎯 主题：抵达 · The Jam 泳池日落 · 从酒店步行圈开始</div>
+      <ul class="tl">
+        <li><span class="time">14:30</span><span class="act"><strong>🚄 抵达 → 入住 The Jam</strong><span class="note">放下行李，换上泳衣——这才是抵达的正确姿势</span></span></li>
+        <li><span class="time">15:30</span><span class="act"><strong>🏊 The Jam 无边际泳池 · 欢迎仪式</strong><span class="note">泳池边点一杯 welcome drink（老挝冰咖啡或椰子水），泡在池里看古城天际线。拍下这趟旅行的第一张"大片"</span></span></li>
+        <li><span class="time">17:00</span><span class="act"><strong>维苏纳拉特寺散步</strong> <span class="walk">🚶 4min</span><span class="price">¥4</span><span class="note">西瓜形佛塔和巨大坐佛，出门就到。几乎没有游客的宝藏寺庙</span></span></li>
+        <li><span class="time">18:30</span><span class="act"><strong>夜市初探 + 素食 buffet 晚餐</strong> <span class="walk">🚶 10min</span><span class="price">人均 ¥25</span><span class="note">不急买，先感受。¥6 一盘随便装是琅勃拉邦的性价比传奇</span></span></li>
+        <li><span class="time">20:30</span><span class="act"><strong>The Jam 泳池夜 · 观星</strong> <span class="walk">🚶 10min 走回</span><span class="note">琅勃拉邦光污染少，泳池边的夜空可以看到很多星星</span></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>泳池里喝到的第一口冰咖啡 → 出门 4min 就是古寺 → 池边看古城天际线变暗 → 泳池上方的星空</div>
+    </div>
+
+    <!-- D Day 2 -->
+    <div class="day alt">
+      <div class="day-header"><span class="day-num">Day 2</span><span class="day-date">6/19 周五</span><span class="day-location">🏊 The Jam 基地</span></div>
+      <div class="day-theme">🎯 主题：布施 + 香通寺 + 普西山 · 经典不可少（从 The Jam 步行+短途 tuk-tuk）</div>
+      <ul class="tl">
+        <li><span class="time">05:30</span><span class="act"><strong>布施仪式 Tak Bat</strong> <span class="walk">🚶 8min</span><span class="price">免费</span><span class="note">Sakkaline 路。安静旁观或用糯米饭参与。这是琅勃拉邦的灵魂画面</span></span></li>
+        <li><span class="time">06:30</span><span class="act"><strong>早市早餐</strong> <span class="walk">🚶 5min</span><span class="price">人均 ¥15</span><span class="note">竹筒糯米饭、patongo 油条、现开椰子</span></span></li>
+        <li><span class="time">07:30</span><span class="act"><strong>香通寺 Wat Xieng Thong</strong> <span class="walk">🛺 5min（北端）</span><span class="price">¥8</span><span class="note">生命之树壁画，晨光最佳。tuk-tuk 去，然后慢慢走回来一路逛寺庙——效率最大化</span></span></li>
+        <li><span class="time">09:30</span><span class="act"><strong>沿半岛往回漫步</strong><span class="note">Wat Sensoukharam → 鸡蛋花树下的红墙寺庙。这段漫步是琅勃拉邦的精髓</span></span></li>
+        <li><span class="time">10:30</span><span class="act"><strong>皇宫博物馆</strong> <span class="walk">🚶 回程中</span><span class="price">¥11</span></span></li>
+        <li><span class="time">12:00</span><span class="act"><strong>午餐 · Tamarind</strong> <span class="walk">🚶 8min</span><span class="price">人均 ¥55</span><span class="note">老挝 tasting platter + 湄公河苔藓</span></span></li>
+        <li><span class="time">14:00</span><span class="act"><strong>🏊 回 The Jam 泳池午休</strong> <span class="walk">🚶 10min</span><span class="note">避开正午高温。泳池边躺椅上看书或小睡——度假感拉满</span></span></li>
+        <li><span class="time">16:00</span><span class="act"><strong>TAEC 民族学中心</strong> <span class="walk">🚶 5min</span><span class="price">¥9</span><span class="note">有空调的文化充电。离 The Jam 走路就到——本地优势！</span></span></li>
+        <li><span class="time">17:15</span><span class="act"><strong>普西山日落</strong> <span class="walk">🚶 15min</span><span class="price">¥8</span><span class="note">328 级台阶 15 分钟登顶。提前 40 分钟到占位</span></span></li>
+        <li><span class="time">19:00</span><span class="act"><strong>晚餐 · 3 Nagas 庭院餐厅</strong> <span class="walk">🚶 10min</span><span class="price">人均 ¥80-120</span><span class="note">殖民风格建筑，老挝 tasting menu。不需要预约 Manda de Laos 那么麻烦，品质同样出色</span></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>布施的橙色僧袍 → 香通寺生命之树晨光 → The Jam 泳池午后慵懒 → 普西山金色日落 → 3 Nagas 庭院烛光</div>
+      <div class="rain-plan">🌧️ <strong>雨天备选：</strong>TAEC + UXO Lao 中心（The Jam 步行 5min 内！）+ 酒店泳池边咖啡馆赏雨</div>
+    </div>
+
+    <!-- D Day 3 -->
+    <div class="day">
+      <div class="day-header"><span class="day-num">Day 3</span><span class="day-date">6/20 周六</span><span class="day-location">🏊 The Jam 基地</span></div>
+      <div class="day-theme">🎯 主题：光西瀑布精选版 + 烹饪课 · The Jam 告别之夜</div>
+      <ul class="tl">
+        <li><span class="time">07:30</span><span class="act"><strong>出发去光西瀑布</strong> <span class="walk">🛺 包车 40min</span><span class="price">~¥25-38/人</span><span class="note">不必赶开门，8 点到就行。光线照进钙化池最蓝的时候是 9-10 点</span></span></li>
+        <li><span class="time">08:30</span><span class="act"><strong>光西瀑布 · 精选 3 小时</strong><span class="price">门票 ¥8</span><span class="note">蝴蝶园 → 黑熊救助中心 → 选 2-3 个最蓝的池子跳水/泡水 → 爬到主瀑布下方拍照。精选体验，不贪多</span></span></li>
+        <li><span class="time">12:00</span><span class="act"><strong>回古城午餐 · Saffron Coffee 河景</strong> <span class="walk">🚶 10min 到</span><span class="price">人均 ¥35</span></span></li>
+        <li><span class="time">13:30</span><span class="act"><strong>🏊 The Jam 泳池 · 最后的池畔时光</strong> <span class="walk">🚶 10min 回</span><span class="note">明天就要换酒店了，好好享受 The Jam 的最后一个下午</span></span></li>
+        <li><span class="time">15:00</span><span class="act"><strong>老挝烹饪课 Cooking Class</strong> <span class="walk">🛺 5min</span><span class="price">~¥180-250/人</span><span class="note">逛菜市场 → 学做 Laap + Mok Pa + 绿咖喱 → 吃自己做的晚餐。3 小时。提前 1 天预约！</span></span></li>
+        <li><span class="time">19:00</span><span class="act"><strong>享用自己做的晚餐</strong><span class="note">亲手做的老挝菜配花园烛光</span></span></li>
+        <li><span class="time">20:30</span><span class="act"><strong>告别 The Jam · 泳池边的最后一杯</strong> <span class="note">住了三晚，泳池、房间、窗外好景——和这里说再见</span></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>上午瀑布蓝 + 下午厨房香 → The Jam 泳池最后一游 → 自己做的晚餐 → 泳池边告别的仪式感</div>
+    </div>
+
+    <!-- D Day 4 -->
+    <div class="day alt">
+      <div class="day-header"><span class="day-num">Day 4</span><span class="day-date">6/21 周日 · 🔄 换酒店日</span><span class="day-location">🏊 The Jam → 🏡 My BanLao</span></div>
+      <div class="day-theme">🎯 主题：慢船千佛洞 → 入住 My BanLao → 步行圈内轻奢收官</div>
+      <ul class="tl">
+        <li><span class="time">06:30</span><span class="act"><strong>包慢船 → 千佛洞 Pak Ou Caves</strong> <span class="walk">🛺 码头 5min</span><span class="price">~¥45-60/人</span><span class="note">清晨出发，湄公河晨雾中的慢船——这趟旅行最美的 2 小时水上旅程。从 The Jam 出发最后的大型活动</span></span></li>
+        <li><span class="time">08:30</span><span class="act"><strong>千佛洞</strong><span class="price">¥8</span><span class="note">4000 多尊佛像，清晨独享</span></span></li>
+        <li><span class="time">10:00</span><span class="act"><strong>威士忌村回程停靠</strong></span></li>
+        <li><span class="time">12:00</span><span class="act"><strong>退房 The Jam · 告别莲花池</strong><span class="note">住了三晚的地方，说再见</span></span></li>
+        <li><span class="time">14:00</span><span class="act"><strong>🏨 入住 My BanLao Hotel</strong> <span class="walk">🛺 或 🚶 15min</span><span class="note">池景三人房 44m²。放下行李——从现在起只用脚，不用车</span></span></li>
+        <li><span class="time">15:00</span><span class="act"><strong>🏊 My BanLao 泳池初体验</strong><span class="note">新酒店的泳池，新视角。Ban Mano 区的安静氛围和半岛中心截然不同</span></span></li>
+        <li><span class="time">16:30</span><span class="act"><strong>Ban Mano 区探索 + Wat Mano</strong> <span class="walk">🚶 3min</span><span class="note">几乎没有游客的区域。Wat Mano 藏在居民区里，安静到只有鸟叫。拍人文照片的最佳区域</span></span></li>
+        <li><span class="time">17:30</span><span class="act"><strong>湄公河日落游船</strong> <span class="walk">🚶 5min 到河边</span><span class="price">~¥70-110/人</span><span class="note">1 小时，金色夕阳 + 鸡尾酒。My BanLao 离河边比 The Jam 还近</span></span></li>
+        <li><span class="time">19:00</span><span class="act"><strong>告别晚餐 · Manda de Laos 荷花池</strong> <span class="walk">🚶 6min</span><span class="price">人均 ¥100-150</span><span class="note">三池荷花围绕的庭院。蕉叶蒸鱼、柠檬草牛肉。提前预订！从 My BanLao 走路就到——不用叫车，不用看地图，跟着荷花香味走就到了</span></span></li>
+        <li><span class="time">21:00</span><span class="act"><strong>My BanLao 池景房 · 最后一夜</strong> <span class="walk">🚶 6min 走回</span><span class="note">窗外泳池的反光透过窗帘。泡一杯老挝茶，享受这趟旅行最后的静谧</span></span></li>
+      </ul>
+      <div class="switch-box">
+        <strong>🔄 今日"切换"逻辑：</strong><br>
+        上午从 The Jam 出发（慢船=需要交通工具）→ 中午退房 → 入住 My BanLao 后，所有活动（泳池-探索-游船-晚餐-回酒店）全部步行 3-6 分钟内。<br>
+        这就是双酒店的妙处：<strong>前半段用 The Jam 做探索基地，后半段用 My BanLao 做步行收官。</strong>
+      </div>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>慢船晨雾 → 独享千佛洞 → "搬家"的仪式感 → My BanLao 新泳池 → 步行 3min 探索无游客的 Ban Mano → 日落游船 → 走路去荷花池吃告别宴 → 池景房最后一夜</div>
+      <div class="rain-plan">🌧️ <strong>雨天备选：</strong>大雨取消慢船 → 上午 Ock Pop Tok 工坊 + TAEC → 退房 → 入住 My BanLao → My BanLao SPA + 泳池 → 晚餐 Manda de Laos 照常（走路 6min 撑伞就到）</div>
+    </div>
+
+    <!-- D Day 5 -->
+    <div class="day">
+      <div class="day-header"><span class="day-num">Day 5</span><span class="day-date">6/22 周一 · 👋 告别</span><span class="day-location">🏡 My BanLao 基地</span></div>
+      <div class="day-theme">🎯 主题：睡到自然醒 · 步行搞定一切 · 把节奏留到最后</div>
+      <ul class="tl">
+        <li><span class="time">08:00</span><span class="act"><strong>自然醒 · My BanLao 最后的早餐</strong><span class="note">不用赶。在池边慢慢吃完最后一顿早餐</span></span></li>
+        <li><span class="time">09:30</span><span class="act"><strong>早市最后的采购</strong> <span class="walk">🚶 4min</span><span class="price">人均 ¥10-15</span><span class="note">老挝咖啡豆 ×4 包（自己和朋友）、手工皂、桑皮纸笔记本。My BanLao 走路就到早市</span></span></li>
+        <li><span class="time">10:30</span><span class="act"><strong>再走一遍最喜欢的街</strong> <span class="walk">🚶 出门就是</span><span class="note">Sakkaline 路的拐角、湄公河岸的棕榈树。拍最后一张照片</span></span></li>
+        <li><span class="time">11:00</span><span class="act"><strong>退房 My BanLao</strong></span></li>
+        <li><span class="time">12:00</span><span class="act"><strong>Le Banneton 可颂外带</strong> <span class="walk">🚶 5min</span><span class="price">人均 ¥30</span><span class="note">带上火车吃</span></span></li>
+        <li><span class="time">13:00</span><span class="act"><strong>前往火车站 → 🚄 D86 返回</strong></span></li>
+      </ul>
+      <div class="highlight-box">💡 <strong>本日记忆点：</strong>最后一口老挝咖啡 → 行李箱里的四包咖啡豆 → 火车窗外远去的湄公河 → 已经在想什么时候再来了</div>
+    </div>
+
+    <div class="plan-bottom-nav">
+      <span class="hint">看完 Plan D 了？</span>
+      <button class="plan-bottom-btn" onclick="switchTab('planA')">🏛️ 查看 Plan A · 经典人文 →</button>
+      <button class="plan-bottom-btn" onclick="switchTab('planB')">🌿 查看 Plan B · 自然野趣 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 预算对比 ===== -->
+<div class="section">
+  <div class="section-header"><span class="icon">💰</span> 琅勃拉邦 5 日预算对比（人均，住宿已预订不计入）</div>
+  <div class="section-body" style="overflow-x:auto;">
+    <table class="budget-table">
+      <tr><th>类别</th><th class="plan-col">Plan A</th><th class="plan-col">Plan B</th><th class="plan-col">Plan D ⭐</th></tr>
+      <tr><td>🏨 住宿</td><td class="plan-col" style="color:var(--warm-grey);">已预订</td><td class="plan-col" style="color:var(--warm-grey);">已预订</td><td class="plan-col" style="color:var(--warm-grey);">已预订</td></tr>
+      <tr><td>🍜 餐饮</td><td class="plan-col">¥400-550</td><td class="plan-col">¥350-500</td><td class="plan-col">¥450-650</td></tr>
+      <tr><td>🎫 门票 & 活动</td><td class="plan-col">¥300-450</td><td class="plan-col">¥550-750</td><td class="plan-col">¥400-550</td></tr>
+      <tr><td>🚕 市内交通</td><td class="plan-col">¥100-180</td><td class="plan-col">¥120-200</td><td class="plan-col">¥100-180</td></tr>
+      <tr><td>💆 SPA/按摩</td><td class="plan-col">¥0-80</td><td class="plan-col">¥0-50</td><td class="plan-col">¥50-150</td></tr>
+      <tr><td>🎁 购物/其他</td><td class="plan-col">¥100-200</td><td class="plan-col">¥100-200</td><td class="plan-col">¥150-250</td></tr>
+      <tr><td><strong>💰 人均总计</strong></td><td class="plan-col"><strong>¥900-1,460</strong></td><td class="plan-col"><strong>¥1,120-1,700</strong></td><td class="plan-col"><strong>¥1,150-1,780</strong></td></tr>
+      <tr><td><strong>💰 4 人合计</strong></td><td class="plan-col"><strong>¥3,600-5,840</strong></td><td class="plan-col"><strong>¥4,480-6,800</strong></td><td class="plan-col"><strong>¥4,600-7,120</strong></td></tr>
+    </table>
+    <p style="margin-top:12px;font-size:0.85em;color:var(--warm-grey);">
+      * 住宿已预订（The Jam 3 晚 + My BanLao 1 晚），不重复计入。<br>
+      * 以上不含签证费 ($20/人) 和城际火车票。价格以实际汇率（1 CNY ≈ 3,000 LAK）为准。
+    </p>
+  </div>
+</div>
+
+<!-- ===== 实用清单 ===== -->
+<div class="section">
+  <div class="section-header"><span class="icon">📋</span> 行前必读清单</div>
+  <div class="section-body">
+    <div class="tips-grid">
+      <div class="tip-card">
+        <h4>🚨 必须预约</h4>
+        <ul class="checklist">
+          <li>MandaLao 大象庇护所（提前 3-7 天）</li>
+          <li>Tamarind / Bamboo Tree 烹饪课（提前 1-2 天）</li>
+          <li>Manda de Laos / L'Elephant 晚餐（提前 1-3 天）</li>
+          <li>千佛洞慢船（提前 1 天傍晚到码头谈价）</li>
+        </ul>
+      </div>
+      <div class="tip-card">
+        <h4>🎒 行前物品</h4>
+        <ul class="checklist">
+          <li>护照（6 个月以上有效期，空白页）</li>
+          <li>2 寸照片 ×2（落地签用）</li>
+          <li>泳衣 & 速干毛巾（双酒店泳池 + 瀑布）</li>
+          <li>轻薄雨衣 / 折叠伞（雨季必备）</li>
+          <li>防水袋（保护手机相机）</li>
+          <li>防晒霜 + 驱蚊液（热带必备）</li>
+          <li>现金美元（落地签 $20）</li>
+          <li>运动凉鞋（寺庙脱鞋方便）</li>
+          <li>薄长裤/长裙（寺庙需遮膝）</li>
+        </ul>
+      </div>
+      <div class="tip-card">
+        <h4>⚠️ 避坑 & 安全</h4>
+        <ul class="checklist">
+          <li>布施时不用闪光灯、不触碰僧侣</li>
+          <li>tuk-tuk 先谈价再上车（古城内 20,000-30,000 LAK）</li>
+          <li>换汇去正规兑换点，汇率比酒店好</li>
+          <li>不要喝自来水，买瓶装水（¥2/瓶）</li>
+          <li>雨季瀑布水流急时不要跳水</li>
+          <li>夜市大胆砍价但保持微笑（通常 7-8 折）</li>
+          <li>竹桥雨季可能被冲毁，过桥前确认</li>
+        </ul>
+      </div>
+      <div class="tip-card">
+        <h4>📱 必备 App & 信息</h4>
+        <ul class="checklist">
+          <li>Google Maps（离线地图提前下载）</li>
+          <li>Google Translate（老挝语离线包）</li>
+          <li>Grab（打车）</li>
+          <li>WhatsApp（联系酒店/向导）</li>
+          <li>Currency 换算 App</li>
+          <li>老挝紧急：警察 1191 / 急救 1195</li>
+          <li>中国驻老挝使馆：+856-21-315100</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 签证 ===== -->
+<div class="section">
+  <div class="section-header">
+    <span class="icon">🛂</span> 签证 & 入境
+    <span style="margin-left:auto;display:flex;gap:6px;">
+      <button class="visa-tab active" onclick="switchVisa('visa-arrival',this)" style="padding:6px 14px;border-radius:16px;border:1.5px solid var(--teal);background:var(--teal);color:white;font-weight:700;font-size:0.82em;cursor:pointer;font-family:inherit;">落地签</button>
+      <button class="visa-tab" onclick="switchVisa('visa-evisa',this)" style="padding:6px 14px;border-radius:16px;border:1.5px solid var(--teal);background:transparent;color:var(--teal);font-weight:700;font-size:0.82em;cursor:pointer;font-family:inherit;">电子签 eVisa</button>
+    </span>
+  </div>
+  <div class="section-body">
+    <div id="visa-arrival" class="visa-content">
+    <table class="budget-table">
+      <tr><td><strong>签证方式</strong></td><td>落地签 (Visa on Arrival)</td></tr>
+      <tr><td><strong>费用</strong></td><td>$20 美元（约 ¥140），只收美元现金</td></tr>
+      <tr><td><strong>所需材料</strong></td><td>护照（6 个月以上有效期）+ 2 寸白底照片 ×1-2 + 入境卡（火车上发放）</td></tr>
+      <tr><td><strong>停留期</strong></td><td>30 天</td></tr>
+      <tr><td><strong>铁路口岸</strong></td><td>磨丁口岸（老挝侧），火车上完成出入境手续</td></tr>
+      <tr><td><strong>注意事项</strong></td><td>准备美元零钱，口岸可能不找零。护照空白页至少 2 页。落地签排队约 15-30 分钟</td></tr>
+    </table>
+    </div>
+    <div id="visa-evisa" class="visa-content" style="display:none;">
+    <table class="budget-table">
+      <tr><td><strong>签证方式</strong></td><td>电子签 eVisa（推荐提前办理）</td></tr>
+      <tr><td><strong>费用</strong></td><td>约 $35-50 美元（按处理速度不同），在线支付</td></tr>
+      <tr><td><strong>所需材料</strong></td><td>护照（6 个月以上有效期）+ 护照照片电子版（白底）</td></tr>
+      <tr><td><strong>有效期</strong></td><td>批准后 60 天内入境，入境后停留最多 30 天，单次入境</td></tr>
+      <tr><td><strong>处理时间</strong></td><td>标准 5-7 工作日 / 加急 3-5 工作日 / 特急 1-3 工作日</td></tr>
+      <tr><td><strong>入境口岸</strong></td><td>琅勃拉邦国际机场 · 万象瓦岱机场 · 磨丁口岸（火车/陆路）· 主要友谊桥口岸</td></tr>
+      <tr><td><strong>申请地址</strong></td><td>官网 laoevisa.gov.la，提前打印电子签证页随身携带</td></tr>
+      <tr><td><strong>优势</strong></td><td>免排队、免准备美元零钱、入境更顺畅。火车口岸可用！</td></tr>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 餐厅速查 ===== -->
+<div class="section">
+  <div class="section-header"><span class="icon">🍽️</span> 餐厅速查表</div>
+  <div class="section-body" style="overflow-x:auto;">
+    <table class="budget-table">
+      <tr><th>餐厅</th><th>类型</th><th>人均 ¥</th><th>推荐菜</th><th>从哪家酒店近</th></tr>
+      <tr><td>Tamarind</td><td>老挝菜</td><td>50-70</td><td>Tasting platter、湄公河苔藓</td><td>The Jam 🚶 8min</td></tr>
+      <tr><td>Manda de Laos</td><td>老挝精致</td><td>100-150</td><td>蕉叶蒸鱼、柠檬草牛肉</td><td>My BanLao 🚶 6min</td></tr>
+      <tr><td>L'Elephant</td><td>法餐</td><td>120-180</td><td>鸭胸肉、红酒炖牛肉</td><td>My BanLao 🚶 10min</td></tr>
+      <tr><td>3 Nagas</td><td>老挝精致</td><td>80-120</td><td>Tasting menu</td><td>My BanLao 🚶 8min</td></tr>
+      <tr><td>Dyen Sabai</td><td>老挝/河畔</td><td>40-60</td><td>Sin dat 老挝火锅</td><td>My BanLao 🚶 12min</td></tr>
+      <tr><td>Tangor</td><td>融合菜</td><td>50-70</td><td>法老融合 tasting</td><td>半岛北端</td></tr>
+      <tr><td>Saffron Coffee</td><td>咖啡馆</td><td>25-45</td><td>老挝咖啡、牛角包三明治</td><td>The Jam 🚶 10min</td></tr>
+      <tr><td>Le Banneton</td><td>法式面包</td><td>20-35</td><td>可颂、法棍三明治</td><td>My BanLao 🚶 5min</td></tr>
+      <tr><td>夜市自助</td><td>素食 buffet</td><td>~6</td><td>15,000 LAK 一盘随便装</td><td>两家都近（🚶 4-10min）</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="footer">
+  <p>🌴 以上信息基于 2025-2026 年公开攻略整理，实际价格、营业时间以当地情况为准。</p>
+  <p style="margin-top:4px;">每个活动都标注了从当前酒店的步行/车程——跟着走就行，不需要再看地图。</p>
+  <p style="margin-top:16px;font-size:0.8em;">世界的风吹向你 · 公众号 · 2026年 6月</p>
+</div>
+
+</div>
+
+<script>
+function switchTab(planId) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById(planId).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function switchVisa(visaId, btn) {
+  document.querySelectorAll('.visa-content').forEach(c => c.style.display = 'none');
+  document.querySelectorAll('.visa-tab').forEach(b => { b.style.background = 'transparent'; b.style.color = 'var(--teal)'; });
+  document.getElementById(visaId).style.display = 'block';
+  btn.style.background = 'var(--teal)'; btn.style.color = 'white';
+}
+</script>
+
+</body>
+</html>

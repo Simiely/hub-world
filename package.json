@@ -1,0 +1,15 @@
+{
+  "name": "2026-07-02-18-21-14",
+  "version": "1.0.0",
+  "description": "> 探索所有项目 — Powered by Simiely / 世界的风吹向你",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/kv": "^3.0.0"
+  }
+}
