@@ -510,11 +510,16 @@
             background: var(--pink-dim);
             border-color: var(--pink-border);
         }
-        .welcome-theme-btn {
-            margin-top: 14px;
+        .welcome-theme-float {
+            position: fixed;
+            top: 14px;
+            right: 32px;
+            z-index: 60;
             font-size: 1.2rem;
-            padding: 8px 14px;
+            padding: 8px 12px;
             border-radius: 10px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
         }
 
         /* ---- Grid Layout ---- */
@@ -697,6 +702,7 @@
 
 <!-- ============ VIEW 1: Welcome (Vertical 3-section layout) ============ -->
 <section class="view-welcome" id="viewWelcome">
+    <button class="theme-toggle welcome-theme-float" id="welcomeThemeToggle" title="切换主题">🌙</button>
     <div class="welcome-layout">
 
         <!-- === SECTION 1: Title === -->
@@ -721,7 +727,7 @@
                 探索发现
             </button>
             <div class="action-hint" id="liveClock"></div>
-            <button class="theme-toggle welcome-theme-btn" id="welcomeThemeToggle" title="切换主题">🌙</button>
+        </div>
         </div>
 
     </div>
