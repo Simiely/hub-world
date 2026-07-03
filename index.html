@@ -789,6 +789,9 @@ var $ = function(id) { return document.getElementById(id); };
 //  Project data — loaded from projects.json
 // =============================================
 var projects = [];
+var FALLBACK_PROJECTS = [
+    { name: '琅勃拉邦旅行计划', desc: '琅勃拉邦 5 日慢游 · 4 人双酒店定制', icon: '✈️', path: 'luang-prabang-trip', tags: ['旅行', '定制'], category: 'web' }
+];
 
 // =============================================
 //  Normalize a project object (fill defaults)
@@ -1414,7 +1417,7 @@ window.addEventListener('DOMContentLoaded', function() {
     fetch('projects.json')
         .then(function(r) { return r.json(); })
         .then(function(data) { projects = data.projects || data; })
-        .catch(function() { projects = []; })
+        .catch(function() { projects = FALLBACK_PROJECTS; })
         .then(function() {
             initMouseGlow();
             initParticles();
