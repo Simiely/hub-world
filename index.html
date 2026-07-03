@@ -1149,14 +1149,6 @@ async function recordClick(path) {
 }
 
 function getSortedProjects(filterCat) {
-    var clicks = {};
-    try {
-        var raw = localStorage.getItem('hubworld_clicks') || '{}';
-        clicks = JSON.parse(raw);
-    } catch(e) {
-        clicks = {};
-    }
-
     var list = projects.map(function(p) {
         return {
             name: p.name,
@@ -1165,7 +1157,7 @@ function getSortedProjects(filterCat) {
             path: p.path || '',
             tags: p.tags || [],
             category: p.category || 'other',
-            clicks: clicks[p.path] || 0
+            clicks: p.clicks || 0
         };
     });
 
