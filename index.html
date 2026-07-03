@@ -851,13 +851,23 @@ function initFloatingCards() {
     
     var swayKeys = ['gentleSway0','gentleSway1','gentleSway2','gentleSway3','gentleSway4','gentleSway5'];
 
-    // Build card data — always create 6 DOM nodes
+    // Build card data — randomly pick up to 6 from projects
     var PLACEHOLDER_NAMES = ['即将上线', 'Coming Soon', '敬请期待', '新项目', '规划中', '更多精彩'];
     var PLACEHOLDER_ICONS = ['🚀', '📦', '💡', '🎨', '🔧', '🌟'];
     var cardData = [];
+
+    // Fisher-Yates shuffle, pick up to 6
+    var shuffled = projects.slice();
+    for (var si = shuffled.length - 1; si > 0; si--) {
+        var sj = Math.floor(Math.random() * (si + 1));
+        var tmp = shuffled[si];
+        shuffled[si] = shuffled[sj];
+        shuffled[sj] = tmp;
+    }
+    var pickCount = Math.min(6, shuffled.length);
     for (var i = 0; i < 6; i++) {
-        if (i < projects.length) {
-            cardData.push(normalizeProject(projects[i]));
+        if (i < pickCount) {
+            cardData.push(normalizeProject(shuffled[i]));
         } else {
             cardData.push({
                 name: PLACEHOLDER_NAMES[i] || ('项目 ' + (i + 1)),
