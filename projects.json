@@ -1,10 +1,13 @@
-[
-    {
-        "name": "琅勃拉邦旅行计划",
-        "desc": "琅勃拉邦 5 日慢游 · 4 人双酒店定制",
-        "icon": "✈️",
-        "path": "luang-prabang-trip",
-        "tags": ["旅行", "定制"],
-        "category": "web"
-    }
-]
+{
+    "_readme": "====================================================\n  Hub World · 项目数据文件\n  使用方式：在此文件的 \"projects\" 数组中添加项目条目。\n  每次新增/修改后推送至 GitHub 即可自动部署。\n====================================================\n\n  项目字段说明：\n    name     - 项目名称（必填）\n    desc     - 项目描述（可选）\n    icon     - 显示图标（可选，emoji 或文字）\n    path     - 项目文件夹名（必填，对应 hub-world 仓库下的目录）\n    tags     - 标签列表（可选，如 [\"旅行\",\"定制\"]）\n    category - 分类（可选，web / tool / design 等）\n\n  示例：\n    {\n        \"name\": \"新项目\",\n        \"desc\": \"项目说明文字\",\n        \"icon\": \"🚀\",\n        \"path\": \"my-project\",\n        \"tags\": [\"功能\"],\n        \"category\": \"tool\"\n    }",
+    "projects": [
+        {
+            "name": "琅勃拉邦旅行计划",
+            "desc": "琅勃拉邦 5 日慢游 · 4 人双酒店定制",
+            "icon": "✈️",
+            "path": "luang-prabang-trip",
+            "tags": ["旅行", "定制"],
+            "category": "web"
+        }
+    ]
+}
