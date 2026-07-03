@@ -4,6 +4,9 @@ temp/
 *.tmp
 *.log
 
+# WorkBuddy memory
+.workbuddy/
+
 # Development helpers
 .dev-scripts/
 
