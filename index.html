@@ -775,6 +775,11 @@
 <!-- ============ VIEW 2: Catalog ============ -->
 <section class="view-catalog" id="viewCatalog">
 
+    <!-- Diagnostic: shows project names as plain text (always visible) -->
+    <div id="catalogDiagnostic" style="display:none;position:fixed;top:80px;left:50%;transform:translateX(-50%);z-index:99999;background:#ff0040;color:#fff;padding:8px 16px;border-radius:8px;font:14px/1.5 sans-serif;font-weight:bold;box-shadow:0 4px 20px rgba(255,0,64,0.4);">
+        🔍 Catalog Diagnostic: <span id="diagProjectList">(empty)</span>
+    </div>
+
     <!-- Masonry card grid -->
     <div class="catalog-masonry" id="projectGrid"></div>
 
@@ -1171,6 +1176,16 @@ function renderCatalog(filterCat) {
     grid.innerHTML = '';
     if (window.__isDebug) debugLog('renderCatalog called, filter=' + filterCat + ' projects.length=' + (projects ? projects.length : 'NULL'));
 
+    // Show diagnostic even without ?debug=true
+    var diag = document.getElementById('catalogDiagnostic');
+    var diagList = document.getElementById('diagProjectList');
+    if (diag && diagList) {
+        diag.style.display = 'block';
+        diagList.textContent = (projects && projects.length > 0)
+            ? projects.map(function(p) { return p.name; }).join(' | ')
+            : 'NO PROJECTS LOADED';
+    }
+
     var sorted = getSortedProjects(filterCat);
     var total = sorted.length;
     var needPlaceholders = Math.max(0, 6 - total);
@@ -1198,6 +1213,12 @@ function renderCatalog(filterCat) {
         }).join('');
 
         var coverBg = coverGradients[idx % coverGradients.length];
+
+        // DIAGNOSTIC: force first real card visible
+        if (idx === 0 && p.isReal) {
+            card.style.border = '4px solid #FF0066';
+            card.style.boxShadow = '0 0 30px rgba(255,0,102,0.5)';
+        }
 
         card.innerHTML =
             '<div class="cc-cover" style="background:' + coverBg + '">' +
