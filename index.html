@@ -751,6 +751,7 @@ var projects = [
         path: 'luang-prabang-trip',
         tags: ['旅行', '定制'],
         category: 'web',
+        clicks: 0
     },
 ];
 
@@ -925,7 +926,7 @@ function initFloatingCards() {
         var tagColors = [varCSS('--pink'), '#4ecdc4', '#f39c12', '#9b59b6', '#3498db'];
         var tagBadge = '<span class="fc-tag-badge">' + (tagLabels[idx] || '#' + idx) + '</span>';
 
-        var clickBadge = p.clicks > 0 ? '<span class="fc-click-badge">🔥 ' + p.clicks + '</span>' : '';
+        var clickBadge = '<span class="fc-click-badge">🔥 ' + p.clicks + '</span>';
 
         card.innerHTML =
             tagBadge +
@@ -1222,7 +1223,7 @@ function renderCatalog(filterCat) {
         card.setAttribute('data-category', p.category || 'other');
         card.style.transitionDelay = (idx * 0.06) + 's';
 
-        var badgeHtml = p.clicks > 0 ? ('<span class="click-badge">🔥 ' + p.clicks + ' 次点击</span>') : '';
+        var badgeHtml = '<span class="click-badge">🔥 ' + p.clicks + ' 次点击</span>';
 
         var tagsHtml = (p.tags || []).map(function(t) {
             return '<span class="cc-tag">' + t + '</span>';
@@ -1244,18 +1245,11 @@ function renderCatalog(filterCat) {
 
         card.addEventListener('click', async function(e) {
             if (p.path && p.path !== '') {
-                // Record click via API, wait for completion before re-render
+                e.preventDefault();
+                // Record click via API, then navigate
                 await recordClick(p.path);
-                // Update local clicks count and re-render
-                try {
-                    const res = await fetch('/api/projects');
-                    if (res.ok) {
-                        const data = await res.json();
-                        const updated = data.find(item => item.path === p.path);
-                        if (updated) p.clicks = updated.clicks;
-                    }
-                } catch (e) {}
-                setTimeout(() => renderCatalog(currentFilter), 500);
+                // Navigate to project page after click recorded
+                window.location.href = card.href;
             }
         });
 
