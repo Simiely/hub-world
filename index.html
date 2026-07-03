@@ -58,12 +58,10 @@
             height: 100vh;
             overflow: hidden;
             background: var(--bg);
-        }
-
-        body {
             font-family: var(--font-zh);
-            background: var(--bg);
             color: var(--text);
+        }
+        body {
             position: relative;
         }
 
@@ -135,22 +133,19 @@
         }
 
         /* Footer */
-        .footer-simple {
+        .footer-base {
             text-align: center;
             color: var(--text-dim);
             font-size: 0.75rem;
             letter-spacing: 0.04em;
         }
-        .footer-simple span { color: var(--pink); }
+        .footer-base span { color: var(--pink); }
         .footer-abs {
             position: absolute;
             bottom: 20px; left: 0; right: 0;
-            text-align: center;
-            color: var(--text-dim);
-            font-size: 0.72rem;
-            letter-spacing: 0.04em;
             z-index: 5;
         }
+        .footer-simple {} /* kept for backward compat */
 
         /* =============================================
            VIEW 1: Welcome — Vertical 3-Section Layout
@@ -515,13 +510,11 @@
             border-color: rgba(255, 146, 146, 0.25);
             box-shadow: 0 0 20px rgba(255, 146, 146, 0.08);
         }
-        .nav-tab.active[data-cat="all"] { color: #fff; background: rgba(255,146,146,0.18); border-color: rgba(255,146,146,0.25); }
         .nav-tab.active[data-cat="web"] { color: #4ecdc4; background: rgba(78,205,196,0.12); border-color: rgba(78,205,196,0.2); }
         .nav-tab.active[data-cat="tool"] { color: #f39c12; background: rgba(243,156,18,0.12); border-color: rgba(243,156,18,0.2); }
         .nav-tab.active[data-cat="design"] { color: #9b59b6; background: rgba(155,89,182,0.12); border-color: rgba(155,89,182,0.2); }
         [data-theme="light"] .nav-tab:hover { color: #555; background: rgba(0,0,0,0.04); }
         [data-theme="light"] .nav-tab.active { color: var(--pink); }
-        [data-theme="light"] .nav-tab.active[data-cat="all"] { background: rgba(255,146,146,0.15); }
 
         /* Theme toggle button */
         .theme-toggle {
@@ -755,7 +748,7 @@
         </div>
     </div>
 
-    <div class="footer-abs">
+    <div class="footer-abs footer-base">
         Hub World &copy; 2026 &middot; Powered by <span>Simiely / 世界的风吹向你</span>
     </div>
 </section>
@@ -781,14 +774,19 @@
     <!-- Masonry card grid -->
     <div class="catalog-masonry" id="projectGrid"></div>
 
-    <div class="footer-simple">
+    <div class="footer-simple footer-base">
         Hub World &copy; 2026 &middot; Powered by <span>Simiely / 世界的风吹向你</span>
     </div>
 </section>
 
 <script>
 // =============================================
-//  CONFIG: Backup projects data (used when API fails)
+//  DOM helper: shorthand for getElementById
+// =============================================
+var $ = function(id) { return document.getElementById(id); };
+
+// =============================================
+//  Project data — external JSON will replace this
 // =============================================
 var projects = [
     {
@@ -803,12 +801,27 @@ var projects = [
 
 
 // =============================================
+//  Normalize a project object (fill defaults)
+// =============================================
+function normalizeProject(p) {
+    return {
+        name: p.name,
+        desc: p.desc || '',
+        icon: p.icon || '📄',
+        path: p.path || '',
+        tags: p.tags || [],
+        category: p.category || 'other',
+        isReal: true,
+    };
+}
+
+// =============================================
 //  Activate Hero animations (vertical cascade)
 // =============================================
 function activateHero() {
-    document.getElementById('titleMain').classList.add('show');
-    document.getElementById('heroSub').classList.add('show');
-    var btn = document.getElementById('btnToCatalog');
+    $('titleMain').classList.add('show');
+    $('heroSub').classList.add('show');
+    var btn = $('btnToCatalog');
     if (btn) setTimeout(function() { btn.classList.add('show'); }, 850);
 }
 
@@ -816,18 +829,14 @@ function activateHero() {
 //  Live clock in action-hint
 // =============================================
 function updateClock() {
-    var el = document.getElementById('liveClock');
+    var el = $('liveClock');
     if (!el) return;
     var now = new Date();
-    var y = now.getFullYear();
-    var m = String(now.getMonth() + 1).padStart(2, '0');
-    var d = String(now.getDate()).padStart(2, '0');
+    var pad = function(n) { return String(n).padStart(2, '0'); };
     var weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-    var wd = weekdays[now.getDay()];
-    var hh = String(now.getHours()).padStart(2, '0');
-    var mm = String(now.getMinutes()).padStart(2, '0');
-    var ss = String(now.getSeconds()).padStart(2, '0');
-    el.textContent = y + '/' + m + '/' + d + ' ' + wd + ' ' + hh + ':' + mm + ':' + ss;
+    el.textContent = now.getFullYear() + '/' + pad(now.getMonth() + 1) + '/' + pad(now.getDate())
+        + ' ' + weekdays[now.getDay()]
+        + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
 }
 setInterval(updateClock, 1000);
 updateClock();
@@ -837,38 +846,25 @@ updateClock();
 //  Continuous right-to-left drift + edge fade
 // =============================================
 function initFloatingCards() {
-    var container = document.getElementById('cardSection');
+    var container = $('cardSection');
     if (!container) return;
-    
-    // Clear existing cards to avoid duplicates
     container.innerHTML = '';
     
     var swayKeys = ['gentleSway0','gentleSway1','gentleSway2','gentleSway3','gentleSway4','gentleSway5'];
 
-    // Build card data — always create 6 card DOM nodes for dynamic show/hide
+    // Build card data — always create 6 DOM nodes
+    var PLACEHOLDER_NAMES = ['即将上线', 'Coming Soon', '敬请期待', '新项目', '规划中', '更多精彩'];
+    var PLACEHOLDER_ICONS = ['🚀', '📦', '💡', '🎨', '🔧', '🌟'];
     var cardData = [];
-    var allNames = ['即将上线', 'Coming Soon', '敬请期待', '新项目', '规划中', '更多精彩'];
-    var allIcons = ['🚀', '📦', '💡', '🎨', '🔧', '🌟'];
-    var i;
-    for (i = 0; i < 6; i++) {
+    for (var i = 0; i < 6; i++) {
         if (i < projects.length) {
-            cardData.push({
-                name: projects[i].name,
-                desc: projects[i].desc || '',
-                icon: projects[i].icon || '📄',
-                isReal: true,
-                path: projects[i].path || '#',
-                tags: projects[i].tags || []
-            });
+            cardData.push(normalizeProject(projects[i]));
         } else {
-            var eIdx = i;
             cardData.push({
-                name: allNames[eIdx] || ('项目 ' + (eIdx + 1)),
+                name: PLACEHOLDER_NAMES[i] || ('项目 ' + (i + 1)),
                 desc: '更多精彩内容即将上线',
-                icon: allIcons[eIdx] || '📄',
-                isReal: false,
-                path: '',
-                tags: []
+                icon: PLACEHOLDER_ICONS[i] || '📄',
+                isReal: false, path: '', tags: [], category: 'other'
             });
         }
     }
@@ -959,13 +955,13 @@ function initFloatingCards() {
         // Staggered fade-in
         card.style.opacity = '0';
         card.style.transform = 'rotate(0deg) scale(0.7) translateY(24px)';
-        (function(c, d, r) {
+        (function(cardEl, delay) {
             setTimeout(function() {
-                c.style.opacity = '1';
-                c.style.transform = 'rotate(' + r + 'deg)';
-                c.style.transition = 'opacity 0.5s ease, transform 0.6s cubic-bezier(0.22,1,0.36,1)';
-            }, 350 + d * 140);
-        })(card, idx, 0);
+                cardEl.style.opacity = '1';
+                cardEl.style.transform = 'rotate(0deg)';
+                cardEl.style.transition = 'opacity 0.5s ease, transform 0.6s cubic-bezier(0.22,1,0.36,1)';
+            }, 350 + delay * 140);
+        })(card, idx);
 
         cards.push({
             el: card,
@@ -1127,37 +1123,23 @@ function playLaunchAnimation(targetEl, callback) {
 //  View switching
 // =============================================
 function showCatalog() {
-    var welcome = document.getElementById('viewWelcome');
-    var catalog = document.getElementById('viewCatalog');
-    var nav = document.getElementById('catalogNav');
-    welcome.classList.add('hidden');
-    catalog.classList.add('visible');
+    $('viewWelcome').classList.add('hidden');
+    $('viewCatalog').classList.add('visible');
+    var nav = $('catalogNav');
     if (nav) nav.classList.add('visible');
     renderCatalog(currentFilter);
 }
 
 function showWelcome() {
-    var welcome = document.getElementById('viewWelcome');
-    var catalog = document.getElementById('viewCatalog');
-    var nav = document.getElementById('catalogNav');
-    catalog.classList.remove('visible');
-    welcome.classList.remove('hidden');
+    $('viewWelcome').classList.remove('hidden');
+    $('viewCatalog').classList.remove('visible');
+    var nav = $('catalogNav');
     if (nav) nav.classList.remove('visible');
 }
 
 
 function getSortedProjects(filterCat) {
-    var list = projects.map(function(p) {
-        return {
-            name: p.name,
-            desc: p.desc || '',
-            icon: p.icon || '📄',
-            path: p.path || '',
-            tags: p.tags || [],
-            category: p.category || 'other'
-        };
-    });
-
+    var list = projects.map(normalizeProject);
     // Filter by category
     if (filterCat && filterCat !== 'all') {
         list = list.filter(function(p) { return p.category === filterCat; });
@@ -1186,7 +1168,7 @@ function renderCatalog(filterCat) {
         if (t.getAttribute('data-cat') === filterCat) t.classList.add('active');
     });
 
-    var grid = document.getElementById('projectGrid');
+    var grid = $('projectGrid');
     grid.innerHTML = '';
 
     var sorted = getSortedProjects(filterCat);
@@ -1228,16 +1210,8 @@ function renderCatalog(filterCat) {
             '</div>' +
             '<div class="cc-arrow">→</div>';
 
-        card.addEventListener('click', function(e) {
-            if (p.path && p.path !== '') {
-            }
-        });
-
         grid.appendChild(card);
-
-        (function(el, d) {
-            setTimeout(function() { el.classList.add('visible'); }, 50 + d * 60);
-        })(card, idx);
+        setTimeout(card.classList.add.bind(card, 'visible'), 50 + idx * 60);
     });
 
     for (var i = 0; i < needPlaceholders; i++) {
@@ -1254,8 +1228,7 @@ function renderCatalog(filterCat) {
                     '<p>更多精彩内容即将上线</p>' +
                 '</div>';
             grid.appendChild(emptyCard);
-
-            setTimeout(function() { emptyCard.classList.add('visible'); }, 50 + (total + eIdx) * 60);
+            setTimeout(emptyCard.classList.add.bind(emptyCard, 'visible'), 50 + (total + eIdx) * 60);
         })(i);
     }
 }
@@ -1264,7 +1237,7 @@ function renderCatalog(filterCat) {
 //  Particle canvas background
 // =============================================
 function initParticles() {
-    var canvas = document.getElementById('particleCanvas');
+    var canvas = $('particleCanvas');
     var ctx = canvas.getContext('2d');
     var w, h, particleArr, mouse = { x: -1000, y: -1000 };
 
@@ -1308,22 +1281,22 @@ function initParticles() {
         }
     }
 
+    function createParticle() {
+        return {
+            x: Math.random() * w,
+            y: Math.random() * h,
+            r: Math.random() * 1.5 + 0.5,
+            dx: (Math.random() - 0.5) * 0.25,
+            dy: (Math.random() - 0.5) * 0.25,
+            alpha: Math.random() * 0.5 + 0.1,
+            cooldown: 0
+        };
+    }
     function createParticles() {
-        // Density: ~1 particle per 6,000 px²  (~120 at 1920×1080)
         var area = w * h;
         var count = Math.max(60, Math.min(350, Math.round(area / 6000)));
         particleArr = [];
-        for (var j = 0; j < count; j++) {
-            particleArr.push({
-                x: Math.random() * w,
-                y: Math.random() * h,
-                r: Math.random() * 1.5 + 0.5,
-                dx: (Math.random() - 0.5) * 0.25,
-                dy: (Math.random() - 0.5) * 0.25,
-                alpha: Math.random() * 0.5 + 0.1,
-                cooldown: 0
-            });
-        }
+        for (var j = 0; j < count; j++) particleArr.push(createParticle());
     }
 
     function draw() {
@@ -1421,18 +1394,7 @@ function initParticles() {
             var target = Math.max(60, Math.min(350, Math.round(area / 6000)));
             var current = particleArr.length;
             if (target > current) {
-                // Add particles
-                for (var j = current; j < target; j++) {
-                    particleArr.push({
-                        x: Math.random() * w,
-                        y: Math.random() * h,
-                        r: Math.random() * 1.5 + 0.5,
-                        dx: (Math.random() - 0.5) * 0.25,
-                        dy: (Math.random() - 0.5) * 0.25,
-                        alpha: Math.random() * 0.5 + 0.1,
-                        cooldown: 0
-                    });
-                }
+                for (var j = current; j < target; j++) particleArr.push(createParticle());
             } else if (target < current) {
                 // Remove excess particles
                 particleArr.length = target;
@@ -1447,7 +1409,7 @@ function initParticles() {
 //  Mouse glow follower
 // =============================================
 function initMouseGlow() {
-    var glow = document.getElementById('mouseGlow');
+    var glow = $('mouseGlow');
     document.addEventListener('pointermove', function(e) {
         glow.style.left = e.clientX + 'px';
         glow.style.top  = e.clientY + 'px';
@@ -1465,7 +1427,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
     setTimeout(activateHero, 200);
 
-    document.getElementById('btnToCatalog').addEventListener('click', function() {
+    $('btnToCatalog').addEventListener('click', function() {
         showCatalog();
     });
 });
@@ -1475,8 +1437,8 @@ window.addEventListener('DOMContentLoaded', function() {
 // =============================================
 (function() {
     var html = document.documentElement;
-    var navBtn = document.getElementById('themeToggle');
-    var welcomeBtn = document.getElementById('welcomeThemeToggle');
+    var navBtn = $('themeToggle');
+    var welcomeBtn = $('welcomeThemeToggle');
     var saved = localStorage.getItem('hubworld-theme');
     
     // Default to dark if no preference saved
@@ -1506,19 +1468,19 @@ window.addEventListener('DOMContentLoaded', function() {
 //  Catalog Nav: tabs + brand click + scroll
 // =============================================
 function initCatalogNav() {
-    var nav = document.getElementById('catalogNav');
+    var nav = $('catalogNav');
 
     // Nav brand click → go back to welcome
-    document.getElementById('navBrand').addEventListener('click', function() {
+    $('navBrand').addEventListener('click', function() {
         showWelcome();
     });
 
     // Welcome brand click → go to catalog
-    var wBrand = document.getElementById('welcomeBrand');
+    var wBrand = $('welcomeBrand');
     if (wBrand) wBrand.addEventListener('click', function() { showCatalog(); });
 
     // Tab switching
-    document.getElementById('navTabs').addEventListener('click', function(e) {
+    $('navTabs').addEventListener('click', function(e) {
         var tab = e.target.closest('.nav-tab');
         if (!tab) return;
         var cat = tab.getAttribute('data-cat');
@@ -1528,7 +1490,7 @@ function initCatalogNav() {
     });
 
     // Scroll effect on nav
-    var viewCatalog = document.getElementById('viewCatalog');
+    var viewCatalog = $('viewCatalog');
     viewCatalog.addEventListener('scroll', function() {
         if (viewCatalog.scrollTop > 10) {
             nav.classList.add('scrolled');
