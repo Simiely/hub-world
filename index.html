@@ -1456,16 +1456,20 @@ function initParticles() {
     dbg.onclick = function() { this.style.display = 'none'; };
     document.body.appendChild(dbg);
 
-    var data = { moves: 0, x: '-', y: '-', particles: '-' };
+    var data = { moves: 0, x: '-', y: '-', particles: '-', ptr: 0 };
     document.addEventListener('mousemove', function(e) {
         data.moves++;
         data.x = e.clientX;
         data.y = e.clientY;
-        console.log('mousemove', e.clientX, e.clientY);
     });
+    document.addEventListener('pointermove', function(e) {
+        data.ptr++;
+        if (data.ptr <= 1) { data.x = e.clientX; data.y = e.clientY; }
+    });
+    document.addEventListener('click', function() { data.ptr += 100; });
     window.__debugParticles = function(n) { data.particles = n; };
     setInterval(function() {
-        dbg.innerHTML = 'moves:' + data.moves + ' | x:' + data.x + ' y:' + data.y + ' | p:' + data.particles;
+        dbg.innerHTML = 'm:' + data.moves + ' p:' + data.ptr + ' | x:' + data.x + ' y:' + data.y + ' | pt:' + data.particles;
     }, 200);
 })();
 
