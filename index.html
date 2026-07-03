@@ -42,12 +42,12 @@
             --pink-dim: rgba(255, 146, 146, 0.08);
             --pink-glow: rgba(255, 146, 146, 0.2);
             --pink-border: rgba(255, 146, 146, 0.15);
-            --bg: #f5f0eb;
+            --bg: #f2f2f2;
             --bg-card: #ffffff;
             --border: rgba(0, 0, 0, 0.08);
-            --text: #2c2c2a;
-            --text-muted: #888;
-            --text-dim: #bbb;
+            --text: #1a1a1a;
+            --text-muted: #666;
+            --text-dim: #999;
             --nav-bg-scrolled: rgba(255, 255, 255, 0.85);
             --mask-color: #333;
             color-scheme: light;
@@ -175,7 +175,7 @@
             font-size: 3.2rem;
             line-height: 1.08;
             letter-spacing: -0.04em;
-            color: #fff;
+            color: var(--text);
             opacity: 0;
             transform: translateY(24px);
             transition: all 0.75s 0.35s cubic-bezier(0.22, 1, 0.36, 1);
@@ -392,7 +392,7 @@
         }
         .cta-btn:hover::before {
             transform: scale(1.05);
-            background: linear-gradient(135deg, #ff80a5, #ff9cbc);
+            background: linear-gradient(135deg, var(--pink-light), var(--pink));
         }
         .cta-btn:active {
             box-shadow: 0 4px 16px rgba(255,146,146,0.2),
@@ -589,8 +589,7 @@
         .cat-card h3 {
             font-size: 0.96rem;
             font-weight: 700;
-            color: #fff;
-            opacity: 0.8;
+            color: var(--text);
             margin-bottom: 5px;
         }
         .cat-card p {
