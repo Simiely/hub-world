@@ -425,12 +425,15 @@
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
             border-bottom: 1px solid var(--border);
-            transition: background 0.3s ease;
-        }
-        .catalog-nav.hidden-nav {
+            transition: background 0.3s ease, opacity 0.4s ease;
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
+        }
+        .catalog-nav.visible {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
         }
         .catalog-nav.scrolled {
             background: var(--nav-bg-scrolled);
