@@ -60,7 +60,7 @@ module.exports = async (req, res) => {
           'Authorization': `Bearer ${redisToken}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify([projects])
+        body: JSON.stringify(projects)
       });
     }
     
