@@ -170,6 +170,22 @@
         }
 
         /* ---- SECTION 1: Title ---- */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .hero-logo {
+            width: 80px;
+            height: auto;
+            opacity: 0;
+            transform: translateY(24px);
+            transition: all 0.75s 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .hero-logo.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
         .hero-title-main {
             font-family: var(--font-en);
             font-weight: 900;
@@ -465,7 +481,7 @@
         .welcome-brand:hover { opacity: 0.8; }
         .welcome-toggle {
             position: fixed;
-            top: 19px;
+            top: 16px;
             right: 32px;
             z-index: 60;
         }
@@ -730,6 +746,7 @@
 
         <!-- === SECTION 1: Title === -->
         <div class="section-title">
+            <img class="hero-logo" src="logo.png" alt="Logo" />
             <h1 class="hero-title-main" id="titleMain">
                 <span class="title-hub">HUB</span><span class="hl-pink">World</span><br/>
                 <span class="title-sub">探索所有项目</span>
@@ -805,6 +822,7 @@ var projects = [
 // =============================================
 function activateHero() {
     document.getElementById('titleMain').classList.add('show');
+    document.querySelector('.hero-logo')?.classList.add('show');
     document.getElementById('heroSub').classList.add('show');
     var btn = document.getElementById('btnToCatalog');
     if (btn) setTimeout(function() { btn.classList.add('show'); }, 850);
