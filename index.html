@@ -714,6 +714,9 @@
     <div class="ripple-circle"></div>
 </div>
 
+<!-- Debug status bar (hidden by default, shown via query param ?debug) -->
+<div id="debugBar" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#111;color:#0f0;font:12px/1.5 monospace;padding:8px 12px;border-top:2px solid #0f0;max-height:120px;overflow-y:auto;"></div>
+
 <!-- ============ VIEW 1: Welcome (Vertical 3-section layout) ============ -->
 <section class="view-welcome" id="viewWelcome">
     <div class="welcome-brand" id="welcomeBrand">
@@ -750,6 +753,7 @@
 
     <div class="footer-abs footer-base">
         Hub World &copy; 2026 &middot; Powered by <span>Simiely / 世界的风吹向你</span>
+        <span id="versionBadge" style="display:none;margin-left:8px;opacity:0.4;font-size:0.7rem;"></span>
     </div>
 </section>
 
@@ -1133,9 +1137,11 @@ function showWelcome() {
 
 function getSortedProjects(filterCat) {
     var list = projects.map(normalizeProject);
+    if (window.__isDebug) debugLog('getSortedProjects: input projects.length=' + (projects ? projects.length : 'NULL') + ' mapped=' + list.length);
     // Filter by category
     if (filterCat && filterCat !== 'all') {
         list = list.filter(function(p) { return p.category === filterCat; });
+        if (window.__isDebug) debugLog('  after filter(' + filterCat + '): ' + list.length + ' items');
     }
 
     // Sort by name (pinyin)
@@ -1163,6 +1169,7 @@ function renderCatalog(filterCat) {
 
     var grid = $('projectGrid');
     grid.innerHTML = '';
+    if (window.__isDebug) debugLog('renderCatalog called, filter=' + filterCat + ' projects.length=' + (projects ? projects.length : 'NULL'));
 
     var sorted = getSortedProjects(filterCat);
     var total = sorted.length;
@@ -1412,21 +1419,69 @@ function initMouseGlow() {
 // =============================================
 //  Init
 // =============================================
+// =============================================
+//  Debug helper — shows project state on page
+//  Activate with ?debug=true in URL
+// =============================================
+function debugLog(msg) {
+    var bar = document.getElementById('debugBar');
+    if (!bar) return;
+    if (bar.style.display === 'none') {
+        bar.style.display = 'block';
+        bar.innerHTML = '<div style="color:#ff0;font-weight:bold">🔍 Debug Mode</div>';
+    }
+    bar.innerHTML += '<div>' + msg + '</div>';
+    bar.scrollTop = bar.scrollHeight;
+}
+
 window.addEventListener('DOMContentLoaded', function() {
+    window.__isDebug = window.location.search.indexOf('debug=true') >= 0;
+    var isDebug = window.__isDebug;
+    if (isDebug) debugLog('DOMContentLoaded fired');
+    if (isDebug) debugLog('Loading projects.json via fetch...');
+    
     // Load project data from external JSON
     fetch('projects.json')
-        .then(function(r) { return r.json(); })
-        .then(function(data) { projects = data.projects || data; })
-        .catch(function() { projects = FALLBACK_PROJECTS; })
+        .then(function(r) {
+            if (isDebug) debugLog('fetch OK, status=' + r.status + ' type=' + r.headers.get('content-type'));
+            return r.json();
+        })
+        .then(function(data) {
+            if (isDebug) debugLog('JSON parsed OK, type=' + typeof data + ' has_projects=' + ('projects' in data));
+            if (isDebug) debugLog('data.projects=' + JSON.stringify((data.projects || []).map(function(p) { return p.name; })));
+            projects = data.projects || data;
+            if (isDebug) debugLog('projects set, length=' + projects.length + ' names=' + projects.map(function(p) { return p.name; }).join(', '));
+        })
+        .catch(function(err) {
+            if (isDebug) debugLog('fetch/parse FAILED: ' + (err && err.message ? err.message : err));
+            if (isDebug) debugLog('Using FALLBACK_PROJECTS');
+            projects = FALLBACK_PROJECTS;
+            if (isDebug) debugLog('Fallback projects loaded, length=' + projects.length);
+        })
         .then(function() {
+            if (isDebug) debugLog('init phase starting... projects.length=' + (projects ? projects.length : 'NULL'));
             initMouseGlow();
             initParticles();
             initFloatingCards();
             initCatalogNav();
             setTimeout(activateHero, 200);
             $('btnToCatalog').addEventListener('click', function() { showCatalog(); });
+            if (isDebug) debugLog('init complete ✅');
         });
 });
+
+// Also expose debug info globally for console inspection
+window.__hubworld_debug = { projects: projects };
+
+// Show version badge on hover — click to toggle version display
+(function() {
+    var vb = $('versionBadge');
+    if (vb) {
+        vb.textContent = 'v2.0+debug';
+        vb.style.display = '';
+        vb.title = 'Deployed: ' + new Date().toISOString().slice(0, 16).replace('T', ' ');
+    }
+})();
 
 // =============================================
 //  Theme toggle (dark/light)
