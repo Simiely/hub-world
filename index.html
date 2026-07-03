@@ -18,11 +18,11 @@
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --pink: #FB7299;
-            --pink-light: #ff8fb0;
-            --pink-dim: rgba(251, 114, 153, 0.12);
-            --pink-glow: rgba(251, 114, 153, 0.35);
-            --pink-border: rgba(251, 114, 153, 0.18);
+            --pink: #ff6766;
+            --pink-light: #ff8f8e;
+            --pink-dim: rgba(255, 103, 102, 0.12);
+            --pink-glow: rgba(255, 103, 102, 0.35);
+            --pink-border: rgba(255, 103, 102, 0.18);
             --bg: #08080c;
             --bg-card: #08080c;
             --border: rgba(255, 255, 255, 0.08);
@@ -37,11 +37,11 @@
         }
 
         [data-theme="light"] {
-            --pink: #FB7299;
-            --pink-light: #ff8fb0;
-            --pink-dim: rgba(251, 114, 153, 0.08);
-            --pink-glow: rgba(251, 114, 153, 0.2);
-            --pink-border: rgba(251, 114, 153, 0.15);
+            --pink: #ff6766;
+            --pink-light: #ff8f8e;
+            --pink-dim: rgba(255, 103, 102, 0.08);
+            --pink-glow: rgba(255, 103, 102, 0.2);
+            --pink-border: rgba(255, 103, 102, 0.15);
             --bg: #f5f0eb;
             --bg-card: #ffffff;
             --border: rgba(0, 0, 0, 0.08);
@@ -482,9 +482,9 @@
         }
         .nav-tab.active {
             color: #fff;
-            background: rgba(251, 114, 153, 0.18);
-            border-color: rgba(251, 114, 153, 0.25);
-            box-shadow: 0 0 20px rgba(251, 114, 153, 0.08);
+            background: rgba(255, 103, 102, 0.18);
+            border-color: rgba(255, 103, 102, 0.25);
+            box-shadow: 0 0 20px rgba(255, 103, 102, 0.08);
         }
         .nav-tab.active[data-cat="all"] { color: #fff; background: rgba(251,114,153,0.18); border-color: rgba(251,114,153,0.25); }
         .nav-tab.active[data-cat="web"] { color: #4ecdc4; background: rgba(78,205,196,0.12); border-color: rgba(78,205,196,0.2); }
@@ -1364,7 +1364,7 @@ function initParticles() {
 
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(251, 114, 153, ' + p.alpha + ')';
+            ctx.fillStyle = 'rgba(255, 103, 102, ' + p.alpha + ')';
             ctx.fill();
         });
         requestAnimationFrame(draw);
