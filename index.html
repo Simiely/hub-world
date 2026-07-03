@@ -1404,8 +1404,6 @@ function initParticles() {
             ctx.fillStyle = 'rgba(255, 146, 146, ' + p.alpha + ')';
             ctx.fill();
         });
-        // Debug: show particle count
-        if (window.__debugParticles) window.__debugParticles(particleArr.length);
         requestAnimationFrame(draw);
     }
 
@@ -1444,30 +1442,6 @@ function initParticles() {
     document.addEventListener('pointermove', function(e) { mouse.x = e.clientX; mouse.y = e.clientY; });
     document.addEventListener('pointerleave', function() { mouse.x = -1000; mouse.y = -1000; });
 }
-
-// =============================================
-//  Debug panel (for diagnosing mouse issues)
-// =============================================
-(function() {
-    var dbg = document.createElement('div');
-    dbg.id = 'debugPanel';
-    dbg.style.cssText = 'position:fixed;bottom:10px;right:10px;z-index:99999;background:rgba(0,0,0,0.8);color:#0f0;padding:8px 12px;border-radius:6px;font:12px monospace;line-height:1.6;cursor:pointer;';
-    dbg.innerHTML = 'debug (click)';
-    dbg.onclick = function() { this.style.display = 'none'; };
-    document.body.appendChild(dbg);
-
-    var data = { moves: 0, x: '-', y: '-', particles: '-', ptr: 0 };
-    document.addEventListener('pointermove', function(e) {
-        data.ptr++;
-        data.x = e.clientX;
-        data.y = e.clientY;
-    });
-    document.addEventListener('click', function() { data.ptr += 100; });
-    window.__debugParticles = function(n) { data.particles = n; };
-    setInterval(function() {
-        dbg.innerHTML = 'm:' + data.moves + ' p:' + data.ptr + ' | x:' + data.x + ' y:' + data.y + ' | pt:' + data.particles;
-    }, 200);
-})();
 
 // =============================================
 //  Mouse glow follower
