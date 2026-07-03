@@ -402,8 +402,12 @@
             font-size: 0.76rem;
             color: var(--text-dim);
             margin-top: 12px;
-            opacity: 0.5;
+            opacity: 0;
             letter-spacing: 0.02em;
+            transition: all 0.5s 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .action-hint.show {
+            opacity: 0.5;
         }
 
         /* =============================================
@@ -825,6 +829,8 @@ function activateHero() {
     $('heroSub').classList.add('show');
     var btn = $('btnToCatalog');
     if (btn) setTimeout(function() { btn.classList.add('show'); }, 850);
+    var clock = $('liveClock');
+    if (clock) setTimeout(function() { clock.classList.add('show'); }, 1050);
 }
 
 // =============================================
@@ -1232,7 +1238,12 @@ function renderCatalog(filterCat) {
             '<div class="cc-arrow">→</div>';
 
         grid.appendChild(card);
-        setTimeout(card.classList.add.bind(card, 'visible'), 50 + idx * 60);
+        // Fade-in via inline style (bypasses CSS class specificity issues)
+        card.style.opacity = '0';
+        setTimeout(function() {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0) scale(1)';
+        }, 50 + idx * 60);
     });
 
     for (var i = 0; i < needPlaceholders; i++) {
@@ -1249,7 +1260,11 @@ function renderCatalog(filterCat) {
                     '<p>更多精彩内容即将上线</p>' +
                 '</div>';
             grid.appendChild(emptyCard);
-            setTimeout(emptyCard.classList.add.bind(emptyCard, 'visible'), 50 + (total + eIdx) * 60);
+            emptyCard.style.opacity = '0';
+            setTimeout(function() {
+                emptyCard.style.opacity = '0.6';
+                emptyCard.style.transform = 'translateY(0) scale(1)';
+            }, 50 + (total + eIdx) * 60);
         })(i);
     }
 }
