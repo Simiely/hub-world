@@ -745,7 +745,7 @@
         </div>
 
         <!-- === SECTION 3: Action Button === -->
-        <!-- 🔔 调试次数: 211 → 搜索 JS 中 DEBUG_COUNT 变量同步修改 -->
+        <!-- 🔔 调试次数: 212 → 搜索 JS 中 DEBUG_COUNT 变量同步修改 -->
         <div class="section-action">
             <button class="cta-btn" id="btnToCatalog">
                 探索发现
@@ -788,11 +788,11 @@
 <script>
 // ====================================================================
 //  🔔 调试计数器 — 每次修改此 HTML 文件后务必 +1
-//  当前值: 211
+//  当前值: 212
 //  此常量影响: (1) 上方 HTML 注释  (2) debugCount 显示文本
 //  搜索关键词: DEBUG_COUNT
 // ====================================================================
-var DEBUG_COUNT = 211;
+var DEBUG_COUNT = 212;
 
 // =============================================
 //  DOM helper: shorthand for getElementById
@@ -910,7 +910,7 @@ function initFloatingCards() {
             { top: '18%',  leftPct: 94,  rot: -5,  sway: 5, z: 4 },
         ],
     };
-    var DRIFT_SPEED = 0.12;
+    var DRIFT_SPEED = 0.30;
     var CARD_W = 210;
     var cards = [];
 
@@ -1053,7 +1053,7 @@ function initFloatingCards() {
         cards.forEach(function(c) {
             c.el.style.setProperty('--card-scale', String(scale));
             c.el.style.width = cardW + 'px';
-            c.el.style.top = (c.baseTop + offsetPct) + '%';
+            c.el.style.top = Math.max(1, c.baseTop + offsetPct) + '%';
         });
     }
     requestAnimationFrame(updateCardScale);
