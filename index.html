@@ -421,19 +421,15 @@
             align-items: center;
             justify-content: space-between;
             padding: 14px 32px;
+            background: transparent;
+            border-bottom: 1px solid transparent;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+        .view-welcome.hidden .catalog-nav {
             background: var(--bg-card);
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
-            border-bottom: 1px solid var(--border);
-            transition: background 0.3s ease, opacity 0.4s ease;
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-        .catalog-nav.visible {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
+            border-bottom-color: var(--border);
         }
         .catalog-nav.scrolled {
             background: var(--nav-bg-scrolled);
@@ -448,6 +444,9 @@
             transition: opacity 0.25s;
         }
         .nav-brand:hover { opacity: 0.8; }
+        .view-welcome:not(.hidden) ~ .catalog-nav .nav-tabs { display: none; }
+
+        /* ---- Grid Layout ---- */
         .nav-logo {
             height: 1.12rem;
             width: auto;
@@ -512,21 +511,6 @@
             background: var(--pink-dim);
             border-color: var(--pink-border);
         }
-        .welcome-top-bar {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 60;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 32px;
-            border-bottom: 1px solid transparent;
-            pointer-events: none;
-        }
-        .welcome-top-bar > * {
-            pointer-events: auto;
-        }
-        .view-welcome.hidden .welcome-top-bar { display: none; }
 
         /* ---- Grid Layout ---- */
         .catalog-masonry {
@@ -693,8 +677,6 @@
             .floating-card { width: 160px; height: 195px; }
             .catalog-nav { padding: 10px 16px; }
             .nav-tab { font-size: 0.74rem; padding: 6px 12px; }
-            .welcome-brand { left: 16px; top: 10px; }
-            .welcome-top-bar { padding: 10px 16px; }
         }
     </style>
 </head>
@@ -711,13 +693,6 @@
 
 <!-- ============ VIEW 1: Welcome (Vertical 3-section layout) ============ -->
 <section class="view-welcome" id="viewWelcome">
-    <div class="welcome-top-bar">
-        <div class="nav-brand" id="welcomeBrand">
-            <img class="nav-logo" src="logo.png" alt="Logo" />
-            <span class="nav-name">Hub World</span>
-        </div>
-        <button class="theme-toggle" id="welcomeThemeToggle" title="切换主题">🌙</button>
-    </div>
     <div class="welcome-layout">
 
         <!-- === SECTION 1: Title === -->
@@ -1121,20 +1096,16 @@ function playLaunchAnimation(targetEl, callback) {
 function showCatalog() {
     var welcome = document.getElementById('viewWelcome');
     var catalog = document.getElementById('viewCatalog');
-    var nav = document.getElementById('catalogNav');
     welcome.classList.add('hidden');
     catalog.classList.add('visible');
-    if (nav) nav.classList.add('visible');
     renderCatalog(currentFilter);
 }
 
 function showWelcome() {
     var welcome = document.getElementById('viewWelcome');
     var catalog = document.getElementById('viewCatalog');
-    var nav = document.getElementById('catalogNav');
     catalog.classList.remove('visible');
     welcome.classList.remove('hidden');
-    if (nav) nav.classList.remove('visible');
 }
 
 
@@ -1504,14 +1475,6 @@ function initCatalogNav() {
     document.getElementById('navBrand').addEventListener('click', function() {
         showWelcome();
     });
-
-    // Welcome brand click → go to catalog
-    var wBrand = document.getElementById('welcomeBrand');
-    if (wBrand) {
-        wBrand.addEventListener('click', function() {
-            showCatalog();
-        });
-    }
 
     // Tab switching
     document.getElementById('navTabs').addEventListener('click', function(e) {
