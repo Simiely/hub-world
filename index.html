@@ -9,7 +9,7 @@
     <meta http-equiv="Expires" content="0" />
     <title>Hub World · 导航中心</title>
     <!-- 防止浏览器首次绘制白屏：在外部资源加载前立即设置暗色背景 -->
-    <style>html{background:#08080c}body{margin:0}</style>
+    <style>html{background:#08080c}html[data-theme="light"]{background:#f5f0eb}body{margin:0}</style>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet" />
@@ -31,7 +31,26 @@
             --text-dim: #555;
             --font-en: 'Inter', -apple-system, sans-serif;
             --font-zh: 'Noto Sans SC', -apple-system, 'Microsoft YaHei', sans-serif;
+            --nav-bg-scrolled: rgba(255, 255, 255, 0.07);
+            --mask-color: #fff;
             color-scheme: dark;
+        }
+
+        [data-theme="light"] {
+            --pink: #FB7299;
+            --pink-light: #ff8fb0;
+            --pink-dim: rgba(251, 114, 153, 0.08);
+            --pink-glow: rgba(251, 114, 153, 0.2);
+            --pink-border: rgba(251, 114, 153, 0.15);
+            --bg: #f5f0eb;
+            --bg-card: #ffffff;
+            --border: rgba(0, 0, 0, 0.08);
+            --text: #2c2c2a;
+            --text-muted: #888;
+            --text-dim: #bbb;
+            --nav-bg-scrolled: rgba(255, 255, 255, 0.85);
+            --mask-color: #333;
+            color-scheme: light;
         }
 
         html, body {
@@ -200,15 +219,15 @@
             -webkit-mask-image: linear-gradient(
                 to right,
                 transparent 0%,
-                #fff 10%,
-                #fff 90%,
+                var(--mask-color) 10%,
+                var(--mask-color) 90%,
                 transparent 100%
             );
             mask-image: linear-gradient(
                 to right,
                 transparent 0%,
-                #fff 10%,
-                #fff 90%,
+                var(--mask-color) 10%,
+                var(--mask-color) 90%,
                 transparent 100%
             );
             z-index: 10;
@@ -252,7 +271,7 @@
         }
         .floating-card:hover {
             border-color: rgba(251,114,153,0.28);
-            background: rgba(255,255,255,0.07);
+            background: var(--pink-dim);
             box-shadow: 0 12px 44px rgba(251,114,153,0.1),
                         0 0 64px rgba(251,114,153,0.04);
             z-index: 25;
@@ -265,8 +284,8 @@
         .floating-card .fc-name {
             font-size: 0.84rem;
             font-weight: 700;
-            color: #fff;
-            opacity: 0.8;
+            color: var(--text);
+            opacity: 0.9;
             margin-bottom: 5px;
         }
         .floating-card .fc-desc {
@@ -416,8 +435,8 @@
             pointer-events: auto;
         }
         .catalog-nav.scrolled {
-            background: rgba(255, 255, 255, 0.07);
-            border-bottom-color: rgba(251, 114, 153, 0.18);
+            background: var(--nav-bg-scrolled);
+            border-bottom-color: var(--pink-border);
         }
         .nav-brand {
             display: flex;
@@ -437,7 +456,7 @@
             font-family: var(--font-en);
             font-weight: 900;
             font-size: 1.05rem;
-            color: #fff;
+            color: var(--text);
             letter-spacing: -0.03em;
         }
         .nav-tabs {
@@ -466,6 +485,30 @@
             background: rgba(251, 114, 153, 0.18);
             border-color: rgba(251, 114, 153, 0.25);
             box-shadow: 0 0 20px rgba(251, 114, 153, 0.08);
+        }
+        .nav-tab.active[data-cat="all"] { color: #fff; background: rgba(251,114,153,0.18); border-color: rgba(251,114,153,0.25); }
+        .nav-tab.active[data-cat="web"] { color: #4ecdc4; background: rgba(78,205,196,0.12); border-color: rgba(78,205,196,0.2); }
+        .nav-tab.active[data-cat="tool"] { color: #f39c12; background: rgba(243,156,18,0.12); border-color: rgba(243,156,18,0.2); }
+        .nav-tab.active[data-cat="design"] { color: #9b59b6; background: rgba(155,89,182,0.12); border-color: rgba(155,89,182,0.2); }
+        [data-theme="light"] .nav-tab:hover { color: #555; background: rgba(0,0,0,0.04); }
+        [data-theme="light"] .nav-tab.active { color: #fff; }
+        [data-theme="light"] .nav-tab.active[data-cat="all"] { background: rgba(251,114,153,0.15); }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            font-size: 1.1rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 6px 10px;
+            cursor: pointer;
+            margin-left: 12px;
+            transition: all 0.25s ease;
+            line-height: 1;
+        }
+        .theme-toggle:hover {
+            background: var(--pink-dim);
+            border-color: var(--pink-border);
         }
 
         /* ---- Grid Layout ---- */
@@ -694,6 +737,7 @@
         <button class="nav-tab" data-cat="tool">工具</button>
         <button class="nav-tab" data-cat="design">设计</button>
     </div>
+    <button class="theme-toggle" id="themeToggle" title="切换主题">🌙</button>
 </nav>
 
 <!-- ============ VIEW 2: Catalog ============ -->
@@ -849,14 +893,10 @@ function initFloatingCards() {
         card.className = 'floating-card';
         card.setAttribute('data-index', idx);
 
-        // Tag badge like @coplin / @andrea in reference image
-        var tagLabels = ['#1', '#2', '#3', '#New', '#Hot'];
-        function varCSS(name) {
-            if (name === '--pink') return '#FB7299';
-            return name;
-        }
-        var tagColors = [varCSS('--pink'), '#4ecdc4', '#f39c12', '#9b59b6', '#3498db'];
-        var tagBadge = '<span class="fc-tag-badge">' + (tagLabels[idx] || '#' + idx) + '</span>';
+        // Tag badge — show first project tag, or fallback label
+        var fallbackLabels = ['#1', '#2', '#3', '#New', '#Hot'];
+        var tagText = (p.tags && p.tags.length > 0) ? p.tags[0] : (fallbackLabels[idx] || '#' + idx);
+        var tagBadge = '<span class="fc-tag-badge">' + tagText + '</span>';
 
         card.innerHTML =
             tagBadge +
@@ -1392,6 +1432,30 @@ window.addEventListener('DOMContentLoaded', function() {
         showCatalog();
     });
 });
+
+// =============================================
+//  Theme toggle (dark/light)
+// =============================================
+(function() {
+    var html = document.documentElement;
+    var btn = document.getElementById('themeToggle');
+    var saved = localStorage.getItem('hubworld-theme');
+    
+    // Default to dark if no preference saved
+    var theme = saved || 'dark';
+    html.setAttribute('data-theme', theme);
+    btn.textContent = theme === 'dark' ? '🌙' : '☀️';
+    document.querySelector('meta[name="color-scheme"]').content = theme;
+    
+    btn.addEventListener('click', function() {
+        var current = html.getAttribute('data-theme');
+        var next = current === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        btn.textContent = next === 'dark' ? '🌙' : '☀️';
+        document.querySelector('meta[name="color-scheme"]').content = next;
+        localStorage.setItem('hubworld-theme', next);
+    });
+})();
 
 // =============================================
 //  Catalog Nav: tabs + brand click + scroll
