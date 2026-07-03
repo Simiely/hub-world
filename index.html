@@ -1065,7 +1065,7 @@ function initFloatingCards() {
     setTimeout(animationLoop, 2000);
 
     // MOUSE PARALLAX on floating cards
-    document.addEventListener('mousemove', function(e) { try {
+    document.addEventListener('pointermove', function(e) { try {
         var vh = window.innerHeight;
         // Only react when mouse is near card section
         var sectionRect = container.getBoundingClientRect();
@@ -1081,7 +1081,7 @@ function initFloatingCards() {
         });
     } catch(e) {} });
 
-    document.addEventListener('mouseleave', function() { try {
+    document.addEventListener('pointerleave', function() { try {
         cards.forEach(function(c) {
             c.el.style.marginLeft = '0';
             c.el.style.marginTop  = '0';
@@ -1441,8 +1441,8 @@ function initParticles() {
             }
         }, 300);
     });
-    document.addEventListener('mousemove', function(e) { mouse.x = e.clientX; mouse.y = e.clientY; });
-    document.addEventListener('mouseleave', function() { mouse.x = -1000; mouse.y = -1000; });
+    document.addEventListener('pointermove', function(e) { mouse.x = e.clientX; mouse.y = e.clientY; });
+    document.addEventListener('pointerleave', function() { mouse.x = -1000; mouse.y = -1000; });
 }
 
 // =============================================
@@ -1457,16 +1457,12 @@ function initParticles() {
     document.body.appendChild(dbg);
 
     var data = { moves: 0, x: '-', y: '-', particles: '-', ptr: 0 };
-    function onMove(e) { data.moves++; data.x = e.clientX; data.y = e.clientY; }
-    document.addEventListener('mousemove', onMove);
-    window.onmousemove = onMove;
-    document.onmousemove = onMove;
     document.addEventListener('pointermove', function(e) {
         data.ptr++;
-        if (data.ptr <= 1) { data.x = e.clientX; data.y = e.clientY; }
+        data.x = e.clientX;
+        data.y = e.clientY;
     });
     document.addEventListener('click', function() { data.ptr += 100; });
-    window.addEventListener('click', function() { data.ptr += 100; });
     window.__debugParticles = function(n) { data.particles = n; };
     setInterval(function() {
         dbg.innerHTML = 'm:' + data.moves + ' p:' + data.ptr + ' | x:' + data.x + ' y:' + data.y + ' | pt:' + data.particles;
@@ -1478,7 +1474,7 @@ function initParticles() {
 // =============================================
 function initMouseGlow() {
     var glow = document.getElementById('mouseGlow');
-    document.addEventListener('mousemove', function(e) {
+    document.addEventListener('pointermove', function(e) {
         glow.style.left = e.clientX + 'px';
         glow.style.top  = e.clientY + 'px';
     });
