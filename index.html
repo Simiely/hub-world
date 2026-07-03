@@ -745,12 +745,12 @@
         </div>
 
         <!-- === SECTION 3: Action Button === -->
-        <!-- 调试次数: 209 - 每次修改 HTML 后此数字 +1 -->
+        <!-- 🔔 调试次数: 210 → 搜索 JS 中 DEBUG_COUNT 变量同步修改 -->
         <div class="section-action">
             <button class="cta-btn" id="btnToCatalog">
                 探索发现
             </button>
-            <div id="debugCount" style="font-size:0.72rem;color:var(--text-dim);margin-top:8px;opacity:0;transition:opacity 0.2s;user-select:none;pointer-events:none;">209次调试</div>
+            <div id="debugCount" style="font-size:0.72rem;color:var(--text-dim);margin-top:8px;opacity:0;transition:opacity 0.2s;user-select:none;pointer-events:none;"></div>
         </div>
     </div>
 
@@ -786,6 +786,14 @@
 </section>
 
 <script>
+// ====================================================================
+//  🔔 调试计数器 — 每次修改此 HTML 文件后务必 +1
+//  当前值: 210
+//  此常量影响: (1) 上方 HTML 注释  (2) debugCount 显示文本
+//  搜索关键词: DEBUG_COUNT
+// ====================================================================
+var DEBUG_COUNT = 210;
+
 // =============================================
 //  DOM helper: shorthand for getElementById
 // =============================================
@@ -1501,6 +1509,7 @@ window.addEventListener('DOMContentLoaded', function() {
             (function() {
                 var btn = $('btnToCatalog');
                 var dbg = $('debugCount');
+                if (dbg) dbg.textContent = DEBUG_COUNT + '次调试';
                 var holdTimer = null;
                 var HOLD_MS = 500;
                 btn.addEventListener('click', function() { showCatalog(); });
