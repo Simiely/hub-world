@@ -1405,8 +1405,7 @@ function initParticles() {
             ctx.fill();
         });
         // Debug: show particle count
-        var dbg = document.getElementById('debugPanel');
-        if (dbg) dbg.innerHTML += '<br>particles: ' + particleArr.length;
+        if (window.__debugParticles) window.__debugParticles(particleArr.length);
         requestAnimationFrame(draw);
     }
 
@@ -1457,13 +1456,16 @@ function initParticles() {
     dbg.onclick = function() { this.style.display = 'none'; };
     document.body.appendChild(dbg);
 
-    var count = 0;
+    var data = { moves: 0, x: '-', y: '-', particles: '-' };
     document.addEventListener('mousemove', function(e) {
-        count++;
-        dbg.innerHTML = 'moves: ' + count + '<br>x:' + e.clientX + ' y:' + e.clientY;
+        data.moves++;
+        data.x = e.clientX;
+        data.y = e.clientY;
     });
-    var dc = 0;
-    document.addEventListener('DOMContentLoaded', function() { dc++; });
+    window.__debugParticles = function(n) { data.particles = n; };
+    setInterval(function() {
+        dbg.innerHTML = 'moves:' + data.moves + ' | x:' + data.x + ' y:' + data.y + ' | p:' + data.particles;
+    }, 200);
 })();
 
 // =============================================
