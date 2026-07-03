@@ -404,7 +404,7 @@
             margin-top: 12px;
             opacity: 0;
             letter-spacing: 0.02em;
-            transition: all 0.5s 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: all 0.5s 0s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .action-hint.show {
             opacity: 0.5;
@@ -821,7 +821,7 @@ function activateHero() {
     var btn = $('btnToCatalog');
     if (btn) setTimeout(function() { btn.classList.add('show'); }, 850);
     var clock = $('liveClock');
-    if (clock) setTimeout(function() { clock.classList.add('show'); }, 850);
+    if (clock) setTimeout(function() { clock.classList.add('show'); }, 650);
 }
 
 // =============================================
