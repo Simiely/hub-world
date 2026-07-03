@@ -1065,7 +1065,7 @@ function initFloatingCards() {
     setTimeout(animationLoop, 2000);
 
     // MOUSE PARALLAX on floating cards
-    document.addEventListener('mousemove', function(e) {
+    document.addEventListener('mousemove', function(e) { try {
         var vh = window.innerHeight;
         // Only react when mouse is near card section
         var sectionRect = container.getBoundingClientRect();
@@ -1079,14 +1079,14 @@ function initFloatingCards() {
             c.el.style.marginLeft = (mx * speed * 10) + 'px';
             c.el.style.marginTop  = (my * speed * 6) + 'px';
         });
-    });
+    } catch(e) {} });
 
-    document.addEventListener('mouseleave', function() {
+    document.addEventListener('mouseleave', function() { try {
         cards.forEach(function(c) {
             c.el.style.marginLeft = '0';
             c.el.style.marginTop  = '0';
         });
-    });
+    } catch(e) {} });
 }
 
 // =============================================
