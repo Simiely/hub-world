@@ -523,7 +523,21 @@
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
         }
+        .welcome-brand {
+            position: fixed;
+            top: 14px;
+            left: 32px;
+            z-index: 60;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            user-select: none;
+            transition: opacity 0.25s;
+        }
+        .welcome-brand:hover { opacity: 0.8; }
         .view-welcome.hidden .welcome-theme-float { display: none; }
+        .view-welcome.hidden .welcome-brand { display: none; }
 
         /* ---- Grid Layout ---- */
         .catalog-masonry {
@@ -690,6 +704,7 @@
             .floating-card { width: 160px; height: 195px; }
             .catalog-nav { padding: 10px 16px; }
             .nav-tab { font-size: 0.74rem; padding: 6px 12px; }
+            .welcome-brand { left: 16px; top: 10px; }
         }
     </style>
 </head>
@@ -706,6 +721,10 @@
 
 <!-- ============ VIEW 1: Welcome (Vertical 3-section layout) ============ -->
 <section class="view-welcome" id="viewWelcome">
+    <div class="welcome-brand" id="welcomeBrand">
+        <img class="nav-logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAACzYAAAKaCAYAAABWJS0lAAAACXBIWXMAAAsSAAALEgHS3X78AAAgAElEQVR4nOzd63EcyZU24PNt6D+4FgCyAFwL2LKAkAXsMSCDkAUELRhMpAFsWjCgBWpaIMACARYsYcF+P7Ihcji84FLVpyrreSIYc5E084roS1Xlmyf/3//93/8FAAAAAAAAAAAAAECm/8oOAAAAAAAAAAAAAACg2AwAAAAAAAAAAAAApFNsBgAAAAAAAAAAAADSKTYDAAAAAAAAAAAAAOkUmwEAAAAAAAAAAACAdIrNAAAAAAAAAAAAAEA6xWYAAAAAAAAAAAAAIJ1iMwAAAAAAAAAAAACQTrEZAAAAAAAAAAAAAEin2AwAAAAAAAAAAAAApFNsBgAAAAAAAAAAAADSKTYDAAAAAAAAAAAAAOkUmwEAAAAAAAAAAACAdIrNAAAAAAAAAAAAAEA6xWYAAAAAAAAAAAAAIJ1iMwAAAAAAAAAAAACQTrEZAAAAAAAAAAAAAEin2AwAAAAAAAAAAAAApFNsBgAAAAAAAAAAAADSKTYDAAAAAAAAAAAAAOkUmwEAAAAAAAAAAACAdIrNAAAAAAAAAAAAAEA6xWYAAAAAAAAAAAAAIJ1iMwAAAAAAAAAAAACQTrEZAAAAAAAAAAAAAEj3l+wA91Lrs4h4nh0DAAAAmKzLKOVTdgiAJ6t19ej/bSnbwXIAAAAAAECC//d///d/2Rm+rdajiDiNiJOIOMwNAwAAAMzATURcRMR5lHKdnAXg7hnnUUR8Objh+e6vY/efjfns8zYiLr/46+3uj5/+8/eVoQEAAAAAmJDpFZvbw/5NRLzIDQIAAADM2MeIWCs4A6P7XF5execC81HMb1jDx/hceL6OiGulZwAAAAAA9m1axeZa1xFxHhEHyUkAAACA+buNiNMoZZMdBOhErc+jFZfvfi1hOMNNtLLz5182jQAAAAAAMJLpFJtr3UTEq+wYAAAAQHfeRynr7BDAzNT6LNoU5ue7Py6hxHxftxGxjVZ03prsDAAAAADAUKZRbK71LCLeZMcAAAAAuvU2SjnLDgFMXK2riDiJVmQ+Ts0yPx+jlZ0vopTL5CzsU5tk/iw7xgAuo5RP2SFGVetRRBwlpxjCJ58zsEDtOm3+lrAhrJ9rg+vuTyppmzmfZ8eAmZvtanPYx6qn3vGb5nue5V56/16KvH+5S9Y/+L/aDehSs0AAADAmN5EraaKAn/UFmxW0crML1OzzN+L3a83UevdROeLaEXnvsuinEcfE83/Fu1127N19LEecxP9LrYD31LrSUT8nh1jIP8vO8Ae9HJt8DYizrJDjOx5RPwzOwTM3MdozxWmyOcxD/U8+rnm+tpt9FH0Z3pW4X0ziv/K+hdHxF1jfZOaAQAAAFiKze5ZBLBktR5FradR62XE/Dsi3oVS89AOov2evouI/41aL3e/50e5sYBOHO5KjsByeM8DAIxvmx1gRAe7KeYwtFV2gBFtM//l2RObTyPiMDkDAAAAsAyH0SYVnifnAPatbWo4ifY88jg5zRIdR8SvEfFr1HoVbdjFhaNkgSc4iTYVHujd5+s4AADGVMqnqPVD9DsA4CQiLrND0J2e71VSn7vkTmxui4kAAAAA+3KaHQDYo1pPotaLiPjfaNODlZrz3ZWc/x21XkSt6+Q8wDz1vHAI/NFJtNMgAAAY3zY7wIhW2QHoTDudruehvgstNrfx7j3/YAEAAIDpOXTkHHSu1mdR61nUeh0Rv0e/U2Z68DIi3kWtn6LW891iAMB9HNgYAYthIwMAwP70fDLOi91pIDCUVXaAEV1FKZ8yA2RObHYTCgAAAGTwTAJ6VOtR1LqJNp35TRiqMCcHEfE62hTnbdTqcxq4D58V0Lu26ckmNQCAfSnlOiKusmOMaJUdgK70/Fxikx0gs9hsOhIAAACQwTMJ6Emtq6h1GxH/johXyWl4uhcR8XvUeh21rk3SAX7gpc8I" alt="Logo" />
+        <span class="nav-name">Hub World</span>
+    </div>
     <button class="theme-toggle welcome-theme-float" id="welcomeThemeToggle" title="切换主题">🌙</button>
     <div class="welcome-layout">
 
@@ -1111,9 +1130,11 @@ function showCatalog() {
     var welcome = document.getElementById('viewWelcome');
     var catalog = document.getElementById('viewCatalog');
     var nav = document.getElementById('catalogNav');
+    var wBrand = document.getElementById('welcomeBrand');
     welcome.classList.add('hidden');
     catalog.classList.add('visible');
     if (nav) nav.classList.add('visible');
+    if (wBrand) wBrand.style.display = 'none';
     renderCatalog(currentFilter);
 }
 
@@ -1121,9 +1142,11 @@ function showWelcome() {
     var welcome = document.getElementById('viewWelcome');
     var catalog = document.getElementById('viewCatalog');
     var nav = document.getElementById('catalogNav');
+    var wBrand = document.getElementById('welcomeBrand');
     catalog.classList.remove('visible');
     welcome.classList.remove('hidden');
     if (nav) nav.classList.remove('visible');
+    if (wBrand) wBrand.style.display = '';
 }
 
 
@@ -1493,6 +1516,14 @@ function initCatalogNav() {
     document.getElementById('navBrand').addEventListener('click', function() {
         showWelcome();
     });
+
+    // Welcome brand click → go to catalog
+    var wBrand = document.getElementById('welcomeBrand');
+    if (wBrand) {
+        wBrand.addEventListener('click', function() {
+            showCatalog();
+        });
+    }
 
     // Tab switching
     document.getElementById('navTabs').addEventListener('click', function(e) {
