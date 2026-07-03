@@ -1457,16 +1457,16 @@ function initParticles() {
     document.body.appendChild(dbg);
 
     var data = { moves: 0, x: '-', y: '-', particles: '-', ptr: 0 };
-    document.addEventListener('mousemove', function(e) {
-        data.moves++;
-        data.x = e.clientX;
-        data.y = e.clientY;
-    });
+    function onMove(e) { data.moves++; data.x = e.clientX; data.y = e.clientY; }
+    document.addEventListener('mousemove', onMove);
+    window.onmousemove = onMove;
+    document.onmousemove = onMove;
     document.addEventListener('pointermove', function(e) {
         data.ptr++;
         if (data.ptr <= 1) { data.x = e.clientX; data.y = e.clientY; }
     });
     document.addEventListener('click', function() { data.ptr += 100; });
+    window.addEventListener('click', function() { data.ptr += 100; });
     window.__debugParticles = function(n) { data.particles = n; };
     setInterval(function() {
         dbg.innerHTML = 'm:' + data.moves + ' p:' + data.ptr + ' | x:' + data.x + ' y:' + data.y + ' | pt:' + data.particles;
