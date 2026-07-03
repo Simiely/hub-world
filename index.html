@@ -941,7 +941,7 @@ function initFloatingCards() {
             el.addEventListener('click', function(e) {
                 e.stopPropagation();
                 if (projectData.isReal && projectData.path) {
-                    window.location.href = projectData.path + '/';
+                    window.open(projectData.path + '/', '_blank');
                 } else {
                     // decorative card → show catalog with smooth view switch
                     showCatalog();
@@ -1186,7 +1186,9 @@ function renderCatalog(filterCat) {
 
     sorted.forEach(function(p, idx) {
         var card = document.createElement('a');
-        card.href = (p.path && p.path !== '') ? p.path + '/' : '#';
+                card.href = (p.path && p.path !== '') ? p.path + '/' : '#';
+        card.target = '_blank';
+        card.rel = 'noopener';
         card.className = 'cat-card';
         card.setAttribute('data-path', p.path || '');
         card.setAttribute('data-category', p.category || 'other');
