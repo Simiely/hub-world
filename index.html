@@ -425,15 +425,12 @@
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
             border-bottom: 1px solid var(--border);
-            transition: background 0.3s ease, opacity 0.4s ease;
+            transition: background 0.3s ease;
+        }
+        .catalog-nav.hidden-nav {
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-        }
-        .catalog-nav.visible {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
         }
         .catalog-nav.scrolled {
             background: var(--nav-bg-scrolled);
@@ -512,29 +509,20 @@
             background: var(--pink-dim);
             border-color: var(--pink-border);
         }
-        .welcome-theme-float {
+        .welcome-top-bar {
             position: fixed;
-            top: 14px;
-            right: 32px;
-            z-index: 60;
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-        }
-        .welcome-brand {
-            position: fixed;
-            top: 14px;
-            left: 32px;
+            top: 0; left: 0; right: 0;
             z-index: 60;
             display: flex;
             align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            user-select: none;
-            transition: opacity 0.25s;
+            justify-content: space-between;
+            padding: 14px 32px;
+            pointer-events: none;
         }
-        .welcome-brand:hover { opacity: 0.8; }
-        .view-welcome.hidden .welcome-theme-float { display: none; }
-        .view-welcome.hidden .welcome-brand { display: none; }
+        .welcome-top-bar > * {
+            pointer-events: auto;
+        }
+        .view-welcome.hidden .welcome-top-bar { display: none; }
 
         /* ---- Grid Layout ---- */
         .catalog-masonry {
@@ -702,6 +690,7 @@
             .catalog-nav { padding: 10px 16px; }
             .nav-tab { font-size: 0.74rem; padding: 6px 12px; }
             .welcome-brand { left: 16px; top: 10px; }
+            .welcome-top-bar { padding: 10px 16px; }
         }
     </style>
 </head>
@@ -718,11 +707,13 @@
 
 <!-- ============ VIEW 1: Welcome (Vertical 3-section layout) ============ -->
 <section class="view-welcome" id="viewWelcome">
-    <div class="welcome-brand" id="welcomeBrand">
-        <img class="nav-logo" src="logo.png" alt="Logo" />
-        <span class="nav-name">Hub World</span>
+    <div class="welcome-top-bar">
+        <div class="nav-brand" id="welcomeBrand">
+            <img class="nav-logo" src="logo.png" alt="Logo" />
+            <span class="nav-name">Hub World</span>
+        </div>
+        <button class="theme-toggle" id="welcomeThemeToggle" title="切换主题">🌙</button>
     </div>
-    <button class="theme-toggle welcome-theme-float" id="welcomeThemeToggle" title="切换主题">🌙</button>
     <div class="welcome-layout">
 
         <!-- === SECTION 1: Title === -->
@@ -1127,11 +1118,9 @@ function showCatalog() {
     var welcome = document.getElementById('viewWelcome');
     var catalog = document.getElementById('viewCatalog');
     var nav = document.getElementById('catalogNav');
-    var wBrand = document.getElementById('welcomeBrand');
     welcome.classList.add('hidden');
     catalog.classList.add('visible');
     if (nav) nav.classList.add('visible');
-    if (wBrand) wBrand.style.display = 'none';
     renderCatalog(currentFilter);
 }
 
@@ -1139,11 +1128,9 @@ function showWelcome() {
     var welcome = document.getElementById('viewWelcome');
     var catalog = document.getElementById('viewCatalog');
     var nav = document.getElementById('catalogNav');
-    var wBrand = document.getElementById('welcomeBrand');
     catalog.classList.remove('visible');
     welcome.classList.remove('hidden');
     if (nav) nav.classList.remove('visible');
-    if (wBrand) wBrand.style.display = '';
 }
 
 
