@@ -76,6 +76,8 @@
         /* Mouse glow */
         .mouse-glow {
             position: fixed;
+            left: -9999px;
+            top: -9999px;
             width: 520px; height: 520px;
             border-radius: 50%;
             background: radial-gradient(circle, rgba(255,146,146,0.07) 0%, transparent 70%);
@@ -1333,8 +1335,8 @@ function initParticles() {
         particleArr.forEach(function(p) {
             var dist = Math.sqrt(Math.pow(p.x - mouse.x, 2) + Math.pow(p.y - mouse.y, 2));
             if (dist < 180) {
-                p.x += (mouse.x - p.x) * 0.005;
-                p.y += (mouse.y - p.y) * 0.005;
+                p.x += (mouse.x - p.x) * 0.02;
+                p.y += (mouse.y - p.y) * 0.02;
             }
         });
 
@@ -1448,10 +1450,16 @@ function initParticles() {
 // =============================================
 function initMouseGlow() {
     var glow = document.getElementById('mouseGlow');
-    document.addEventListener('mousemove', function(e) {
+    function updateGlow(e) {
         glow.style.left = e.clientX + 'px';
         glow.style.top  = e.clientY + 'px';
-    });
+    }
+    document.addEventListener('mousemove', updateGlow);
+    // Fallback: if no mousemove within 1s, center it
+    var timer = setTimeout(function() {
+        glow.style.left = (window.innerWidth / 2) + 'px';
+        glow.style.top  = (window.innerHeight / 2) + 'px';
+    }, 1000);
 }
 
 // =============================================
