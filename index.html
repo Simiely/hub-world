@@ -745,10 +745,12 @@
         </div>
 
         <!-- === SECTION 3: Action Button === -->
+        <!-- 调试次数: 209 - 每次修改 HTML 后此数字 +1 -->
         <div class="section-action">
             <button class="cta-btn" id="btnToCatalog">
                 探索发现
             </button>
+            <div id="debugCount" style="font-size:0.72rem;color:var(--text-dim);margin-top:8px;opacity:0;transition:opacity 0.2s;user-select:none;pointer-events:none;">209次调试</div>
         </div>
     </div>
 
@@ -1495,7 +1497,27 @@ window.addEventListener('DOMContentLoaded', function() {
             initFloatingCards();
             initCatalogNav();
             setTimeout(activateHero, 200);
-            $('btnToCatalog').addEventListener('click', function() { showCatalog(); });
+            // CTA button: click → catalog, long-press → debug count
+            (function() {
+                var btn = $('btnToCatalog');
+                var dbg = $('debugCount');
+                var holdTimer = null;
+                var HOLD_MS = 800;
+                btn.addEventListener('click', function() { showCatalog(); });
+                btn.addEventListener('mousedown', function() {
+                    holdTimer = setTimeout(function() {
+                        if (dbg) dbg.style.opacity = '1';
+                    }, HOLD_MS);
+                });
+                btn.addEventListener('mouseup', function() {
+                    if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
+                    if (dbg) dbg.style.opacity = '0';
+                });
+                btn.addEventListener('mouseleave', function() {
+                    if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
+                    if (dbg) dbg.style.opacity = '0';
+                });
+            })();
         });
 });
 
