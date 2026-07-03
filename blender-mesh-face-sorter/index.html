@@ -370,7 +370,20 @@
   }
   .hub-back__inner:hover{opacity:.7}
   .hub-back__logo{height:1.12rem;width:auto;display:block;vertical-align:middle}
-</style>
+
+  .nav-logo{
+    height:1.12rem;
+    width:auto;
+    vertical-align:middle;
+    filter:drop-shadow(0 0 8px var(--rose-glow, rgba(229,93,107,0.5)));
+  }
+  .nav-name{
+    font-family:"Bricolage Grotesque",sans-serif;
+    font-weight:600;
+    font-size:19px;
+    letter-spacing:-.01em;
+  }
+  </style>
 </head>
 <body>
 
@@ -383,8 +396,8 @@
 
 <nav class="nav">
   <div class="nav__brand">
-    <span class="dot"></span>
-    Blender Mesh Face Sorter
+    <img class="nav-logo" src="../logo.png" alt="Logo" />
+    <span class="nav-name">Blender Mesh Face Sorter</span>
   </div>
   <div class="nav__meta">
     <a href="https://github.com/Simiely/blender-mesh-face-sorter" target="_blank" class="nav__link-text">GitHub</a>
