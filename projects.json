@@ -6,8 +6,23 @@
             "desc": "琅勃拉邦 5 日慢游 · 4 人双酒店定制",
             "icon": "✈️",
             "path": "luang-prabang-trip",
-            "tags": ["旅行", "定制"],
+            "tags": [
+                "旅行",
+                "定制"
+            ],
             "category": "web"
+        },
+        {
+            "name": "Blender Mesh Face Sorter",
+            "desc": "Blender 插件 — 按面数/顶点/存储大小排列场景中所有网格体，支持批量减面、孤立显示、MD 报表导出",
+            "icon": "🧊",
+            "path": "blender-mesh-face-sorter",
+            "tags": [
+                "Blender",
+                "插件",
+                "工具"
+            ],
+            "category": "tool"
         }
     ]
 }
