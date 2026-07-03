@@ -868,64 +868,39 @@ function initFloatingCards() {
         }
     }
 
-    // Position presets — spread to cover full visible area + overflow right
-    // Cards are now 210px wide (~16-18% of container)
-    // Fewer cards on narrow screens to avoid crowding
-    var posSets = {
-        3: [
-            { top: '18%', leftPct: 5,  rot: -14, sway: 0, z: 3 },
-            { top: '10%', leftPct: 38, rot: -4,  sway: 1, z: 5 },
-            { top: '22%', leftPct: 72, rot: 10,  sway: 2, z: 4 },
-        ],
-        4: [
-            { top: '14%', leftPct: 3,  rot: -18, sway: 0, z: 2 },
-            { top: '6%',  leftPct: 27, rot: -7,  sway: 1, z: 4 },
-            { top: '24%', leftPct: 51, rot: 8,   sway: 2, z: 6 },
-            { top: '16%', leftPct: 75, rot: -11, sway: 3, z: 3 },
-        ],
-        6: [
-            { top: '14%',  leftPct: 2,   rot: -20, sway: 0, z: 2 },
-            { top: '2%',   leftPct: 22,  rot: -9,  sway: 1, z: 4 },
-            { top: '28%',  leftPct: 40,  rot: 7,   sway: 2, z: 6 },
-            { top: '12%',  leftPct: 58,  rot: 15,  sway: 3, z: 5 },
-            { top: '25%',  leftPct: 76,  rot: -14, sway: 4, z: 3 },
-            { top: '18%',  leftPct: 94,  rot: -5,  sway: 5, z: 4 },
-        ],
-    };
-    var DRIFT_SPEED = 0.018;
+    // ======================================
+    //  New: single-row layout + fly-in entrance + slow drift
+    // ======================================
+    var CARD_W = 210;
+    var CARD_H = 255;
+    var MIN_GAP = 26;
+    var MAX_GAP = 80;
+    var STAGGER_MS = 130;
+    var FLY_MS = 480;
+    var DRIFT_SPEED = 0.012;
     var cards = [];
+    var state = 'entering';  // 'entering' | 'drifting'
+    var entranceStart = 0;
+    var driftOffset = 0;
+    var enteredCount = 0;
 
-    // Create all 6 card DOM elements (show/hide dynamically by ratio)
-    var activeCount = 6;
-    function applyCardLayout() {
-        var cw = container.offsetWidth, ch = container.clientHeight;
-        var ar = cw / ch;
-        activeCount = ar < 0.6 ? 3 : (ar < 0.95 ? 4 : 6);
-        var set = posSets[activeCount] || posSets[6];
-        cards.forEach(function(c, idx) {
-            var show = idx < activeCount;
-            c.el.style.display = show ? '' : 'none';
-            if (show) {
-                var p = set[idx];
-                c.el.style.setProperty('--base-rot', p.rot + 'deg');
-                c.el.style.setProperty('--card-z', String(p.z));
-                c.el.style.animation = swayKeys[p.sway % 5] + ' ' + (7 + idx * 0.8) + 's ease-in-out infinite alternate';
-                c.baseTop = parseFloat(p.top);
-                c.leftPct = p.leftPct;
-                c.baseRot = p.rot;
-                c.el.style.top = p.top;
-                c.el.style.left = p.leftPct + '%';
-            }
+    function calcLayout() {
+        var cw = container.offsetWidth;
+        var gap = Math.max(MIN_GAP, Math.min(MAX_GAP, (cw - CARD_W * 6) / 5));
+        cards.forEach(function(c, i) {
+            c.targetX = i * (CARD_W + gap);
         });
+        return gap;
     }
 
-    // Create DOM elements (positions will be applied by applyCardLayout)
+    var swayAnimNames = ['gentleSway0','gentleSway1','gentleSway2','gentleSway3','gentleSway4','gentleSway5'];
+
+    // Create card DOM elements
     cardData.forEach(function(p, idx) {
         var card = document.createElement('div');
         card.className = 'floating-card';
         card.setAttribute('data-index', idx);
 
-        // Tag badge — show first project tag, or fallback label
         var fallbackLabels = ['#1', '#2', '#3', '#New', '#Hot'];
         var tagText = (p.tags && p.tags.length > 0) ? p.tags[0] : (fallbackLabels[idx] || '#' + idx);
         var tagBadge = '<span class="fc-tag-badge">' + tagText + '</span>';
@@ -936,14 +911,12 @@ function initFloatingCards() {
             '<div class="fc-name">' + p.name + '</div>' +
             '<div class="fc-desc">' + p.desc + '</div>';
 
-        // Click handler — navigate to project
         (function(projectData, el) {
             el.addEventListener('click', function(e) {
                 e.stopPropagation();
                 if (projectData.isReal && projectData.path) {
                     window.open(projectData.path + '/', '_blank');
                 } else {
-                    // decorative card → show catalog with smooth view switch
                     showCatalog();
                 }
             });
@@ -951,113 +924,150 @@ function initFloatingCards() {
 
         container.appendChild(card);
 
-        // Staggered fade-in
+        // Start off-screen right
+        card.style.left = (container.offsetWidth + CARD_W + 30) + 'px';
+        card.style.top = '42%';
         card.style.opacity = '0';
-        card.style.transform = 'rotate(0deg) scale(0.7) translateY(24px)';
-        (function(cardEl, delay) {
-            setTimeout(function() {
-                cardEl.style.opacity = '1';
-                cardEl.style.transform = 'rotate(0deg)';
-                cardEl.style.transition = 'opacity 0.5s ease, transform 0.6s cubic-bezier(0.22,1,0.36,1)';
-            }, 350 + delay * 140);
-        })(card, idx);
+        card.style.transform = 'rotate(0deg) scale(1)';
+        card.style.transition = 'none';
+        card.style.setProperty('--card-scale', '1');
 
         cards.push({
             el: card,
-            leftPct: 2 + idx * 18,
-            baseTop: 10 + idx * 3,
-            baseRot: 0,
+            data: p,
+            targetX: 0,
+            entered: false,
             idx: idx
         });
     });
 
-    // Apply layout based on current aspect ratio, then start scale observer
-    applyCardLayout();
-    requestAnimationFrame(updateCardScale);
-    var ro = new ResizeObserver(function() {
-        applyCardLayout();
-        updateCardScale();
-    });
-    ro.observe(container);
+    // Calculate layout and start entrance
+    calcLayout();
+    entranceStart = performance.now();
 
-    // Adaptive scaling — shrink cards when container is too small
+    // Adaptive scale — shrink/scale cards based on container height
     function updateCardScale() {
         var ch = container.clientHeight;
         if (!ch) return;
-        
-        // Find min/max base top percentages among visible cards
-        var minTop = 100, maxTop = 0;
+        var scale = Math.max(0.2, Math.min(1, ch / 420));
+        var cardW = Math.max(150, Math.min(340, CARD_W * Math.min(1.5, Math.max(0.7, scale))));
         cards.forEach(function(c) {
-            if (c.el.style.display === 'none') return;
-            if (c.baseTop < minTop) minTop = c.baseTop;
-            if (c.baseTop > maxTop) maxTop = c.baseTop;
-        });
-        
-        // Scale based on space below the lowest card's top edge
-        var available = ch * (1 - maxTop / 100);
-        var scale = Math.max(0.12, (available / 255) * 0.63);
-        
-        // Vertical centering: account for scale(center-origin) + sway rotation
-        var maxRotDeg = 22; // max base rotation 20° + sway margin
-        var rotRad = maxRotDeg * Math.PI / 180;
-        var rotHalfH = (210 * Math.sin(rotRad) + 255 * Math.cos(rotRad)) / 2;
-        var halfVisual = rotHalfH * scale;
-        // Visual top edge of the highest card
-        var groupTopPx = minTop / 100 * ch + (127.5 - halfVisual);
-        // Visual bottom edge of the lowest card
-        var groupBotPx = maxTop / 100 * ch + (127.5 + halfVisual);
-        
-        // Ideal offset to center, clamped to prevent clipping
-        var idealOff = (ch - groupBotPx + groupTopPx) / 2;
-        var clampTop = -groupTopPx;
-        var clampBot = ch - groupBotPx - 20;
-        var offsetPx = Math.max(clampTop, Math.min(clampBot, idealOff));
-        var offsetPct = offsetPx / ch * 100;
-        
-        // Ultra-wide compensation: widen cards on aspect ratio > 18:9
-        // Ultra-tall compensation: narrow cards when ≤3 on portrait
-        var containerW = container.offsetWidth;
-        var aspectRatio = containerW / ch;
-        var cardW = 210;
-        if (aspectRatio > 2) {
-            cardW = Math.min(340, 210 * (aspectRatio / 2));
-        } else if (aspectRatio < 0.6 && activeCount <= 3) {
-            cardW = Math.max(150, 210 * (aspectRatio / 0.6));
-        }
-        
-        cards.forEach(function(c) {
-            c.el.style.setProperty('--card-scale', String(scale));
+            c.el.style.setProperty('--card-scale', String(scale * 0.92));
             c.el.style.width = cardW + 'px';
-            c.el.style.top = (c.baseTop + offsetPct) + '%';
         });
     }
 
-    // === ANIMATION LOOP: Drift (edge fade handled by CSS mask-image) ===
-    function animationLoop() {
-        var containerW = container.offsetWidth;
-        var cardWpct = (210 / containerW) * 100;
+    var ro = new ResizeObserver(function() {
+        calcLayout();
+        updateCardScale();
+        // Re-position entered cards during drift phase
+        if (state === 'drifting') {
+            cards.forEach(function(c) {
+                if (c.entered) {
+                    var cw = container.offsetWidth;
+                    c.targetX = c.idx * (CARD_W + Math.max(MIN_GAP, Math.min(MAX_GAP, (cw - CARD_W * 6) / 5)));
+                }
+            });
+        }
+    });
+    ro.observe(container);
+    requestAnimationFrame(updateCardScale);
 
-        cards.forEach(function(c) {
-            // Drift LEFT
-            c.leftPct -= DRIFT_SPEED;
+    // ===== ANIMATION LOOP =====
+    var totalSpan = 0;
+    function animationLoop(ts) {
+        if (!entranceStart) return;
 
-            // OFF-SCREEN LEFT → move to far right
-            if (c.leftPct + cardWpct < -3) {
-                var maxPct = -999;
-                cards.forEach(function(cc) {
-                    if (cc.leftPct > maxPct) maxPct = cc.leftPct;
-                });
-                c.leftPct = maxPct + cardWpct + 1.5 + Math.random() * 0.5;
+        var cw = container.offsetWidth;
+        var gap = Math.max(MIN_GAP, Math.min(MAX_GAP, (cw - CARD_W * 6) / 5));
+        totalSpan = 6 * CARD_W + 5 * gap;
+
+        if (state === 'entering') {
+            var allEntered = true;
+
+            for (var i = 0; i < cards.length; i++) {
+                var c = cards[i];
+                if (c.entered) continue;
+                allEntered = false;
+
+                var localT = ts - entranceStart - i * STAGGER_MS;
+                if (localT <= 0) continue;
+
+                var t = Math.min(1, localT / FLY_MS);
+                // Ease-out cubic bezier: fast start, gentle stop
+                var eased = 1 - Math.pow(1 - t, 3.2);
+
+                var fromX = cw + CARD_W + 30;
+                c.el.style.left = (fromX + (c.targetX - fromX) * eased) + 'px';
+                c.el.style.opacity = String(Math.min(1, eased * 1.8));
+                c.el.style.zIndex = String(10 + i);
+
+                if (t >= 1) {
+                    c.entered = true;
+                    enteredCount++;
+                    c.el.style.left = c.targetX + 'px';
+                    c.el.style.opacity = '1';
+                    // Activate gentle sway rotation
+                    var sIdx = i % swayAnimNames.length;
+                    c.el.style.animation = swayAnimNames[sIdx] + ' ' + (7 + i * 0.7) + 's ease-in-out infinite alternate';
+                    c.el.style.setProperty('--base-rot', '0deg');
+                }
             }
 
-            c.el.style.left = c.leftPct + '%';
-        });
+            if (allEntered && enteredCount >= 6) {
+                state = 'drifting';
+            }
+        }
+
+        if (state === 'drifting') {
+            driftOffset -= DRIFT_SPEED * 60 * (1/60);
+
+            cards.forEach(function(c) {
+                var x = c.targetX + driftOffset;
+
+                // Wrap: moved fully off-screen left → re-insert to the right
+                if (x + CARD_W < 0) {
+                    // Find the rightmost card edge and place this card after it
+                    var maxEdge = -99999;
+                    cards.forEach(function(cc) {
+                        var xe = cc.targetX + driftOffset;
+                        if (xe + CARD_W > maxEdge) maxEdge = xe + CARD_W;
+                    });
+                    x = maxEdge + gap;
+                }
+
+                c.el.style.left = x + 'px';
+            });
+        }
 
         requestAnimationFrame(animationLoop);
     }
 
-    // Start after initial fade-in
-    setTimeout(animationLoop, 2000);
+    requestAnimationFrame(animationLoop);
+
+    // ===== MOUSE PARALLAX =====
+    document.addEventListener('pointermove', function(e) { try {
+        var vh = window.innerHeight;
+        var sectionRect = container.getBoundingClientRect();
+        if (e.clientY < sectionRect.top - 60 || e.clientY > sectionRect.bottom + 60) return;
+
+        var mx = (e.clientX / window.innerWidth - 0.5) * 2;
+        var my = (e.clientY / vh - 0.5) * 2;
+
+        cards.forEach(function(c, i) {
+            var speed = 0.12 + (i % 3) * 0.06;
+            c.el.style.marginLeft = (mx * speed * 10) + 'px';
+            c.el.style.marginTop  = (my * speed * 6) + 'px';
+        });
+    } catch(e) {} });
+
+    document.addEventListener('pointerleave', function() { try {
+        cards.forEach(function(c) {
+            c.el.style.marginLeft = '0';
+            c.el.style.marginTop  = '0';
+        });
+    } catch(e) {} });
+
 
     // MOUSE PARALLAX on floating cards
     document.addEventListener('pointermove', function(e) { try {
