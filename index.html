@@ -738,7 +738,7 @@ var projects = [
     },
 ];
 
-// Dynamic loading from API (with localStorage fallback)
+// Dynamic loading from API
 async function loadProjects() {
     try {
         const res = await fetch('/api/projects', { 
@@ -919,8 +919,8 @@ function initFloatingCards() {
             el.addEventListener('click', async function(e) {
                 e.stopPropagation();
                 if (projectData.isReal && projectData.path) {
-                    // Record click via API (with localStorage fallback)
-                    await recordClick(projectData.path);
+                    // Record click via API (sendBeacon)
+                    recordClick(projectData.path);
                     // Navigate after recording
                     window.location.href = projectData.path + '/';
                 } else {
@@ -1122,30 +1122,17 @@ function showWelcome() {
 }
 
 // =============================================
-//  Click count (API + localStorage fallback)
+//  Click count (API only, sendBeacon for reliability)
 // =============================================
-async function recordClick(path) {
-    // Try API first (with keepalive to ensure request completes)
+function recordClick(path) {
+    // Use sendBeacon — survives page navigation reliably
+    var url = '/api/click?path=' + encodeURIComponent(path);
     try {
-        const res = await fetch('/api/click?path=' + encodeURIComponent(path), {
-            method: 'POST',
-            keepalive: true
-        });
-        if (res.ok) {
-            console.log('[Hub World] Click recorded via API');
-            return;
-        }
-    } catch (e) {
-        console.log('[Hub World] API failed, using localStorage');
+        navigator.sendBeacon(url, '');
+    } catch(e) {
+        // Fallback: fetch with keepalive
+        fetch(url, { method: 'POST', keepalive: true }).catch(function(){});
     }
-    
-    // Fallback to localStorage
-    try {
-        var raw = localStorage.getItem('hubworld_clicks') || '{}';
-        var clicks = JSON.parse(raw);
-        clicks[path] = (clicks[path] || 0) + 1;
-        localStorage.setItem('hubworld_clicks', JSON.stringify(clicks));
-    } catch(e) {}
 }
 
 function getSortedProjects(filterCat) {
@@ -1238,8 +1225,8 @@ function renderCatalog(filterCat) {
 
         card.addEventListener('click', async function(e) {
             if (p.path && p.path !== '') {
-                // Record click via API (with localStorage fallback)
-                await recordClick(p.path);
+                // Record click via API (sendBeacon)
+                recordClick(p.path);
                 // Update local clicks count and re-render
                 try {
                     const res = await fetch('/api/projects');
