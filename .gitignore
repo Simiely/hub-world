@@ -1,0 +1,12 @@
+# Process artifacts - do not upload
+scripts/
+temp/
+*.tmp
+*.log
+
+# Development helpers
+.dev-scripts/
+
+# OS files
+.DS_Store
+Thumbs.db
