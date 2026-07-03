@@ -288,6 +288,22 @@
             opacity: 0.85;
             white-space: nowrap;
         }
+        .fc-click-badge {
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.55rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 6px;
+            background: rgba(255,107,107,0.2);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            color: #ff6b6b;
+            white-space: nowrap;
+            z-index: 2;
+        }
 
         /* Gentle sway keyframes for each card */
         @keyframes gentleSway0 {
@@ -828,7 +844,8 @@ function initFloatingCards() {
                 desc: projects[i].desc || '',
                 icon: projects[i].icon || '📄',
                 isReal: true,
-                path: projects[i].path || '#'
+                path: projects[i].path || '#',
+                clicks: projects[i].clicks || 0
             });
         } else {
             var eIdx = i;
@@ -908,8 +925,11 @@ function initFloatingCards() {
         var tagColors = [varCSS('--pink'), '#4ecdc4', '#f39c12', '#9b59b6', '#3498db'];
         var tagBadge = '<span class="fc-tag-badge">' + (tagLabels[idx] || '#' + idx) + '</span>';
 
+        var clickBadge = p.clicks > 0 ? '<span class="fc-click-badge">🔥 ' + p.clicks + '</span>' : '';
+
         card.innerHTML =
             tagBadge +
+            clickBadge +
             '<span class="fc-icon">' + p.icon + '</span>' +
             '<div class="fc-name">' + p.name + '</div>' +
             '<div class="fc-desc">' + p.desc + '</div>';
@@ -1125,9 +1145,13 @@ function showWelcome() {
 //  Click count (API only)
 // =============================================
 async function recordClick(path) {
-    await fetch('/api/click?path=' + encodeURIComponent(path), {
-        method: 'POST'
-    });
+    try {
+        await fetch('/api/click?path=' + encodeURIComponent(path), {
+            method: 'POST'
+        });
+    } catch(e) {
+        console.warn('[Hub World] Failed to record click:', e);
+    }
 }
 
 function getSortedProjects(filterCat) {
