@@ -27,7 +27,7 @@
         {
             "name": "C4D Mesh Face Sorter",
             "desc": "Cinema 4D 插件 — 按面数/存储大小排列场景多边形物体，支持孤立显示、空网格清理、MD 报表导出",
-            "icon": "🔷",
+            "icon": "🧩",
             "path": "c4d-mesh-face-sorter",
             "tags": [
                 "C4D",
