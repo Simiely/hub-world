@@ -919,8 +919,8 @@ function initFloatingCards() {
             el.addEventListener('click', async function(e) {
                 e.stopPropagation();
                 if (projectData.isReal && projectData.path) {
-                    // Record click via API (sendBeacon)
-                    recordClick(projectData.path);
+                    // Record click via API, then navigate
+                    await recordClick(projectData.path);
                     // Navigate after recording
                     window.location.href = projectData.path + '/';
                 } else {
@@ -1122,17 +1122,12 @@ function showWelcome() {
 }
 
 // =============================================
-//  Click count (API only, sendBeacon for reliability)
+//  Click count (API only)
 // =============================================
-function recordClick(path) {
-    // Use sendBeacon — survives page navigation reliably
-    var url = '/api/click?path=' + encodeURIComponent(path);
-    try {
-        navigator.sendBeacon(url, '');
-    } catch(e) {
-        // Fallback: fetch with keepalive
-        fetch(url, { method: 'POST', keepalive: true }).catch(function(){});
-    }
+async function recordClick(path) {
+    await fetch('/api/click?path=' + encodeURIComponent(path), {
+        method: 'POST'
+    });
 }
 
 function getSortedProjects(filterCat) {
@@ -1225,8 +1220,8 @@ function renderCatalog(filterCat) {
 
         card.addEventListener('click', async function(e) {
             if (p.path && p.path !== '') {
-                // Record click via API (sendBeacon)
-                recordClick(p.path);
+                // Record click via API, wait for completion before re-render
+                await recordClick(p.path);
                 // Update local clicks count and re-render
                 try {
                     const res = await fetch('/api/projects');
