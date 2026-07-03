@@ -36,6 +36,23 @@ module.exports = async (req, res) => {
       const data = await projectsResp.json();
       if (data.result) {
         projects = JSON.parse(data.result);
+        
+        // 自动修复错误格式：[{"0": {...}}] -> [{...}]
+        if (Array.isArray(projects) && projects.length > 0 && projects[0]["0"]) {
+          console.log('Detected wrong format, fixing...');
+          projects = projects.map((p, idx) => p["0"] || p[idx] || p);
+          
+          // 保存修复后的格式回 Redis
+          await fetch(`${redisUrl}/set/projects`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${redisToken}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(projects)
+          });
+          console.log('Fixed and saved correct format to Redis');
+        }
       }
     }
     
