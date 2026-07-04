@@ -24,6 +24,17 @@
             "category": "web"
         },
         {
+            "name": "VMware Workstation 虚拟机安装指南",
+            "desc": "交互式幻灯片教程 — 从零开始一步步安装 Windows 虚拟机的图文指南，覆盖下载、创建、配置到优化全程",
+            "icon": "🖥️",
+            "path": "vmware-install-guide",
+            "tags": [
+                "教程",
+                "工具"
+            ],
+            "category": "web"
+        },
+        {
             "name": "AE-Lyrics-Animator",
             "desc": "After Effects 脚本面板 — 一键为歌词文本图层生成逐字入场、出场、错落、散落、字间距等动画效果",
             "icon": "🎬",
