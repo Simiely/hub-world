@@ -199,13 +199,13 @@
   .hero__sub{margin-top:28px;max-width:520px;font-size:clamp(14px,1.4vw,17px);line-height:1.55;color:var(--ink-soft)}
   .hero__sub b{color:var(--ink);font-weight:600}
 
-  .blender-badge{
+  .badge-area{
     justify-self:end;align-self:center;text-align:right;position:relative;
   }
-  .blender-badge__icon{font-family:"Bricolage Grotesque",sans-serif;font-weight:300;font-size:clamp(72px,12vw,160px);line-height:1;letter-spacing:-.02em;margin-bottom:12px}
-  .blender-badge__label{font-family:"Geist Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px}
-  .blender-badge__tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
-  .blender-badge__tags span{
+  .badge-area__icon{font-family:"Bricolage Grotesque",sans-serif;font-weight:300;font-size:clamp(72px,12vw,160px);line-height:1;letter-spacing:-.02em;margin-bottom:12px}
+  .badge-area__label{font-family:"Geist Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px}
+  .badge-area__tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+  .badge-area__tags span{
     padding:5px 12px;border:1px solid var(--hairline);border-radius:100px;
     font-family:"Geist Mono",monospace;font-size:11px;color:var(--ink-soft);
   }
@@ -366,8 +366,8 @@
   /* ============ RESPONSIVE ============ */
   @media(max-width:860px){
     .hero__inner{grid-template-columns:1fr;gap:24px}
-    .blender-badge{text-align:left;justify-self:start}
-    .blender-badge__tags{justify-content:flex-start}
+    .badge-area{text-align:left;justify-self:start}
+    .badge-area__tags{justify-content:flex-start}
     .feat{grid-template-columns:1fr 1fr}
     .how__grid{grid-template-columns:1fr}
     .install__grid{grid-template-columns:1fr}
@@ -383,6 +383,7 @@
   }
 
   /* ============ RESPONSIVE 860px（cont'd）============ */
+</style>
 </head>
 <body>
 
@@ -446,10 +447,10 @@
           快速定位高面数模型 · 批量减面 · 清理场景 · <b>一切尽在侧边栏</b>
         </div>
       </div>
-      <div class="blender-badge anim scale d4">
-        <div class="blender-badge__label" id="hero-badge-label">Compatible</div>
-        <div class="blender-badge__icon" id="hero-badge-icon">🧊</div>
-        <div class="blender-badge__tags" id="hero-badge-tags">
+      <div class="badge-area anim scale d4">
+        <div class="badge-area__label" id="hero-badge-label">Compatible</div>
+        <div class="badge-area__icon" id="hero-badge-icon">🧊</div>
+        <div class="badge-area__tags" id="hero-badge-tags">
           <span>Blender 3.0~5.1+</span>
           <span>MIT</span>
           <span>Python</span>
@@ -458,20 +459,20 @@
     </div>
     <div class="ticker">
       <div class="ticker__track">
-        <span class="ticker__item">Sort by faces</span>
-        <span class="ticker__item">Sort by vertices</span>
-        <span class="ticker__item">Sort by storage</span>
-        <span class="ticker__item">Batch Decimate</span>
-        <span class="ticker__item">Isolate display</span>
-        <span class="ticker__item">MD report export</span>
-        <span class="ticker__item">Unused data cleanup</span>
-        <span class="ticker__item">Sort by faces</span>
-        <span class="ticker__item">Sort by vertices</span>
-        <span class="ticker__item">Sort by storage</span>
-        <span class="ticker__item">Batch Decimate</span>
-        <span class="ticker__item">Isolate display</span>
-        <span class="ticker__item">MD report export</span>
-        <span class="ticker__item">Unused data cleanup</span>
+        <span class="ticker__item">按面数排序</span>
+        <span class="ticker__item">按顶点排序</span>
+        <span class="ticker__item">按存储排序</span>
+        <span class="ticker__item">批量减面</span>
+        <span class="ticker__item">孤立显示</span>
+        <span class="ticker__item">导出MD报告</span>
+        <span class="ticker__item">清理未用数据</span>
+        <span class="ticker__item">按面数排序</span>
+        <span class="ticker__item">按顶点排序</span>
+        <span class="ticker__item">按存储排序</span>
+        <span class="ticker__item">批量减面</span>
+        <span class="ticker__item">孤立显示</span>
+        <span class="ticker__item">导出MD报告</span>
+        <span class="ticker__item">清理未用数据</span>
       </div>
     </div>
   </section>
