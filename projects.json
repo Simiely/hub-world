@@ -37,6 +37,18 @@
             "category": "design"
         },
         {
+            "name": "C4D UserData Manager",
+            "desc": "Cinema 4D 插件 — 列表式管理用户数据，支持10种数据类型、14组内置预设、模板导入导出与批量应用",
+            "icon": "📦",
+            "path": "c4d-userdata-manager",
+            "tags": [
+                "C4D",
+                "插件",
+                "工具"
+            ],
+            "category": "design"
+        },
+        {
             "name": "Edge Multi-Account Cookie Switcher",
             "desc": "Edge/Chrome 浏览器扩展 — 一键保存和切换多账号 Cookie，AES-256-GCM 加密存储，支持密码锁与加密备份",
             "icon": "🍪",
