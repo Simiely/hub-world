@@ -37,16 +37,15 @@
             "category": "design"
         },
         {
-            "name": "AE-Lyrics-Animator",
-            "desc": "AE 歌词逐字动画工具 — 五种动画器一键生成，方向/模式/模糊/间距自由控制",
-            "icon": "🎬",
-            "path": "AE-Lyrics-Animator",
+            "name": "Edge Multi-Account Cookie Switcher",
+            "desc": "Edge/Chrome 浏览器扩展 — 一键保存和切换多账号 Cookie，AES-256-GCM 加密存储，支持密码锁与加密备份",
+            "icon": "🍪",
+            "path": "edge-multi-account-cookie",
             "tags": [
-                "After Effects",
-                "插件",
-                "动画"
+                "浏览器扩展",
+                "工具"
             ],
-            "category": "design"
+            "category": "tool"
         }
     ]
 }
