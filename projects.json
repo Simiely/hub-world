@@ -61,6 +61,18 @@
             "category": "design"
         },
         {
+            "name": "OC插件快速激活工具",
+            "desc": "Windows 桌面工具 — 一键清空 OctaneRender 缓存并自动部署插件资源，解决 C4D 中 OC 插件失效问题",
+            "icon": "⚡",
+            "path": "oc-plugin-activator",
+            "tags": [
+                "C4D",
+                "插件",
+                "工具"
+            ],
+            "category": "tool"
+        },
+        {
             "name": "扫完记得还 — 美团骑车锁车提醒",
             "desc": "Android 应用 — 一键启动倒计时并联动美团扫一扫，50分钟后准时提醒锁车，避免忘锁持续扣费",
             "icon": "🚲",
