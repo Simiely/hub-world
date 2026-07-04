@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>多少岁的小朋友适合扎辫子？</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: #18191a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            width: 360px;
+            height: 760px;
+            position: relative;
+            perspective: 1500px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border-radius: 20px;
+            overflow: hidden;
+            transform-origin: center center;
+        }
+        
+        .card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #242526;
+            border-radius: 20px;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1), opacity 0.8s ease;
+            opacity: 0;
+            pointer-events: none;
+            backface-visibility: hidden;
+        }
+        
+        .card.active {
+            transform: rotateY(0deg) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 10;
+        }
+        
+        .card.prev {
+            transform: rotateY(-180deg) scale(0.8);
+            opacity: 0;
+            z-index: 5;
+        }
+        
+        .card.next {
+            transform: rotateY(180deg) scale(0.8);
+            opacity: 0;
+            z-index: 5;
+        }
+        
+        .card-number {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 14px;
+            color: #aaa;
+            font-weight: 500;
+        }
+        
+        .icon {
+            font-size: 80px;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .card-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #e4e6eb;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+        
+        .card-subtitle {
+            font-size: 18px;
+            color: #b0b3b8;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        
+        .card-content {
+            font-size: 18px;
+            color: #b0b3b8;
+            line-height: 1.8;
+            text-align: left;
+            width: 100%;
+        }
+        
+        .card-content ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .card-content li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .card-content li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #FB7299;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .highlight {
+            color: #FB7299;
+            font-weight: bold;
+        }
+        
+        .warning {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        
+        .safe {
+            color: #51cf66;
+            font-weight: bold;
+        }
+        
+        .tip-box {
+            background: #3a3b3c;
+            border-left: 4px solid #FB7299;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #b0b3b8;
+        }
+        
+        .age-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .age-badge.no {
+            background: #3d1a1a;
+            color: #ff6b6b;
+        }
+        
+        .age-badge.caution {
+            background: #3d2a1a;
+            color: #ffa726;
+        }
+        
+        .age-badge.yes {
+            background: #1a3d1a;
+            color: #51cf66;
+        }
+        
+        .navigation {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+        
+        .nav-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: rgba(251, 114, 153, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-dot.active {
+            background: #FB7299;
+            width: 12px;
+            border-radius: 2px;
+        }
+        
+        .swipe-hint {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            color: #aaa;
+            animation: fadeInOut 2s ease-in-out infinite;
+        }
+        
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        .cover-card {
+            background: linear-gradient(135deg, #FB7299 0%, #fc9b9b 100%);
+            color: white;
+        }
+        
+        .cover-card .card-title {
+            color: white;
+            font-size: 38px;
+        }
+        
+        .cover-card .card-subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 20px;
+        }
+        
+        .cover-card .card-number {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .danger-list {
+            background: #3d1a1a;
+            border: 2px solid #ff6b6b;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .danger-list li:before {
+            color: #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <!-- 卡片1: 封面 -->
+        <div class="card active cover-card">
+            <div class="card-number">1/7</div>
+            <div class="icon">👧</div>
+            <div class="card-title">多少岁的小朋友<br>适合扎辫子？</div>
+            <div class="card-subtitle">按年龄段给出科学建议<br>让宝宝舒适又漂亮</div>
+        </div>
+        
+        <!-- 卡片2: 3岁以下 -->
+        <div class="card">
+            <div class="card-number">2/7</div>
+            <div class="icon">❌</div>
+            <div class="card-title">3岁以下</div>
+            <div class="age-badge no">不建议经常扎</div>
+            <div class="card-content">
+                <ul>
+                    <li>建议：<span class="highlight">自然披发为主</span></li>
+                    <li>原因：头发细软、头皮敏感</li>
+                    <li>偶尔扎：≤2小时，必须很松</li>
+                </ul>
+                <div class="tip-box">
+                    💡 医学建议：3岁以下以自然披发为主
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片3: 4-6岁 -->
+        <div class="card">
+            <div class="card-number">3/7</div>
+            <div class="icon">⚠️</div>
+            <div class="card-title">4-6岁</div>
+            <div class="age-badge caution">可以尝试</div>
+            <div class="card-content">
+                <ul>
+                    <li>可尝试<span class="highlight">简单低扎发型</span></li>
+                    <li>每次 ≤<span class="highlight">4小时</span></li>
+                    <li>睡觉前<span class="highlight">必须松开</span></li>
+                </ul>
+                <div class="tip-box">
+                    💡 选择柔软布圈，避免橡皮筋
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片4: 7岁以上 -->
+        <div class="card">
+            <div class="card-number">4/7</div>
+            <div class="icon">✅</div>
+            <div class="card-title">7岁以上</div>
+            <div class="age-badge yes">可以适当造型</div>
+            <div class="card-content">
+                <ul>
+                    <li>可适当增加<span class="highlight">造型变化</span></li>
+                    <li>每日需<span class="highlight">6-8小时</span>完全放松</li>
+                    <li><span class="highlight">经常变换</span>扎发位置</li>
+                </ul>
+                <div class="tip-box">
+                    💡 避免总在同一个地方扎
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片5: 注意事项 -->
+        <div class="card">
+            <div class="card-number">5/7</div>
+            <div class="icon">📌</div>
+            <div class="card-title">扎辫子注意事项</div>
+            <div class="card-subtitle">核心要点</div>
+            <div class="card-content">
+                <ul>
+                    <li><span class="highlight">松紧</span>：能插入一根手指</li>
+                    <li><span class="highlight">发饰</span>：柔软布圈，避免橡皮筋</li>
+                    <li><span class="highlight">位置</span>：经常变换，避免发际线</li>
+                    <li><span class="highlight">观察</span>：头皮红痕、频繁挠头 → 立即松开</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 卡片6: 危险信号 -->
+        <div class="card">
+            <div class="card-number">6/7</div>
+            <div class="icon">🚨</div>
+            <div class="card-title">危险信号</div>
+            <div class="card-subtitle">出现以下情况立即就医</div>
+            <div class="card-content">
+                <div class="danger-list">
+                    <ul>
+                        <li>头皮红色勒痕</li>
+                        <li>发根小白点（断发）</li>
+                        <li>局部脱发、发际线后移</li>
+                        <li>孩子频繁挠头、哭闹</li>
+                    </ul>
+                </div>
+                <div class="tip-box" style="margin-top: 20px;">
+                    ⚠️ 出现以上情况：立即就医
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卡片7: 总结 -->
+        <div class="card">
+            <div class="card-number">7/7</div>
+            <div class="icon">💡</div>
+            <div class="card-title">总结</div>
+            <div class="card-content">
+                <ul>
+                    <li><span class="highlight">3岁以下</span>不扎</li>
+                    <li><span class="highlight">4岁后</span>尝试</li>
+                    <li><span class="highlight">7岁后</span>适当造型</li>
+                </ul>
+                <div class="tip-box">
+                    🔑 关键：松紧适度、时间控制、选对发饰<br><br>
+                    ❤️ 温馨提醒：宝宝舒适最重要
+                </div>
+            </div>
+        </div>
+        
+        <div class="navigation" id="navigation">
+            <div class="nav-dot active" onclick="goToCard(0)"></div>
+            <div class="nav-dot" onclick="goToCard(1)"></div>
+            <div class="nav-dot" onclick="goToCard(2)"></div>
+            <div class="nav-dot" onclick="goToCard(3)"></div>
+            <div class="nav-dot" onclick="goToCard(4)"></div>
+            <div class="nav-dot" onclick="goToCard(5)"></div>
+            <div class="nav-dot" onclick="goToCard(6)"></div>
+        </div>
+        
+        <div class="swipe-hint" id="swipeHint">点击屏幕切换卡片</div>
+    </div>
+
+    <script>
+        const CARD_W = 360;
+        const CARD_H = 760;
+        const container = document.getElementById('container');
+        
+        function resizeContainer() {
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+            const padding = 20;
+            const maxW = vw - padding * 2;
+            const maxH = vh - padding * 2;
+            
+            const scaleW = maxW / CARD_W;
+            const scaleH = maxH / CARD_H;
+            const scale = Math.min(scaleW, scaleH);
+            
+            container.style.transform = 'scale(' + scale + ')';
+        }
+        
+        window.addEventListener('resize', resizeContainer);
+        resizeContainer();
+        
+        let currentCard = 0;
+        const totalCards = 7;
+        const cards = document.querySelectorAll('.card');
+        const navDots = document.querySelectorAll('.nav-dot');
+        const swipeHint = document.getElementById('swipeHint');
+        
+        function showCard(index) {
+            // 移除所有卡片的类
+            cards.forEach((card, i) => {
+                card.classList.remove('active', 'prev', 'next');
+                if (i < index) {
+                    card.classList.add('prev');
+                } else if (i > index) {
+                    card.classList.add('next');
+                }
+            });
+            
+            // 显示当前卡片
+            cards[index].classList.add('active');
+            
+            // 更新导航点
+            navDots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            
+            // 隐藏提示
+            if (index > 0) {
+                swipeHint.style.display = 'none';
+            }
+            
+            currentCard = index;
+        }
+        
+        function nextCard() {
+            if (currentCard < totalCards - 1) {
+                showCard(currentCard + 1);
+            }
+        }
+        
+        function prevCard() {
+            if (currentCard > 0) {
+                showCard(currentCard - 1);
+            }
+        }
+        
+        function goToCard(index) {
+            showCard(index);
+        }
+        
+        // 点击切换卡片
+        document.getElementById('container').addEventListener('click', (e) => {
+            // 如果点击的是导航点，不触发
+            if (e.target.classList.contains('nav-dot')) return;
+            
+            const x = e.clientX || e.touches?.[0]?.clientX || 0;
+            const width = window.innerWidth;
+            
+            if (x > width / 2) {
+                nextCard();
+            } else {
+                prevCard();
+            }
+        });
+        
+        // 键盘导航
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextCard();
+            } else if (e.key === 'ArrowLeft') {
+                prevCard();
+            }
+        });
+        
+        // 初始化
+        showCard(0);
+    </script>
+</body>
+</html>
