@@ -47,6 +47,18 @@
             "category": "design"
         },
         {
+            "name": "AudioScale",
+            "desc": "After Effects 2026 脚本面板 — 将音频振幅自动映射为图层缩放关键帧，三种映射模式可选",
+            "icon": "🎵",
+            "path": "AudioScale",
+            "tags": [
+                "AE",
+                "脚本",
+                "设计"
+            ],
+            "category": "design"
+        },
+        {
             "name": "Blender Mesh Face Sorter",
             "desc": "Blender 插件 — 按面数/顶点/存储大小排列场景中所有网格体，支持批量减面、孤立显示、MD 报表导出",
             "icon": "🧊",
