@@ -51,7 +51,7 @@
         {
             "name": "Edge Multi-Account Cookie Switcher",
             "desc": "Edge/Chrome 浏览器扩展 — 一键保存和切换多账号 Cookie，AES-256-GCM 加密存储，支持密码锁与加密备份",
-            "icon": "🍪",
+            "icon": "🔐",
             "path": "edge-multi-account-cookie",
             "tags": [
                 "浏览器扩展",
