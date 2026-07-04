@@ -35,6 +35,18 @@
                 "设计"
             ],
             "category": "design"
+        },
+        {
+            "name": "AE-Lyrics-Animator",
+            "desc": "AE 歌词逐字动画工具 — 五种动画器一键生成，方向/模式/模糊/间距自由控制",
+            "icon": "🎬",
+            "path": "AE-Lyrics-Animator",
+            "tags": [
+                "After Effects",
+                "插件",
+                "动画"
+            ],
+            "category": "design"
         }
     ]
 }
