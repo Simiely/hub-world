@@ -13,6 +13,18 @@
             "category": "web"
         },
         {
+            "name": "AE-Lyrics-Animator",
+            "desc": "After Effects 脚本面板 — 一键为歌词文本图层生成逐字入场、出场、错落、散落、字间距等动画效果",
+            "icon": "🎤",
+            "path": "AE-Lyrics-Animator",
+            "tags": [
+                "AE",
+                "脚本",
+                "设计"
+            ],
+            "category": "design"
+        },
+        {
             "name": "Blender Mesh Face Sorter",
             "desc": "Blender 插件 — 按面数/顶点/存储大小排列场景中所有网格体，支持批量减面、孤立显示、MD 报表导出",
             "icon": "🧊",
