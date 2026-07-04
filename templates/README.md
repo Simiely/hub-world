@@ -34,7 +34,6 @@ template.html
 │   ├── pageTitle / brand / version       ← 页面基本信息
 │   ├── accentColor                        ← 全局主题色
 │   ├── hero { ... }                       ← 首屏（大标题 + 功能卡片 + 轮播）
-│   │   └── tickerItems                   ← 底部轮播词数组（见下方备注说明）
 │   ├── problem { ... }                    ← 痛点屏（问题描述 + 数据统计）
 │   ├── features { ... }                   ← 功能介绍屏（6 宫格卡片）
 │   ├── usage { ... }                      ← 使用引导屏（4 步骤 + 流程条）
@@ -91,11 +90,7 @@ license:   "MIT License"
 - `badgeLabel` — 右侧 badge 标签（纯文本）
 - `badgeIcon` — badge 区图标（emoji）
 - `tags` — 标签数组（`["标签1", "标签2", ...]`）
-- `tickerItems` — 底部轮播文字数组（轮播词）
-  > **备注**：轮播词在页面底部循环滚动展示，轮播词之间自动用 ✦ 分隔。
-  > 示例中使用了 GitHub PAT 令牌作为占位轮播词：
-  > `ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
-  > 实际使用时替换为产品关键词、口号或特性列表即可。
+- `tickerItems` — 底部轮播文字数组（★ 其他 AI 使用本模板时，请用中文替换轮播词，不要用英文 ★）
 
 ### problem 痛点屏
 
