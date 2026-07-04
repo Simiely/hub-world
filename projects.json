@@ -49,6 +49,17 @@
             "category": "design"
         },
         {
+            "name": "扫完记得还 — 美团骑车锁车提醒",
+            "desc": "Android 应用 — 一键启动倒计时并联动美团扫一扫，50分钟后准时提醒锁车，避免忘锁持续扣费",
+            "icon": "🚲",
+            "path": "meituan-bike-reminder",
+            "tags": [
+                "Android",
+                "工具"
+            ],
+            "category": "tool"
+        },
+        {
             "name": "Edge Multi-Account Cookie Switcher",
             "desc": "Edge/Chrome 浏览器扩展 — 一键保存和切换多账号 Cookie，AES-256-GCM 加密存储，支持密码锁与加密备份",
             "icon": "🔐",
