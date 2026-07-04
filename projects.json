@@ -15,7 +15,7 @@
         {
             "name": "AE-Lyrics-Animator",
             "desc": "After Effects 脚本面板 — 一键为歌词文本图层生成逐字入场、出场、错落、散落、字间距等动画效果",
-            "icon": "🎤",
+            "icon": "🎬",
             "path": "AE-Lyrics-Animator",
             "tags": [
                 "AE",
