@@ -29,19 +29,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet" />
 <style>
   :root{
-    --bg:#161110;
-    --bg-warm:#1E1817;
-    --ink:#E8E4E1;
-    --ink-soft:#A89F9A;
-    --ink-faint:#6E6560;
-    --rose:#E55D6B;
-    --rose-rgb:229,93,107;
-    --rose-deep:#C94D5A;
-    --rose-soft:#F7A8AE;
-    --cream:#2A2220;
-    --hairline:rgba(255,255,255,.08);
-    --ease:cubic-bezier(.7,.05,.2,1);
-    --ease-out:cubic-bezier(.16,1,.3,1);
+    /* ═══ 色彩系统 ═══ */
+    --bg:#161110;        /* 背景色（底部/主背景） */
+    --bg-warm:#1E1817;   /* 温暖背景色（卡片/次级区域） */
+    --ink:#E8E4E1;       /* 主文字色 */
+    --ink-soft:#A89F9A;  /* 柔和文字色（次级文案） */
+    --ink-faint:#6E6560; /* 更淡文字色（注释/元信息） */
+    --rose:#E55D6B;      /* 主题色（强调色）—— 修改 CONFIG.accentColor 即可全局换色 */
+    --rose-rgb:229,93,107;      /* 主题色的 RGB 值（用于 rgba 透明度运算） */
+    --rose-deep:#C94D5A; /* 主题色深色变体（hover 效果） */
+    --rose-soft:#F7A8AE; /* 主题色浅色变体（CTA 区标语） */
+    --cream:#2A2220;     /* 代码块背景色 */
+    --hairline:rgba(255,255,255,.08); /* 分割线色 */
+    /* ═══ 动画曲线 ═══ */
+    --ease:cubic-bezier(.7,.05,.2,1);     /* 缓动曲线 */
+    --ease-out:cubic-bezier(.16,1,.3,1);  /* 退出缓动曲线 */
   }
 
   *{margin:0;padding:0;box-sizing:border-box}
@@ -64,7 +66,8 @@
   }
   ::selection{background:var(--rose);color:#fff}
 
-  /* ============ DECK ============ */
+  /* ============ DECK（全屏滚动容器）============ */
+  /* ★ scroll-snap-type: y mandatory 实现每屏自动对齐吸附效果 ★ */
   .deck{
     height:100vh;
     height:100dvh;
@@ -230,7 +233,10 @@
     font-family:"Geist Mono",monospace;font-size:11px;color:var(--ink-soft);
   }
 
-  /* ticker */
+  /* ============ TICKER（底部轮播条）============ */
+  /* ★ 说明：CONFIG.hero.tickerItems 中的文本会在此处循环滚动展示        ★ */
+  /*   轮播词之间用 ✦ 分隔，颜色自动使用主题色 --rose                     ★ */
+  /*   动画时长 36s，可调整下方 animation 值改变滚动速度                   ★ */
   .ticker{
     position:absolute;left:0;right:0;bottom:0;
     border-top:1px solid var(--ink);background:var(--bg-warm);overflow:hidden;padding:13px 0;
@@ -243,7 +249,8 @@
   .ticker__item::after{content:"✦";color:var(--rose);font-style:normal;font-size:15px}
   @keyframes marquee{to{transform:translateX(-50%)}}
 
-  /* ============ SLIDE 2: PROBLEM ============ */
+  /* ============ SLIDE 2: PROBLEM（痛点屏，背景自动跟随鼠标产生视差效果）============ */
+  /* ★ 背景径向渐变使用 --mx 和 --my CSS 变量，由交互脚本根据鼠标位置更新 ★ */
   .problem{background:var(--rose);color:#fff;position:relative}
   .problem::before{
     content:"";position:absolute;inset:0;
@@ -270,7 +277,9 @@
   }
   .problem__stat .l{font-family:"Geist Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;opacity:.85;max-width:12ch}
 
-  /* ============ SLIDE 3: FEATURES ============ */
+  /* ============ SLIDE 3: FEATURES（6 宫格功能卡片，hover 时主题色填充）============ */
+  /* ★ .feat__cell::before 实现 hover 时左侧向右填充的动效               ★ */
+  /* ★ .feat__cell:hover .feat__icon 具有轻微平移+放大效果               ★ */
   .feat{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--ink);border:1px solid var(--ink);width:100%;max-width:1180px;margin:0 auto}
   .feat__cell{
     background:var(--bg);padding:clamp(32px,4vw,48px) clamp(24px,3vw,32px);
@@ -451,8 +460,17 @@ var CONFIG = {
     badgeLabel: "标签头",                 // 如 "Compatible" 或 "Features"
     badgeIcon: "🧩",                     // emoji 图标
     tags: ["标签1", "标签2", "标签3"],    // 兼容性标签数组
-    // 底部轮播条
-    tickerItems: ["轮播词1", "轮播词2", "轮播词3", "轮播词4", "轮播词5"]
+    // 底部轮播条（轮播词数组，会在页面底部循环滚动展示）
+    // 占位示例展示了 GitHub PAT 令牌格式（ghp_...），
+    // 实际使用时请替换为自己的文案，如特性关键词、口号等
+    tickerItems: [
+      "ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",  // ← 示例轮播词，替换为实际 PAT
+      "轮播词2",
+      "轮播词3",
+      "轮播词4",
+      "轮播词5",
+      "轮播词6"
+    ]
   },
 
   // ──── Problem 痛点屏 ────
@@ -601,12 +619,15 @@ var CONFIG = {
       </div>
     </div>
     <div class="ticker">
+      <!-- ★ ticker-track 容器的内容由渲染脚本根据 CONFIG.hero.tickerItems 动态生成 ★ -->
+      <!--    默认占位条目仅用于预览；实际内容的数量和文本均由 CONFIG 控制        -->
       <div class="ticker__track" id="ticker-track">
-        <span class="ticker__item">轮播词1</span>
+        <span class="ticker__item">ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>
         <span class="ticker__item">轮播词2</span>
         <span class="ticker__item">轮播词3</span>
         <span class="ticker__item">轮播词4</span>
         <span class="ticker__item">轮播词5</span>
+        <span class="ticker__item">轮播词6</span>
       </div>
     </div>
   </section>
@@ -772,7 +793,9 @@ var CONFIG = {
     });
   }
 
-  // Ticker
+  // Ticker（轮播条）：将 CONFIG.hero.tickerItems 数组中的轮播词渲染到页面底部
+  // ★ 为达成无缝滚动效果，将数组复制一份（doubled）拼接后渲染         ★
+  // ★ 轮播词的数量、文本内容均由 CONFIG.hero.tickerItems 控制         ★
   var tickerTrack = document.getElementById('ticker-track');
   tickerTrack.innerHTML = '';
   if (cfg.hero.tickerItems && cfg.hero.tickerItems.length) {
