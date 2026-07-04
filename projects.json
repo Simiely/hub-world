@@ -13,6 +13,17 @@
             "category": "web"
         },
         {
+            "name": "多少岁的小朋友适合扎辫子？",
+            "desc": "交互式信息页面 — 按年龄段（3岁以下/4-6岁/7岁+）给出儿童扎辫子的安全建议与注意事项",
+            "icon": "👧",
+            "path": "baby-hair-braiding-guide",
+            "tags": [
+                "生活",
+                "亲子"
+            ],
+            "category": "web"
+        },
+        {
             "name": "AE-Lyrics-Animator",
             "desc": "After Effects 脚本面板 — 一键为歌词文本图层生成逐字入场、出场、错落、散落、字间距等动画效果",
             "icon": "🎬",
