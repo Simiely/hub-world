@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VMware Workstation 虚拟机安装指南</title>
+<link rel="icon" href="https://simiely.github.io/hub-world/favicon.png" type="image/png" />
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@300;400;500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@300;400;500;700&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Geist:wght@300..700&display=swap');
 
   :root {
     --bg: #0a0a0b;
@@ -671,10 +672,33 @@
     .nav { right: 16px; bottom: 16px; }
     .img-inline { margin-left: 20px; }
     .img-inline img { max-width: 100%; }
+    .hub-back { justify-content: flex-start; padding: 14px 20px; }
   }
+
+  /* Hub World 返回导航 */
+  .hub-back {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    display: flex; align-items: center; justify-content: center;
+    padding: 14px 0; pointer-events: none; text-decoration: none;
+    mix-blend-mode: difference; color: #fff;
+  }
+  .hub-back__inner {
+    pointer-events: auto; display: flex; align-items: center; gap: 10px; padding-top: 3px;
+    font-family: "Bricolage Grotesque", sans-serif; font-weight: 600; font-size: 19px;
+    letter-spacing: -.01em; cursor: pointer; transition: opacity .3s;
+  }
+  .hub-back__inner:hover { opacity: .7; }
+  .hub-back__logo { height: 1.12rem; width: auto; display: block; vertical-align: middle; }
 </style>
 </head>
 <body>
+
+<a class="hub-back" href="https://simiely.github.io/hub-world/" aria-label="Hub World">
+  <span class="hub-back__inner">
+    <img class="hub-back__logo" src="https://simiely.github.io/hub-world/logo.png" alt="Hub World">
+    <span>Hub World</span>
+  </span>
+</a>
 
 <div class="glow glow-1"></div>
 <div class="glow glow-2"></div>
