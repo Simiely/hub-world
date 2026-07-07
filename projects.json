@@ -59,6 +59,18 @@
             "category": "design"
         },
         {
+            "name": "星空粒子生成器",
+            "desc": "AE 脚本面板 — 一键生成大量可控星空粒子，支持 4 种形状、HSL 颜色、模糊羽化、闪烁、目标吸引",
+            "icon": "✨",
+            "path": "starry-sky-generator",
+            "tags": [
+                "AE",
+                "脚本",
+                "设计"
+            ],
+            "category": "design"
+        },
+        {
             "name": "Blender Mesh Face Sorter",
             "desc": "Blender 插件 — 按面数/顶点/存储大小排列场景中所有网格体，支持批量减面、孤立显示、MD 报表导出",
             "icon": "🧊",
