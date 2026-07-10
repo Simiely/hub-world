@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>汽车高精度模型减面 · 逆向优化工作流</title>
+<link rel="icon" href="https://simiely.github.io/hub-world/favicon.png" type="image/png">
 <style>
   :root{
     --bg:#0e0f12;
@@ -49,6 +50,21 @@
     transition:color .18s;padding:4px 0;
   }
   nav .links a:hover{color:var(--text)}
+
+  /* ---------- HUB BACK (Hub World 品牌 logo + 跳转) ---------- */
+  .hub-back{
+    position:fixed;top:0;left:0;right:0;z-index:200;
+    display:flex;align-items:center;justify-content:center;
+    padding:14px 0;pointer-events:none;text-decoration:none;
+    mix-blend-mode:difference;color:#fff;
+  }
+  .hub-back__inner{
+    pointer-events:auto;display:flex;align-items:center;gap:10px;padding-top:3px;
+    font-family:var(--font);font-weight:600;font-size:19px;letter-spacing:-.01em;
+    cursor:pointer;transition:opacity .3s;
+  }
+  .hub-back__inner:hover{opacity:.7}
+  .hub-back__logo{height:1.12rem;width:auto;display:block;vertical-align:middle}
 
   /* ---------- HERO ---------- */
   header.hero{padding:76px 0 56px;border-bottom:1px solid var(--border-soft)}
@@ -238,9 +254,23 @@
     section{padding:48px 0}
     .sec-head h2{font-size:23px}
   }
+
+  /* hub-back 在窄屏避免与导航品牌名重叠 */
+  @media(max-width:768px){
+    nav .brand{display:none}
+    .hub-back{justify-content:flex-start;padding:14px clamp(20px,4vw,40px)}
+  }
 </style>
 </head>
 <body>
+
+<!-- Hub World 品牌 logo + 跳转（结构参照 templates/template.html 的 .hub-back） -->
+<a class="hub-back" href="https://simiely.github.io/hub-world/" aria-label="返回 Hub World">
+  <span class="hub-back__inner">
+    <img class="hub-back__logo" src="https://simiely.github.io/hub-world/logo.png" alt="Hub World">
+    <span>Hub World</span>
+  </span>
+</a>
 
 <nav>
   <div class="wrap">
