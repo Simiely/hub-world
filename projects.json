@@ -139,6 +139,18 @@
                 "工具"
             ],
             "category": "tool"
+        },
+        {
+            "name": "汽车模型减面 · 逆向优化工作流",
+            "desc": "交互式技术文档 — 近景镜面烤漆车先做 10 万面卡位、收缩包裹锚定，再用 Catmull-Clark 细分到 30 万、可选弱包裹微调的高效减面工作流",
+            "icon": "🚗",
+            "path": "car-model-decimation",
+            "tags": [
+                "3D",
+                "汽车",
+                "设计"
+            ],
+            "category": "design"
         }
     ]
 }
