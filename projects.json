@@ -151,6 +151,18 @@
                 "设计"
             ],
             "category": "design"
+        },
+        {
+            "name": "Explorer Refresh Fix",
+            "desc": "Windows 资源管理器自动刷新修复 — 一键重置 Shell Bags、清除缩略图缓存、启用后台刷新，解决下载文件后不自动显示、需手动 F5 的问题",
+            "icon": "🔄",
+            "path": "windows-explorer-refresh-fix",
+            "tags": [
+                "Windows",
+                "工具",
+                "系统"
+            ],
+            "category": "tool"
         }
     ]
 }
