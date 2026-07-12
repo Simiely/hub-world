@@ -163,6 +163,18 @@
                 "系统"
             ],
             "category": "tool"
+        },
+        {
+            "name": "ExplorerBlurMica 底部白条修复",
+            "desc": "修复 ExplorerBlurMica 在浏览器拉起下载目录时资源管理器底部白条的自动 nudge 脚本（事件驱动·零依赖）",
+            "icon": "🪟",
+            "path": "ExplorerBlurMica-whitebar-fix",
+            "tags": [
+                "Windows",
+                "工具",
+                "PowerShell"
+            ],
+            "category": "tool"
         }
     ]
 }
