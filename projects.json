@@ -175,6 +175,18 @@
                 "PowerShell"
             ],
             "category": "tool"
+        },
+        {
+            "name": "宝宝如厕训练助手",
+            "desc": "微信小程序 · 帮助家长记录和分析宝宝如厕训练进度，AI 预测排便规律，全家云端共享",
+            "icon": "🚽",
+            "path": "potty-training-miniprogram",
+            "tags": [
+                "小程序",
+                "亲子",
+                "工具"
+            ],
+            "category": "web"
         }
     ]
 }
