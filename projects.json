@@ -187,6 +187,18 @@
                 "工具"
             ],
             "category": "tool"
+        },
+        {
+            "name": "暗幕 (WindowTinter)",
+            "desc": "Windows 桌面工具 — 给任意窗口叠加半透明蒙版，目标切到后台自动变暗，多窗口同时监控",
+            "icon": "🌑",
+            "path": "WindowTinter",
+            "tags": [
+                "Windows",
+                "工具",
+                "桌面"
+            ],
+            "category": "tool"
         }
     ]
 }
