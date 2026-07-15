@@ -575,6 +575,9 @@
         .cat-card.visible {
             opacity: 1; transform: translateY(0) scale(1);
         }
+        .cat-card.empty.visible {
+            opacity: 0.6;
+        }
         /* Color bar top */
         .cat-card::before {
             content: '';
@@ -641,7 +644,7 @@
             transition: all 0.3s;
         }
         .cat-card:hover {
-            transform: translateY(-6px) scale(1.02) !important;
+            transform: translateY(-6px) scale(1.02);
             border-color: rgba(255,146,146,0.25);
             background: rgba(255,255,255,0.06);
             box-shadow: 0 16px 48px rgba(255,146,146,0.08),
@@ -665,36 +668,6 @@
         .cat-card.empty p  { color: var(--text-dim); }
 
         /* Launch overlay */
-        .launch-overlay {
-            position: fixed; inset: 0;
-            z-index: 9999;
-            background: var(--bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.15s ease;
-        }
-        .launch-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .launch-overlay .ripple-circle {
-            width: 20px; height: 20px;
-            border-radius: 50%;
-            background: radial-gradient(circle at center, var(--pink), transparent 80%);
-            transform: scale(0);
-            animation: rippleExpand 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        }
-        @keyframes rippleExpand {
-            0%   { transform: scale(0); border-radius: 50%; }
-            35%  { transform: scale(15); border-radius: 8%; }
-            65%  { transform: scale(28); border-radius: 2%; }
-            85%  { transform: scale(38); border-radius: 0.5%; }
-            100% { transform: scale(42); border-radius: 0; }
-        }
 
         /* Responsive */
         @media (max-width: 800px) {
@@ -712,11 +685,6 @@
 <!-- Background -->
 <canvas id="particleCanvas"></canvas>
 <div class="mouse-glow" id="mouseGlow"></div>
-
-<!-- App launch overlay -->
-<div class="launch-overlay" id="launchOverlay">
-    <div class="ripple-circle"></div>
-</div>
 
 <!-- ============ VIEW 1: Welcome (Vertical 3-section layout) ============ -->
 <section class="view-welcome" id="viewWelcome">
@@ -745,12 +713,10 @@
         </div>
 
         <!-- === SECTION 3: Action Button === -->
-        <!-- 🔔 调试次数: 214 → 搜索 JS 中 DEBUG_COUNT 变量同步修改 -->
         <div class="section-action">
             <button class="cta-btn" id="btnToCatalog">
                 探索发现
             </button>
-            <div id="debugCount" style="font-size:0.72rem;color:var(--text-dim);margin-top:8px;opacity:0;transition:opacity 0.2s;user-select:none;pointer-events:none;"></div>
         </div>
     </div>
 
@@ -786,18 +752,17 @@
 </section>
 
 <script>
-// ====================================================================
-//  🔔 调试计数器 — 每次修改此 HTML 文件后务必 +1
-//  当前值: 214
-//  此常量影响: (1) 上方 HTML 注释  (2) debugCount 显示文本
-//  搜索关键词: DEBUG_COUNT
-// ====================================================================
-var DEBUG_COUNT = 214;
-
 // =============================================
 //  DOM helper: shorthand for getElementById
 // =============================================
 var $ = function(id) { return document.getElementById(id); };
+
+// Escape HTML to prevent XSS when injecting project data into innerHTML
+function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+}
 
 // =============================================
 //  Project data — loaded from projects.json
@@ -930,14 +895,14 @@ function initFloatingCards() {
                 var p = set[idx];
                 c.el.style.setProperty('--base-rot', p.rot + 'deg');
                 c.el.style.setProperty('--card-z', String(p.z));
-                c.el.style.animation = swayKeys[p.sway % 5] + ' ' + (7 + idx * 0.8) + 's ease-in-out infinite alternate';
+                c.el.style.animation = swayKeys[p.sway % swayKeys.length] + ' ' + (7 + idx * 0.8) + 's ease-in-out infinite alternate';
                 c.baseTop = parseFloat(p.top);
                 c.leftPct = p.leftPct;
                 c.baseRot = p.rot;
                 // Set targetX in pixels for drift
                 c.targetX = cw * p.leftPct / 100;
                 if (state === 'drifting') {
-                    c.el.style.top = p.top;
+                    c.el.style.top = (parseFloat(p.top) + currentOffsetPct + 5) + '%';
                     c.el.style.left = (c.targetX + driftOffset) + 'px';
                 }
             }
@@ -949,6 +914,7 @@ function initFloatingCards() {
     var entranceStart = 0;
     var driftOffset = 0;
     var enteredCount = 0;
+    var currentOffsetPct = 0; // shared vertical-centering offset, applied consistently across init / entering / drifting
 
     cardData.forEach(function(p, idx) {
         var card = document.createElement('div');
@@ -956,20 +922,20 @@ function initFloatingCards() {
         card.setAttribute('data-index', idx);
 
         var fallbackLabels = ['#1', '#2', '#3', '#New', '#Hot'];
-        var tagText = (p.tags && p.tags.length > 0) ? p.tags[0] : (fallbackLabels[idx] || '#' + idx);
-        var tagBadge = '<span class="fc-tag-badge">' + tagText + '</span>';
+        var rawTag = (p.tags && p.tags.length > 0) ? p.tags[0] : (fallbackLabels[idx] || '#' + idx);
+        var tagBadge = '<span class="fc-tag-badge">' + escapeHtml(rawTag) + '</span>';
 
         card.innerHTML =
             tagBadge +
-            '<span class="fc-icon">' + p.icon + '</span>' +
-            '<div class="fc-name">' + p.name + '</div>' +
-            '<div class="fc-desc">' + p.desc + '</div>';
+            '<span class="fc-icon">' + escapeHtml(p.icon) + '</span>' +
+            '<div class="fc-name">' + escapeHtml(p.name) + '</div>' +
+            '<div class="fc-desc">' + escapeHtml(p.desc) + '</div>';
 
         (function(projectData, el) {
             el.addEventListener('click', function(e) {
                 e.stopPropagation();
                 if (projectData.isReal && projectData.path) {
-                    window.open(projectData.path + '/', '_blank');
+                    window.open(projectData.path + '/', '_blank', 'noopener');
                 } else {
                     showCatalog();
                 }
@@ -1042,17 +1008,9 @@ function initFloatingCards() {
         var clampBot = ch - groupBotPx - 20;
         var offsetPx = Math.max(clampTop, Math.min(clampBot, idealOff));
         var offsetPct = offsetPx / ch * 100;
-        var containerW = container.offsetWidth;
-        var aspectRatio = containerW / ch;
-        var cardW = CARD_W;
-        if (aspectRatio > 2) {
-            cardW = Math.min(340, CARD_W * (aspectRatio / 2));
-        } else if (aspectRatio < 0.6 && activeCount <= 3) {
-            cardW = Math.max(150, CARD_W * (aspectRatio / 0.6));
-        }
+        currentOffsetPct = offsetPct;
         cards.forEach(function(c) {
             c.el.style.setProperty('--card-scale', String(scale));
-            c.el.style.width = cardW + 'px';
             c.el.style.top = (c.baseTop + offsetPct + 5) + '%';
         });
     }
@@ -1062,7 +1020,6 @@ function initFloatingCards() {
     function animationLoop(ts) {
         if (!entranceStart) return;
         var cw = container.offsetWidth + CARD_W + 30;
-        var gap = 0;
         var set = posSets[activeCount] || posSets[6];
 
         if (state === 'entering') {
@@ -1084,7 +1041,7 @@ function initFloatingCards() {
                 c.baseTop = parseFloat(pos.top);
 
                 c.el.style.left = (cw + (c.targetX - cw) * eased) + 'px';
-                c.el.style.top = (parseFloat(pos.top) + 5) + '%';
+                c.el.style.top = (parseFloat(pos.top) + currentOffsetPct + 5) + '%';
                 c.el.style.opacity = String(Math.min(1, eased * 1.8));
                 c.el.style.zIndex = String(10 + i);
 
@@ -1095,14 +1052,15 @@ function initFloatingCards() {
                     c.el.style.opacity = '1';
                 }
             }
-            if (allEntered && enteredCount >= 6) {
+            if (allEntered && enteredCount >= cards.length) {
                 state = 'drifting';
                 driftOffset = 0;
+                updateCardScale(); // apply adaptive vertical centering now that cards rest
             }
         }
 
         if (state === 'drifting') {
-            driftOffset -= DRIFT_SPEED * 60 * (1/60);
+            driftOffset -= DRIFT_SPEED;
             var cw = container.offsetWidth;
             var gap = Math.max(26, Math.min(80, (cw - CARD_W * 6) / 5));
             cards.forEach(function(c) {
@@ -1149,40 +1107,6 @@ function initFloatingCards() {
             c.el.style.marginTop  = '0';
         });
     } catch(e) {} });
-}
-
-// =============================================
-//  Launch overlay animation (app-icon zoom)
-// =============================================
-function playLaunchAnimation(targetEl, callback) {
-    var overlay = document.getElementById('launchOverlay');
-    overlay.classList.add('active');
-
-    if (targetEl) {
-        targetEl.style.transition = 'transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)';
-        targetEl.style.zIndex = '10000';
-        targetEl.style.transform += ' scale(1.2)';
-    }
-
-    setTimeout(function() {
-        if (targetEl) {
-            targetEl.style.transition = 'opacity 0.15s';
-            targetEl.style.opacity = '0';
-        }
-        if (callback) callback();
-    }, 480);
-
-    setTimeout(function() {
-        overlay.classList.remove('active');
-        var ripple = overlay.querySelector('.ripple-circle');
-        if (ripple) ripple.style.animation = '';
-        if (targetEl) {
-            targetEl.style.zIndex = '';
-            targetEl.style.transition = '';
-            targetEl.style.transform = '';
-            targetEl.style.opacity = '';
-        }
-    }, 700);
 }
 
 // =============================================
@@ -1262,29 +1186,26 @@ function renderCatalog(filterCat) {
         card.style.transitionDelay = (idx * 0.06) + 's';
 
         var tagsHtml = (p.tags || []).map(function(t) {
-            return '<span class="cc-tag">' + t + '</span>';
+            return '<span class="cc-tag">' + escapeHtml(t) + '</span>';
         }).join('');
 
         var coverBg = coverGradients[idx % coverGradients.length];
 
         card.innerHTML =
             '<div class="cc-cover" style="background:' + coverBg + '">' +
-                '<span style="font-size:2.4rem;">' + (p.icon || '📄') + '</span>' +
+                '<span style="font-size:2.4rem;">' + escapeHtml(p.icon || '📄') + '</span>' +
             '</div>' +
             '<div class="cc-body">' +
-                '<h3>' + p.name + '</h3>' +
-                '<p>' + (p.desc || '') + '</p>' +
+                '<h3>' + escapeHtml(p.name) + '</h3>' +
+                '<p>' + escapeHtml(p.desc || '') + '</p>' +
                 (tagsHtml ? '<div class="cc-tags">' + tagsHtml + '</div>' : '') +
             '</div>' +
             '<div class="cc-arrow">→</div>';
 
         grid.appendChild(card);
-        // Fade-in via inline style (bypasses CSS class specificity issues)
-        card.style.opacity = '0';
-        setTimeout(function() {
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0) scale(1)';
-        }, 50 + idx * 60);
+        // Staggered reveal driven by CSS (.cat-card.visible) — avoids inline
+        // transform fighting :hover (no !important needed)
+        requestAnimationFrame(function() { card.classList.add('visible'); });
     });
 
     for (var i = 0; i < needPlaceholders; i++) {
@@ -1294,18 +1215,14 @@ function renderCatalog(filterCat) {
             emptyCard.style.transitionDelay = (total + eIdx) * 0.06 + 's';
             emptyCard.innerHTML =
                 '<div class="cc-cover" style="background:rgba(255,255,255,0.02)">' +
-                    '<span style="font-size:2rem;">' + (emptyIcons[eIdx] || '📄') + '</span>' +
+                    '<span style="font-size:2rem;">' + escapeHtml(emptyIcons[eIdx] || '📄') + '</span>' +
                 '</div>' +
                 '<div class="cc-body">' +
-                    '<h3>' + (emptyNames[eIdx] || '待上线') + '</h3>' +
+                    '<h3>' + escapeHtml(emptyNames[eIdx] || '待上线') + '</h3>' +
                     '<p>更多精彩内容即将上线</p>' +
                 '</div>';
             grid.appendChild(emptyCard);
-            emptyCard.style.opacity = '0';
-            setTimeout(function() {
-                emptyCard.style.opacity = '0.6';
-                emptyCard.style.transform = 'translateY(0) scale(1)';
-            }, 50 + (total + eIdx) * 60);
+            requestAnimationFrame(function() { emptyCard.classList.add('visible'); });
         })(i);
     }
 }
@@ -1508,28 +1425,8 @@ window.addEventListener('DOMContentLoaded', function() {
             initFloatingCards();
             initCatalogNav();
             setTimeout(activateHero, 200);
-            // CTA button: click → catalog, long-press → debug count
-            (function() {
-                var btn = $('btnToCatalog');
-                var dbg = $('debugCount');
-                if (dbg) dbg.textContent = DEBUG_COUNT + '次调试';
-                var holdTimer = null;
-                var HOLD_MS = 500;
-                btn.addEventListener('click', function() { showCatalog(); });
-                btn.addEventListener('mousedown', function() {
-                    holdTimer = setTimeout(function() {
-                        if (dbg) dbg.style.opacity = '1';
-                    }, HOLD_MS);
-                });
-                btn.addEventListener('mouseup', function() {
-                    if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
-                    if (dbg) dbg.style.opacity = '0';
-                });
-                btn.addEventListener('mouseleave', function() {
-                    if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
-                    if (dbg) dbg.style.opacity = '0';
-                });
-            })();
+            var btn = $('btnToCatalog');
+            if (btn) btn.addEventListener('click', function() { showCatalog(); });
         });
 });
 
@@ -1540,16 +1437,19 @@ window.addEventListener('DOMContentLoaded', function() {
     var html = document.documentElement;
     var navBtn = $('themeToggle');
     var welcomeBtn = $('welcomeThemeToggle');
+    var meta = document.querySelector('meta[name="color-scheme"]');
     var saved = localStorage.getItem('hubworld-theme');
-    
+
+    function setColorScheme(t) { if (meta) meta.content = t; }
+
     // Default to dark if no preference saved
     var theme = saved || 'dark';
     html.setAttribute('data-theme', theme);
     var icon = theme === 'dark' ? '🌙' : '☀️';
     if (navBtn) navBtn.textContent = icon;
     if (welcomeBtn) welcomeBtn.textContent = icon;
-    document.querySelector('meta[name="color-scheme"]').content = theme;
-    
+    setColorScheme(theme);
+
     function toggleTheme() {
         var current = html.getAttribute('data-theme');
         var next = current === 'dark' ? 'light' : 'dark';
@@ -1557,10 +1457,10 @@ window.addEventListener('DOMContentLoaded', function() {
         var icon = next === 'dark' ? '🌙' : '☀️';
         if (navBtn) navBtn.textContent = icon;
         if (welcomeBtn) welcomeBtn.textContent = icon;
-        document.querySelector('meta[name="color-scheme"]').content = next;
+        setColorScheme(next);
         localStorage.setItem('hubworld-theme', next);
     }
-    
+
     if (navBtn) navBtn.addEventListener('click', toggleTheme);
     if (welcomeBtn) welcomeBtn.addEventListener('click', toggleTheme);
 })();
@@ -1572,16 +1472,16 @@ function initCatalogNav() {
     var nav = $('catalogNav');
 
     // Nav brand click → go back to welcome
-    $('navBrand').addEventListener('click', function() {
-        showWelcome();
-    });
+    var navBrand = $('navBrand');
+    if (navBrand) navBrand.addEventListener('click', function() { showWelcome(); });
 
     // Welcome brand click → go to catalog
     var wBrand = $('welcomeBrand');
     if (wBrand) wBrand.addEventListener('click', function() { showCatalog(); });
 
     // Tab switching
-    $('navTabs').addEventListener('click', function(e) {
+    var navTabs = $('navTabs');
+    if (navTabs) navTabs.addEventListener('click', function(e) {
         var tab = e.target.closest('.nav-tab');
         if (!tab) return;
         var cat = tab.getAttribute('data-cat');
@@ -1592,11 +1492,11 @@ function initCatalogNav() {
 
     // Scroll effect on nav
     var viewCatalog = $('viewCatalog');
-    viewCatalog.addEventListener('scroll', function() {
+    if (viewCatalog) viewCatalog.addEventListener('scroll', function() {
         if (viewCatalog.scrollTop > 10) {
-            nav.classList.add('scrolled');
+            if (nav) nav.classList.add('scrolled');
         } else {
-            nav.classList.remove('scrolled');
+            if (nav) nav.classList.remove('scrolled');
         }
     }, { passive: true });
 }
