@@ -63,6 +63,9 @@
         }
         body {
             position: relative;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
         }
 
         /* Canvas background */
@@ -244,22 +247,23 @@
         /* Floating card — bigger */
         .floating-card {
             position: absolute;
-            width: 210px;
-            height: 255px;
-            scale: var(--card-scale, 1);
+            width: 13.125em;   /* 210px @ 16px base */
+            height: 15.9375em; /* 255px @ 16px base */
+            /* Drive size via font-size (not CSS scale) so text is rasterized
+               at its final resolution instead of scaling a blurry bitmap. */
+            font-size: calc(var(--card-scale, 1) * 16px);
             background: rgba(8, 8, 12, 0.1);
             backdrop-filter: blur(19.2px);
             -webkit-backdrop-filter: blur(19.2px);
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 1em;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 22px 16px;
+            padding: 1.375em 1em;
             cursor: pointer;
-            will-change: transform, filter, opacity;
             transition: box-shadow 0.3s ease,
                         border-color 0.3s ease,
                         background 0.3s ease,
@@ -276,31 +280,31 @@
         [data-theme="light"] .floating-card { background: rgba(242, 242, 242, 0.1); }
         [data-theme="light"] .floating-card:hover { background: rgba(242, 242, 242, 0.85); }
         .floating-card .fc-icon {
-            font-size: 2rem;
-            margin-bottom: 12px;
+            font-size: 2em;
+            margin-bottom: 0.75em;
             display: block;
         }
         .floating-card .fc-name {
-            font-size: 0.84rem;
+            font-size: 0.84em;
             font-weight: 700;
             color: var(--text);
             opacity: 0.8;
-            margin-bottom: 5px;
+            margin-bottom: 0.3125em;
         }
         .floating-card .fc-desc {
-            font-size: 0.7rem;
+            font-size: 0.7em;
             color: var(--text-muted);
             line-height: 1.35;
         }
         /* Small badge like @coplin in ref image */
         .fc-tag-badge {
             position: absolute;
-            top: -10px;
-            right: -6px;
-            font-size: 0.58rem;
+            top: -0.7em;
+            right: -0.4em;
+            font-size: 0.58em;
             font-weight: 600;
-            padding: 3px 9px;
-            border-radius: 8px;
+            padding: 0.25em 0.75em;
+            border-radius: 0.6em;
             background: var(--pink);
             color: #fff;
             opacity: 0.85;
