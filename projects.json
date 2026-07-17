@@ -199,6 +199,18 @@
                 "桌面"
             ],
             "category": "tool"
+        },
+        {
+            "name": "夜深模式",
+            "desc": "Android 全屏降亮护眼工具 — 自定义颜色/透明度蒙版，覆盖状态栏与刘海",
+            "icon": "🌙",
+            "path": "DarkMask",
+            "tags": [
+                "Android",
+                "工具",
+                "护眼"
+            ],
+            "category": "tool"
         }
     ]
 }
