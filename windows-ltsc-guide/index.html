@@ -232,13 +232,19 @@
   }
   .fn a { color: #58a6ff; }
 
+  /* Hub World 返回链接（模板视觉，页面开头） */
   .hub-back {
     display: inline-flex; align-items: center; gap: 10px;
-    text-decoration: none; color: #848d97; font-size: 13px;
-    margin-bottom: 20px; transition: color 0.2s;
+    text-decoration: none; margin-bottom: 20px;
+    transition: opacity 0.3s;
   }
-  .hub-back:hover { color: #e6edf3; }
-  .hub-back__inner { display: flex; align-items: center; gap: 6px; }
+  .hub-back:hover { opacity: 0.7; }
+  .hub-back__inner {
+    display: flex; align-items: center; gap: 10px; padding-top: 3px;
+    font-family: "Bricolage Grotesque", "Segoe UI", sans-serif;
+    font-weight: 600; font-size: 19px; letter-spacing: -0.01em;
+    color: #e6edf3;
+  }
   .hub-back__logo {
     height: 1.12rem;
     width: auto;
