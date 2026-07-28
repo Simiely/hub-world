@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Windows系统Bug频发，怎么选更稳定</title>
+<link rel="icon" href="https://simiely.github.io/hub-world/favicon.png" type="image/png">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+    background: #0d1117;
+    color: #e6edf3;
+    line-height: 1.8;
+    padding: 32px 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+
+  /* ===== 标题 ===== */
+  h1 {
+    font-size: 26px; font-weight: 700; margin-bottom: 6px; color: #f0f6fc;
+  }
+  .subtitle {
+    font-size: 15px; color: #848d97; margin-bottom: 28px;
+  }
+  h2 {
+    font-size: 18px; font-weight: 600; color: #f0f6fc; margin-bottom: 14px;
+  }
+
+  /* ===== 结论卡片（突出） ===== */
+  .conclusion {
+    background: linear-gradient(135deg, #1f1722, #22151a);
+    border: 1px solid #ff9292;
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+  .conclusion .label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #0d1117;
+    background: #ff9292;
+    border-radius: 4px;
+    padding: 1px 10px;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+  .conclusion p { color: #e6edf3; margin-bottom: 0; }
+  .conclusion strong.hl { color: #ff9292; }
+
+  .conclusion-red {
+    background: linear-gradient(135deg, #1f1414, #221515);
+    border: 1px solid #da3633;
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+  .conclusion-red .label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #0d1117;
+    background: #f85149;
+    border-radius: 4px;
+    padding: 1px 10px;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+  .conclusion-red p { color: #e6edf3; margin-bottom: 0; }
+  .conclusion-red strong.hl { color: #f85149; }
+
+  /* ===== 补充信息（弱化） ===== */
+  .supplement {
+    font-size: 13px;
+    color: #484f58;
+    margin-bottom: 18px;
+    line-height: 1.7;
+  }
+  .supplement strong { color: #6e7681; }
+
+  /* ===== 分隔 ===== */
+  hr { border: none; border-top: 1px solid #21262d; margin: 28px 0; }
+
+  /* ===== 卡片时间线 ===== */
+  .card-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+  .bug-card {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .bug-card .time {
+    flex-shrink: 0;
+    width: 72px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #848d97;
+    padding-top: 2px;
+  }
+  .bug-card .body { flex: 1; font-size: 14px; color: #b0b8c4; line-height: 1.7; }
+  .bug-card .body strong { color: #e6edf3; }
+  .bug-card .body .bsod {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    background: #3d1a1a; color: #f85149; border-radius: 3px; padding: 0 6px;
+    vertical-align: middle; margin-right: 3px;
+  }
+  .bug-card .body .unfixed {
+    color: #f85149; font-weight: 600;
+  }
+  .bug-card.sep {
+    border-color: #30363d;
+    background: #11151c;
+  }
+  .bug-card.sep .body { font-size: 12px; color: #6e7681; }
+  .bug-card.sep .body strong { color: #ff9292; }
+  .bug-card.bsod-card { border-left: 3px solid #f85149; }
+  .bug-card.bad-card { border-left: 3px solid #da3633; }
+
+  /* ===== 原因卡片 ===== */
+  .cause-list { list-style: none; margin-bottom: 24px; }
+  .cause-list li {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #b0b8c4;
+    line-height: 1.7;
+  }
+  .cause-list li:last-child { margin-bottom: 0; }
+  .cause-list li strong { color: #e6edf3; }
+
+  /* ===== LTSC 三栏 ===== */
+  .benefits { display: flex; gap: 12px; margin-bottom: 24px; }
+  .benefit-card {
+    flex: 1; background: #161b22; border: 1px solid #21262d;
+    border-radius: 10px; padding: 16px;
+  }
+  .benefit-card .n { font-size: 11px; font-weight: 700; color: #ff9292; letter-spacing: 1px; margin-bottom: 4px; }
+  .benefit-card p { font-size: 14px; color: #848d97; margin-bottom: 0; line-height: 1.7; }
+  .benefit-card p strong { color: #e6edf3; }
+
+  /* ===== LTSC 自身 bug 卡片 ===== */
+  .small-card {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: #848d97;
+    line-height: 1.6;
+    display: flex;
+    gap: 8px;
+  }
+  .small-card .tag-l { flex-shrink: 0; font-size: 11px; color: #484f58; width: 56px; padding-top: 1px; }
+  .small-card strong { color: #b0b8c4; }
+
+  /* ===== 缺失列表 ===== */
+  .missing-list { background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 16px 20px; margin-bottom: 24px; }
+  .missing-list ul { list-style: none; }
+  .missing-list li {
+    font-size: 13px; color: #848d97; padding: 4px 0; padding-left: 16px;
+    position: relative; line-height: 1.7;
+  }
+  .missing-list li::before { content: "\2716"; position: absolute; left: 0; top: 4px; font-size: 11px; color: #da3633; }
+  .missing-list li strong { color: #e6edf3; }
+
+  /* ===== 选型 ===== */
+  .edition-grid { display: flex; gap: 12px; margin-bottom: 16px; }
+  .edition-card {
+    flex: 1; background: #161b22; border: 1px solid #21262d;
+    border-radius: 10px; padding: 18px 20px;
+  }
+  .edition-card.highlight { border-color: #ff9292; background: #1f1722; }
+  .edition-card .tag {
+    display: inline-block; font-size: 12px; font-weight: 700; color: #0d1117;
+    background: #848d97; border-radius: 4px; padding: 2px 10px; margin-bottom: 8px;
+  }
+  .edition-card.highlight .tag { background: #ff9292; }
+  .edition-card h3 { font-size: 17px; font-weight: 600; color: #f0f6fc; margin-bottom: 8px; }
+  .spec { font-size: 13px; color: #848d97; margin-bottom: 3px; }
+  .spec strong { color: #e6edf3; }
+  .lt { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 4px; }
+  .lt td { padding: 5px 0; color: #848d97; }
+  .lt td:last-child { text-align: right; color: #e6edf3; font-weight: 600; }
+  .lt .rec td { color: #ff9292; }
+
+  .tree {
+    background: #161b22; border: 1px solid #21262d; border-radius: 10px;
+    padding: 20px 22px; margin-bottom: 24px;
+  }
+  .tree code {
+    display: block; font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+    font-size: 15px; line-height: 2.1; color: #e6edf3; white-space: pre;
+  }
+  .tree .g { color: #7ee787; }
+  .tree .r { color: #ff9292; }
+
+  .fn {
+    font-size: 12px; color: #484f58; text-align: center; margin-top: 20px;
+  }
+  .fn a { color: #58a6ff; }
+
+  /* Hub World 返回链接 */
+  .hub-back {
+    display: inline-flex; align-items: center; gap: 8px;
+    text-decoration: none; color: #848d97; font-size: 13px;
+    margin-bottom: 20px; transition: color 0.2s;
+  }
+  .hub-back:hover { color: #e6edf3; }
+  .hub-back__logo { height: 20px; width: auto; vertical-align: middle; }
+  .hub-back__inner { display: flex; align-items: center; gap: 6px; }
+
+  @media (max-width: 640px) {
+    body { padding: 20px 14px; }
+    h1 { font-size: 22px; }
+    .subtitle { font-size: 14px; margin-bottom: 22px; }
+    .benefits, .edition-grid { flex-direction: column; gap: 10px; }
+    .bug-card { flex-direction: column; gap: 4px; padding: 12px 14px; }
+    .bug-card .time { width: auto; }
+    .conclusion, .conclusion-red { padding: 14px 16px; font-size: 14px; }
+    .tree code { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <a class="hub-back" href="https://simiely.github.io/hub-world/" aria-label="Hub World">
+    <span class="hub-back__inner">
+      <img class="hub-back__logo" src="https://simiely.github.io/hub-world/logo.png" alt="Hub World">
+      <span>Hub World</span>
+    </span>
+  </a>
+
+  <h1>Windows 系统 Bug 频发，怎么选更稳定？</h1>
+  <p class="subtitle">从 Win11 发布至今的更新事故，看 LTSC 为什么是更省心的选择</p>
+
+  <div class="conclusion">
+    <span class="label">先说结论</span>
+    <p>
+      <strong>选 LTSC。</strong> Windows 的 LTSC 版本（长期服务版）是目前最稳定、最省心的选择。<br><br>
+      原因很简单：标准版（Home/Pro）每次大版本更新都捆绑了功能变更 + 驱动更新 + 安全修补，一个组件出问题就可能导致<strong class="hl">蓝屏、启动循环、SSD 消失、系统无法修复</strong>。从 2021 年到 2026 年，<strong class="hl">几乎每年都有一次致命级翻车</strong>，而且没有改善迹象。<br><br>
+      LTSC <strong class="hl">只收安全补丁，不收任何功能更新</strong>。没有大版本更新，就不会有连带引入的回归 bug。<br><br>
+      ⚠️ 但即使安装了 LTSC，也<strong class="hl">不建议第一时间打每月安全补丁</strong>。LTSC 的月度安全更新与标准版共享代码基座，偶尔也会带出问题（如 2026-03 导致微软账号登录报错、BitLocker 弹窗等）。建议<strong class="hl">延迟 1-2 个月</strong>，等社区反馈确认无问题再更新。<br><br>
+      <strong class="hl">甚至不更新也没关系。</strong> LTSC 没有功能更新，你缺的只是安全补丁——对于个人家用电脑，只要不上来历不明的网站、不装来路不明的软件，安全性风险极低。微软很多安全漏洞披露的是企业域环境攻击路径，普通家庭用户根本不会被瞄上。<br><br>
+      老旧机器（不支持 TPM 2.0）→ <strong class="hl">Win10 IoT LTSC 2021</strong>（支持至 2032）<br>
+      新机器（支持 TPM 2.0）→ <strong class="hl">Win11 IoT LTSC 2024</strong>（支持至 2034）
+    </p>
+  </div>
+
+  <hr>
+
+  <!-- ====== 第一章：先摆问题 ====== -->
+  <h2>这些年 Windows 更新出了多少事？</h2>
+  <p class="supplement">以下列出 Win11 发布以来影响范围广、被大量证实的更新事故。<strong>红色</strong>为官方承认的 BSOD 类问题。<strong>深红标记</strong>为迄今未修复的遗留 bug。</p>
+
+  <div class="card-grid">
+    <div class="bug-card">
+      <span class="time">2021-10</span>
+      <div class="body"><strong>首发即翻车</strong> — AMD 性能降 10-15%、VirtualBox 不兼容、打印机失效</div>
+    </div>
+    <div class="bug-card">
+      <span class="time">2022-09</span>
+      <div class="body"><strong>恢复拖放功能</strong> — 21H2 被砍掉的任务栏拖放终于补回来了，但文件管理器仍存在卡顿问题</div>
+    </div>
+    <div class="bug-card">
+      <span class="time">2023-10</span>
+      <div class="body"><strong>Copilot 深度集成引发争议</strong> — 23H2 将 Copilot 嵌入系统层，部分用户反馈日常操作中意外触发、影响体验</div>
+    </div>
+    <div class="bug-card bsod-card">
+      <span class="time">2024-06</span>
+      <div class="body"><span class="bsod">BSOD</span> <strong>启动循环</strong> — KB5039212 导致反复蓝屏重启（0xC000021A）</div>
+    </div>
+    <div class="bug-card bsod-card">
+      <span class="time">2024-09</span>
+      <div class="body"><span class="bsod">BSOD</span> <strong>无限重启 + BitLocker 锁死</strong> — KB5043145 安装后部分设备数据险些丢失</div>
+    </div>
+    <div class="bug-card sep">
+      <span class="time" style="color:#484f58;">⬇ 以下为 Win11 LTSC 2024 发布后</span>
+      <div class="body"><strong>LTSC 用户全部免疫</strong></div>
+    </div>
+    <div class="bug-card bsod-card">
+      <span class="time">2024-10</span>
+      <div class="body"><span class="bsod">BSOD</span> <strong>Intel SST 驱动不兼容蓝屏</strong> — 11 代酷睿笔记本大面积蓝屏、音频丢失，微软紧急暂停推送。同期 Dirac 失声、摄像头卡死、壁纸应用失效</div>
+    </div>
+    <div class="bug-card bsod-card">
+      <span class="time">2025-01</span>
+      <div class="body"><span class="bsod">严重</span> <strong>USB DAC 音频全废 + 摄像头失联</strong> — KB5050009 后外置解码器集体无法出声，HP/Dell 内置摄像头找不到，横跨 22H2~24H2 全线。同期 KB5050094 导致 Premiere 多屏拖拽报废</div>
+    </div>
+    <div class="bug-card bad-card">
+      <span class="time">2025-02</span>
+      <div class="body"><strong>资源管理器完全死掉</strong> — KB5051987 后 Explorer 无响应，用户被迫回滚</div>
+    </div>
+    <div class="bug-card bad-card">
+      <span class="time">2025-03</span>
+      <div class="body"><strong>系统卡顿 + 游戏掉帧 + 蓝屏</strong> — KB5053598 安装失败率异常高</div>
+    </div>
+    <div class="bug-card bad-card">
+      <span class="time">2025-08</span>
+      <div class="body"><strong>SSD 离奇消失</strong> — 传输超 50GB 后 SSD 从系统消失！<span class="unfixed">截至 2026-07 未完全修复</span></div>
+    </div>
+    <div class="bug-card bsod-card">
+      <span class="time">2025-09~10</span>
+      <div class="body"><span class="bsod">BSOD</span> <strong>WinRE 中 USB 键鼠失效</strong> — 崩了都没法修。同期 DRM 播放失败、sprotect.sys 死机</div>
+    </div>
+    <div class="bug-card bad-card">
+      <span class="time">2026-01</span>
+      <div class="body"><strong>Outlook 崩溃 + 黑屏</strong> — KB5074109 "2026 开年大翻车"：桌面背景被重置为黑色、任务管理器内存泄漏、Azure 远程桌面瘫痪</div>
+    </div>
+    <div class="bug-card bad-card">
+      <span class="time">2026-07</span>
+      <div class="body"><strong>Dell 笔记本发热关机</strong> — KB5101650 后部分 Dell 机型意外关机、续航骤降，波及 24H2 和 25H2</div>
+    </div>
+  </div>
+
+  <div class="conclusion-red">
+    <span class="label">结论</span>
+    <p>从 2021 到 2026，<strong class="hl">几乎每年都有至少一次致命级更新事故</strong>——蓝屏、启动循环、SSD 消失、BitLocker 锁死、系统不能修。而且这个趋势没有改善的迹象。</p>
+  </div>
+
+  <hr>
+
+  <!-- ====== 第二章：原因 ====== -->
+  <h2>为什么标准版更新这么容易翻车？</h2>
+  <ul class="cause-list">
+    <li><strong>功能 + 安全更新捆绑推送</strong> — 每月累积更新包含安全补丁、功能调整、驱动更新、框架变更，一个组件出问题整包翻车</li>
+    <li><strong>硬件组合无法穷尽测试</strong> — 即使有 Insider 计划，也不可能覆盖市面上所有 CPU/GPU/驱动/外设组合</li>
+    <li><strong>AI 投入稀释了核心质量</strong> — 微软近几年在 Copilot/AI 上投入巨大，核心组件质量被挤压</li>
+    <li><strong>修了又犯的恶性循环</strong> — Wi-Fi、蓝牙、文件管理器问题反复出现，说明测试流程有系统性漏洞</li>
+  </ul>
+
+  <div class="conclusion">
+    <span class="label">核心思路</span>
+    <p>LTSC 的解决方案很简单：<strong class="hl">不要功能更新，只要安全补丁</strong>。没有大版本更新，就不会有连带引入的回归 bug。</p>
+  </div>
+
+  <hr>
+
+  <!-- ====== 第三章：LTSC 是什么 ====== -->
+  <h2>解决方案：什么是 LTSC？</h2>
+
+  <div class="conclusion" style="margin-bottom:18px;">
+    <span class="label">定义</span>
+    <p><strong>LTSC</strong>（Long-Term Servicing Channel）是微软的"长期服务版"，专为稳定第一的场景设计。不面向零售，但懂的人当中口碑极好。</p>
+  </div>
+
+  <div class="benefits">
+    <div class="benefit-card">
+      <span class="n">核心 1</span>
+      <p><strong>没有功能更新</strong><br>不存在"更新后蓝屏/卡死/SSD消失"的风险</p>
+    </div>
+    <div class="benefit-card">
+      <span class="n">核心 2</span>
+      <p><strong>干净安静</strong><br>没有 Copilot、Cortana 等后台，开机内存占用低</p>
+    </div>
+    <div class="benefit-card">
+      <span class="n">核心 3</span>
+      <p><strong>行为可预期</strong><br>系统十年不变，不会突然多了个 AI 助手</p>
+    </div>
+  </div>
+
+  <p class="supplement" style="margin-bottom:24px;">
+    两个版本：<strong>Enterprise LTSC</strong>（5 年支持）与 <strong>IoT Enterprise LTSC</strong>（10 年支持），功能和安装一模一样，推荐个人用户选 IoT 版。
+    Edge 浏览器从 Win10 LTSC 2021 起自带 Chromium 版；Store 默认没有，可手动安装。
+  </p>
+
+  <hr>
+
+  <!-- ====== 第四章：LTSC 自身有没有 bug ====== -->
+  <h2>那 LTSC 自己有没有翻过车？</h2>
+  <p class="supplement">以下是微软官方 Release Health 记录的 Win10 LTSC 2021 近两年全部已知问题：</p>
+
+  <div class="small-card"><span class="tag-l">2026-06</span><strong>回收站显示内部文件名</strong> — 删除确认框显示 $Rxxxxx.ext，纯 UI 问题，次月修复</div>
+  <div class="small-card"><span class="tag-l">2026-01</span><strong>部分设备无法关机</strong> — 仅限 Secure Launch+VSM 特定 PC，范围极窄，次月修复</div>
+  <div class="small-card"><span class="tag-l">2026-01</span><strong>Outlook+OneDrive PST 卡死</strong> — 仅企业场景，普通用户不涉及，两周内热修复</div>
+  <div class="small-card"><span class="tag-l">2026-01</span><strong>Azure 虚拟桌面认证失败</strong> — 仅企业远程桌面，一周内热修复</div>
+  <div class="small-card"><span class="tag-l">2025-12</span><strong>MSMQ 消息队列失败</strong> — 仅企业场景，9 天修复</div>
+  <div class="small-card"><span class="tag-l">2025-10</span><strong>"终止支持"文案错误</strong> — 设置页面显示错误，纯 UI bug</div>
+  <div class="small-card"><span class="tag-l">2025-08</span><strong>UAC 弹窗问题</strong> — 仅影响 MSI 企业推送场景</div>
+
+  <p class="supplement" style="margin-top:14px;">
+    社区报告过一个稍大的问题：Win10 LTSC 2021 初始版<strong>缺少 VCLibs 依赖库</strong>，导致 msappx CPU 高占用、输入法无候选框。安装 Store 或手动部署 VCLibs 即可解决，已在累积更新中修复。
+  </p>
+
+  <div class="conclusion-red">
+    <span class="label">关键对比</span>
+    <p>
+      ✅ <strong>LTSC 的问题</strong>：UI 显示错误、特定企业场景故障、一次性缺库 — <strong class="hl">没有蓝屏、没有启动循环、没有 SSD 消失</strong>。<br><br>
+      ❌ <strong>标准版的问题</strong>：蓝屏、无限重启、BitLocker 锁死、SSD 消失、摄像头失效 — <strong class="hl">每年至少一次致命级翻车</strong>。<br><br>
+      而且 LTSC 的所有 bug 都来自<strong>共享的安全更新基座</strong>（每月必须打的安全补丁），<strong>功能更新层面的 bug 一个都没有</strong>——因为没有功能更新。
+    </p>
+  </div>
+
+  <hr>
+
+  <!-- ====== 补充：LTSC 安全更新也会翻车吗 ====== -->
+  <h2>LTSC 的安全更新就绝对安全吗？</h2>
+  <p class="supplement">也不完全是。LTSC 每月仍会收到安全补丁，这些补丁与标准版共享同一代码库，bug 也可能波及 LTSC。区别在于<strong>影响范围小、修复快</strong>。</p>
+
+  <div class="card-grid">
+    <div class="bug-card">
+      <span class="time">2026-04</span>
+      <div class="body"><strong>BitLocker 恢复密钥弹窗</strong> — KB5082200 在特定组策略配置下触发一次性 BitLocker 恢复提示，不影响普通用户</div>
+    </div>
+    <div class="bug-card">
+      <span class="time">2026-04</span>
+      <div class="body"><strong>RDP 安全警告显示异常</strong> — 多显示器+不同缩放比例下安全弹窗文字重叠，次月修复</div>
+    </div>
+    <div class="bug-card">
+      <span class="time">2026-04</span>
+      <div class="body"><strong>备份软件因驱动黑名单失效</strong> — 安全强化误杀旧版备份工具驱动，需更新软件版本</div>
+    </div>
+    <div class="bug-card">
+      <span class="time">2026-03</span>
+      <div class="body"><strong>Microsoft 账号登录"无 Internet"</strong> — KB5078885 后即使网络正常也报错，阻止访问 Teams 等微软服务</div>
+    </div>
+  </div>
+
+  <div class="conclusion">
+    <span class="label">应对策略</span>
+    <p>LTSC 的安全更新同样建议<strong class="hl">延迟 1-2 个月再打</strong>。等社区反馈确认无问题后再更新，既保证安全又不踩坑。这是 LTSC 相比标准版的一大优势——标准版有功能更新强制推送，你没法拖；LTSC 没有功能更新，安全补丁完全可以手动控制节奏。<br><br>
+    <strong class="hl">甚至一直不更新也没问题。</strong> 对于家庭用户来说，LTSC 本身就是为"不变化"设计的。不打安全补丁意味着你错过了针对已知漏洞的修复——但只要你规规矩矩上网、用正版软件、不瞎点链接，中招的概率极低。很多 CVE 披露的攻击路径依赖企业域环境或管理员提权，普通个人电脑根本不在攻击面上。</p>
+  </div>
+
+  <hr>
+
+  <!-- ====== 第五章：取舍 ====== -->
+  <h2>LTSC 的取舍</h2>
+  <p class="supplement">按影响范围从大到小排列：</p>
+  <div class="missing-list">
+    <ul>
+      <li><strong>功能更新</strong> — 永不接收大版本更新，新硬件优化可能滞后</li>
+      <li><strong>新硬件优化滞后</strong> — 新 CPU/GPU 的调度优化和 DirectX 改进需等待下一个 LTSC 版本</li>
+      <li><strong>UWP 内置应用</strong> — 日历、邮件、相机、OneNote 等需自行安装</li>
+      <li><strong>Microsoft Store</strong> — 默认没有，可手动安装</li>
+      <li><strong>Copilot / AI 功能</strong> — 不含 Recall、实时字幕等</li>
+      <li><strong>Edge 版本滞后</strong> — LTSC 2021 起自带 Chromium Edge，但非最新版</li>
+      <li><strong>Xbox / PC Game Pass</strong> — 无集成，手柄驱动不受影响</li>
+      <li><strong>Windows Ink</strong> — 触控笔功能受限</li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <!-- ====== 第六章：最终决策 ====== -->
+  <h2>那到底怎么选？</h2>
+
+  <div class="edition-grid">
+    <div class="edition-card">
+      <span class="tag">老旧机器</span>
+      <h3>Win10 LTSC 2021</h3>
+      <div class="spec">CPU: 1GHz / 内存: <strong>2GB</strong> / 存储: <strong>20GB</strong></div>
+      <div class="spec">TPM 2.0: <strong>不强制</strong></div>
+      <table class="lt">
+        <tr><td>企业版</td><td>2027-01-12</td></tr>
+        <tr class="rec"><td>IoT 版 ✅</td><td>2032-01-13</td></tr>
+      </table>
+    </div>
+    <div class="edition-card highlight">
+      <span class="tag">新机器</span>
+      <h3>Win11 LTSC 2024</h3>
+      <div class="spec">CPU: 1GHz 2核+ / 内存: <strong>4GB</strong> / 存储: <strong>64GB</strong></div>
+      <div class="spec">TPM 2.0: <strong>强制</strong></div>
+      <table class="lt">
+        <tr><td>企业版</td><td>2029-10-09</td></tr>
+        <tr class="rec"><td>IoT 版 ✅</td><td>2034-10-10</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="tree">
+    <code>
+电脑是否支持 TPM 2.0？
+<span class="g">├── 否</span> → <span class="r">Win10 IoT LTSC 2021</span>（到 2032）
+<span class="g">└── 是</span> → <span class="r">Win11 IoT LTSC 2024</span>（到 2034）</code>
+  </div>
+
+  <div class="conclusion">
+    <span class="label">最终建议</span>
+    <p>如果你厌倦了每次更新都像开盲盒，LTSC 就是那个"<strong class="hl">装好就能安心用很多年</strong>"的选择。<br><br>
+    回头看上面的更新时间线——那些蓝屏、启动循环、SSD 消失、WinRE 键鼠失灵……<strong class="hl">LTSC 用户一个都碰不到</strong>，因为没有功能更新可翻车。</p>
+  </div>
+
+  <p class="fn">
+    数据来源：<a href="https://learn.microsoft.com/zh-cn/windows/release-health/" target="_blank">Microsoft Windows 发布运行状况</a>、
+    Windows Latest、PCWorld、Reddit 社区，交叉验证于 2026-07-28
+  </p>
+
+</div>
+
+</div>
+</body>
+</html>
