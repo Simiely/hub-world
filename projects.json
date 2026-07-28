@@ -211,6 +211,18 @@
                 "护眼"
             ],
             "category": "tool"
+        },
+        {
+            "name": "Windows LTSC 选购指南",
+            "desc": "从 Win11 发布至今的更新事故时间线，解释为什么 LTSC 是最稳定省心的选择 — 含交互版和静态版",
+            "icon": "🪟",
+            "path": "windows-ltsc-guide",
+            "tags": [
+                "Windows",
+                "系统",
+                "指南"
+            ],
+            "category": "web"
         }
     ]
 }

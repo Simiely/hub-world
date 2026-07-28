@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Windows系统Bug频发，怎么选更稳定（交互版）</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+    background: #0d1117;
+    color: #e6edf3;
+    line-height: 1.8;
+    padding: 32px 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+
+  h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; color: #f0f6fc; }
+  .subtitle { font-size: 15px; color: #848d97; margin-bottom: 28px; }
+  h2 { font-size: 18px; font-weight: 600; color: #f0f6fc; margin-bottom: 14px; }
+
+  /* 结论卡片 */
+  .conclusion {
+    background: linear-gradient(135deg, #1f1722, #22151a);
+    border: 1px solid #ff9292; border-radius: 12px;
+    padding: 18px 22px; margin-bottom: 28px; font-size: 15px; line-height: 1.8;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  .conclusion:hover { box-shadow: 0 0 20px rgba(255,146,146,0.06); border-color: #ffa8a8; }
+  .conclusion .label {
+    display: inline-block; font-size: 11px; font-weight: 700; color: #0d1117;
+    background: #ff9292; border-radius: 4px; padding: 1px 10px; margin-bottom: 6px; letter-spacing: 1px;
+  }
+  .conclusion p { color: #e6edf3; margin-bottom: 0; }
+  .conclusion strong.hl { color: #ff9292; }
+
+  .conclusion-red {
+    background: linear-gradient(135deg, #1f1414, #221515);
+    border: 1px solid #da3633; border-radius: 12px;
+    padding: 18px 22px; margin-bottom: 28px; font-size: 15px; line-height: 1.8;
+    transition: box-shadow 0.2s ease;
+  }
+  .conclusion-red:hover { box-shadow: 0 0 20px rgba(218,54,51,0.08); }
+  .conclusion-red .label {
+    display: inline-block; font-size: 11px; font-weight: 700; color: #0d1117;
+    background: #f85149; border-radius: 4px; padding: 1px 10px; margin-bottom: 6px; letter-spacing: 1px;
+  }
+  .conclusion-red p { color: #e6edf3; margin-bottom: 0; }
+  .conclusion-red strong.hl { color: #f85149; }
+
+  hr { border: none; border-top: 1px solid #21262d; margin: 28px 0; }
+
+  /* ===== 折叠面板 ===== */
+  .collapse {
+    border: 1px solid #21262d;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .collapse-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    background: #161b22;
+    cursor: pointer;
+    user-select: none;
+    font-size: 15px;
+    font-weight: 600;
+    color: #e6edf3;
+    transition: background 0.15s;
+  }
+  .collapse-header:hover { background: #1c2128; }
+  .collapse-header .arrow {
+    font-size: 12px;
+    color: #848d97;
+    transition: transform 0.25s ease;
+  }
+  .collapse-header .arrow.open { transform: rotate(180deg); }
+  .collapse-header .badge-count {
+    font-size: 11px;
+    font-weight: 600;
+    color: #848d97;
+    background: #21262d;
+    border-radius: 10px;
+    padding: 0 8px;
+    margin-left: 8px;
+  }
+  .collapse-body {
+    max-height: 0;
+    overflow-y: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+    padding: 0 18px;
+    background: #11151c;
+    box-sizing: content-box;
+  }
+  .collapse-body.open {
+    padding: 16px 18px;
+  }
+
+  /* 折叠面板内的卡片 */
+  .card-grid { display: flex; flex-direction: column; gap: 8px; }
+  .bug-card {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .bug-card:hover {
+    border-color: #424a56;
+    transform: translateX(3px);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.03);
+  }
+  .bug-card.sep:hover { transform: none; border-color: #30363d; }
+  .bug-card.bsod-card:hover { border-left-color: #f85149; border-color: #553030; }
+  .bug-card.bad-card:hover { border-left-color: #da3633; border-color: #4a2828; }
+  .bug-card .time {
+    flex-shrink: 0; width: 72px;
+    font-size: 12px; font-weight: 700; color: #848d97; padding-top: 2px;
+  }
+  .bug-card .body { flex: 1; font-size: 14px; color: #b0b8c4; line-height: 1.7; }
+  .bug-card .body strong { color: #e6edf3; }
+  .bug-card .body .bsod {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    background: #3d1a1a; color: #f85149; border-radius: 3px; padding: 0 6px;
+    vertical-align: middle; margin-right: 3px;
+  }
+  .bug-card .body .unfixed { color: #f85149; font-weight: 600; }
+  .bug-card.sep { border-color: #30363d; background: #11151c; }
+  .bug-card.sep .body { font-size: 12px; color: #6e7681; }
+  .bug-card.sep .body strong { color: #ff9292; }
+  .bug-card.bsod-card { border-left: 3px solid #f85149; }
+  .bug-card.bad-card { border-left: 3px solid #da3633; }
+
+  .cause-list { list-style: none; }
+  .cause-list li {
+    background: #161b22; border: 1px solid #21262d; border-radius: 8px;
+    padding: 12px 16px; margin-bottom: 8px; font-size: 14px; color: #b0b8c4; line-height: 1.7;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .cause-list li:hover { border-color: #424a56; transform: translateX(3px); }
+  .cause-list li:last-child { margin-bottom: 0; }
+  .cause-list li strong { color: #e6edf3; }
+
+  .small-cards { display: flex; flex-direction: column; gap: 6px; }
+  .small-card {
+    background: #161b22; border: 1px solid #21262d; border-radius: 6px;
+    padding: 8px 12px; font-size: 13px; color: #848d97; line-height: 1.6;
+    display: flex; gap: 8px;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .small-card:hover { border-color: #424a56; transform: translateX(2px); }
+  .small-card .tag-l { flex-shrink: 0; font-size: 11px; color: #484f58; width: 56px; }
+  .small-card strong { color: #b0b8c4; }
+
+  .missing-list { list-style: none; }
+  .missing-list li {
+    font-size: 13px; color: #848d97; padding: 4px 0; padding-left: 16px;
+    position: relative; line-height: 1.7;
+    transition: color 0.15s ease, padding-left 0.2s ease;
+  }
+  .missing-list li:hover { color: #b0b8c4; padding-left: 20px; }
+  .missing-list li:hover strong { color: #ff9292; }
+  .missing-list li::before { content: "\2716"; position: absolute; left: 0; top: 4px; font-size: 11px; color: #da3633; transition: transform 0.2s ease; }
+  .missing-list li:hover::before { transform: scale(1.2); }
+  .missing-list li strong { color: #e6edf3; }
+
+  /* 三栏 */
+  .benefits { display: flex; gap: 12px; margin-bottom: 24px; }
+  .benefit-card {
+    flex: 1; background: #161b22; border: 1px solid #21262d;
+    border-radius: 10px; padding: 16px;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .benefit-card:hover {
+    border-color: #ff9292;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(255,146,146,0.08);
+  }
+  .benefit-card .n { font-size: 11px; font-weight: 700; color: #ff9292; letter-spacing: 1px; margin-bottom: 4px; }
+  .benefit-card p { font-size: 14px; color: #848d97; margin-bottom: 0; line-height: 1.7; }
+  .benefit-card p strong { color: #e6edf3; }
+
+  /* ��型 */
+  .edition-grid { display: flex; gap: 12px; margin-bottom: 16px; }
+  .edition-card {
+    flex: 1; background: #161b22; border: 1px solid #21262d;
+    border-radius: 10px; padding: 18px 20px;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .edition-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(255,255,255,0.04); }
+  .edition-card.highlight:hover { border-color: #ff9292; box-shadow: 0 4px 16px rgba(255,146,146,0.1); }
+  .edition-card.highlight { border-color: #ff9292; background: #1f1722; }
+  .edition-card .tag {
+    display: inline-block; font-size: 12px; font-weight: 700; color: #0d1117;
+    background: #848d97; border-radius: 4px; padding: 2px 10px; margin-bottom: 8px;
+  }
+  .edition-card.highlight .tag { background: #ff9292; }
+  .edition-card h3 { font-size: 17px; font-weight: 600; color: #f0f6fc; margin-bottom: 8px; }
+  .spec { font-size: 13px; color: #848d97; margin-bottom: 3px; }
+  .spec strong { color: #e6edf3; }
+  .lt { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 4px; }
+  .lt td { padding: 5px 0; color: #848d97; }
+  .lt td:last-child { text-align: right; color: #e6edf3; font-weight: 600; }
+  .lt .rec td { color: #ff9292; }
+  .edition-note { font-size: 13px; color: #484f58; margin-bottom: 24px; }
+
+  .tree {
+    background: #161b22; border: 1px solid #21262d; border-radius: 10px;
+    padding: 20px 22px; margin-bottom: 24px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .tree:hover { border-color: #ff9292; box-shadow: 0 0 16px rgba(255,146,146,0.06); }
+  .tree code {
+    display: block; font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+    font-size: 15px; line-height: 2.1; color: #e6edf3; white-space: pre;
+  }
+  .tree .g { color: #7ee787; }
+  .tree .r { color: #ff9292; }
+
+  .fn {
+    font-size: 12px; color: #484f58; text-align: center; margin-top: 20px;
+  }
+  .fn a { color: #58a6ff; }
+
+  @media (max-width: 640px) {
+    body { padding: 20px 14px; }
+    h1 { font-size: 22px; }
+    .subtitle { font-size: 14px; margin-bottom: 22px; }
+    .benefits, .edition-grid { flex-direction: column; gap: 10px; }
+    .bug-card { flex-direction: column; gap: 4px; padding: 12px 14px; }
+    .bug-card .time { width: auto; }
+    .conclusion, .conclusion-red { padding: 14px 16px; font-size: 14px; }
+    .tree code { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>Windows 系统 Bug 频发，怎么选更稳定？</h1>
+  <p class="subtitle">交互版 · 点击灰色标题展开详情</p>
+
+  <!-- ====== 结论 ====== -->
+  <div class="conclusion">
+    <span class="label">先说结论</span>
+    <p>
+      <strong>选 LTSC。</strong> Windows 的 LTSC 版本（长期服务版）是目前最稳定、最省心的选择。<br><br>
+      原因很简单：标准版每次大版本更新都捆绑了功能变更 + 驱动更新 + 安全修补，一个组件出问题就可能导致<strong class="hl">蓝屏、启动循环、SSD 消失、系统无法修复</strong>。从 2021 年到 2026 年，<strong class="hl">几乎每年都有一次致命级翻车</strong>，而且没有改善迹象。<br><br>
+      LTSC <strong class="hl">只收安全补丁，不收任何功能更新</strong>。没有大版本更新，就不会有连带引入的回归 bug。<br><br>
+      ⚠️ 但即使安装了 LTSC，也<strong class="hl">不建议第一时间打每月安全补丁</strong>。LTSC 的月度安全更新与标准版共享代码基座，偶尔也会带出问题。建议<strong class="hl">延迟 1-2 个月</strong>，等社区反馈确认无问题再更新。<br><br>
+      <strong class="hl">甚至不更新也没关系。</strong> 对于个人家用电脑，只要不上来历不明的网站、不装来路不明的软件，安全性风险极低。<br><br>
+      老旧机器（不支持 TPM 2.0）→ <strong class="hl">Win10 IoT LTSC 2021</strong>（支持至 2032）<br>
+      新机器（支持 TPM 2.0）→ <strong class="hl">Win11 IoT LTSC 2024</strong>（支持至 2034）
+    </p>
+  </div>
+
+  <hr>
+
+  <!-- ====== 第一章：更新时间线（折叠） ====== -->
+  <div class="collapse">
+    <div class="collapse-header" onclick="toggle(this)">
+      <span>📋 这些年 Windows 更新出了多少事？ <span class="badge-count">14 条</span></span>
+      <span class="arrow">▾</span>
+    </div>
+    <div class="collapse-body">
+      <p style="font-size:13px; color:#6e7681; margin-bottom:12px;">以下为 Win11 发布以来影响范围广、被大量证实的更新事故。红色左边框 = 官方 BSOD。</p>
+      <div class="card-grid">
+        <div class="bug-card"><span class="time">2021-10</span><div class="body"><strong>首发即翻车</strong> — AMD 性能降 10-15%、VirtualBox 不兼容、打印机失效</div></div>
+        <div class="bug-card"><span class="time">2022-09</span><div class="body"><strong>恢复拖放功能</strong> — 21H2 被砍掉的任务栏拖放终于补回来了</div></div>
+        <div class="bug-card"><span class="time">2023-10</span><div class="body"><strong>Copilot 深度集成</strong> — 23H2 将 Copilot 嵌入系统层，部分用户反馈意外触发</div></div>
+        <div class="bug-card bsod-card"><span class="time">2024-06</span><div class="body"><span class="bsod">BSOD</span> <strong>启动循环</strong> — KB5039212 反复蓝屏重启（0xC000021A）</div></div>
+        <div class="bug-card bsod-card"><span class="time">2024-09</span><div class="body"><span class="bsod">BSOD</span> <strong>无限重启 + BitLocker 锁死</strong> — KB5043145 数据险些丢失</div></div>
+        <div class="bug-card sep"><span class="time" style="color:#484f58;">⬇ LTSC 发布后</span><div class="body"><strong>LTSC 用户全部免疫</strong></div></div>
+        <div class="bug-card bsod-card"><span class="time">2024-10</span><div class="body"><span class="bsod">BSOD</span> <strong>Intel SST 蓝屏</strong> — 11 代酷睿大面积蓝屏、音频丢矢，同期 Dirac 失声、摄像头卡死</div></div>
+        <div class="bug-card bsod-card"><span class="time">2025-01</span><div class="body"><span class="bsod">严重</span> <strong>USB DAC 全废 + 摄像头失联</strong> — 横跨 22H2~24H2 全线，Premiere 拖拽也报废</div></div>
+        <div class="bug-card bad-card"><span class="time">2025-02</span><div class="body"><strong>资源管理器完全死掉</strong> — KB5051987 后 Explorer 无响应，用户被迫回滚</div></div>
+        <div class="bug-card bad-card"><span class="time">2025-03</span><div class="body"><strong>系统卡顿 + 游戏掉帧 + 蓝屏</strong> — KB5053598 安装失败率异常高</div></div>
+        <div class="bug-card bad-card"><span class="time">2025-08</span><div class="body"><strong>SSD 离奇消失</strong> — 传输超 50GB 后 SSD 从系统消失！<span class="unfixed">未完全修复</span></div></div>
+        <div class="bug-card bsod-card"><span class="time">2025-09~10</span><div class="body"><span class="bsod">BSOD</span> <strong>WinRE 中 USB 键鼠失效</strong> — 崩了都没法修</div></div>
+        <div class="bug-card bad-card"><span class="time">2026-01</span><div class="body"><strong>Outlook 崩溃 + 黑屏</strong> — KB5074109 "2026 开年大翻车"</div></div>
+        <div class="bug-card bad-card"><span class="time">2026-07</span><div class="body"><strong>Dell 笔记本发热关机</strong> — KB5101650，波及 24H2 和 25H2</div></div>
+      </div>
+      <div class="conclusion-red" style="margin-top:14px; margin-bottom:0;">
+        <span class="label">结论</span>
+        <p>从 2021 到 2026，<strong class="hl">几乎每年都有至少一次致命级更新事故</strong>——蓝屏、启动循环、SSD 消失。而且这个趋势没有改善。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 第二章：原因分析（折叠） ====== -->
+  <div class="collapse">
+    <div class="collapse-header" onclick="toggle(this)">
+      <span>🔍 为什么标准版更新这么容易翻车？</span>
+      <span class="arrow">▾</span>
+    </div>
+    <div class="collapse-body">
+      <ul class="cause-list">
+        <li><strong>功能 + 安全更新捆绑推送</strong> — 每月累积更新包含安全补丁、功能调整、驱动更新，一个组件出问题整包翻车</li>
+        <li><strong>硬件组合无法穷尽测试</strong> — Insider 计划也不可能覆盖所有 CPU/GPU/驱动组合</li>
+        <li><strong>AI 投入稀释了核心质量</strong> — 微软近年在 Copilot/AI 投入大，核心组件质量被挤压</li>
+        <li><strong>修了又犯的恶性循环</strong> — Wi-Fi、蓝牙、文件管理器问题反复出现</li>
+      </ul>
+      <div class="conclusion" style="margin-bottom:0; margin-top:12px;">
+        <span class="label">核心思路</span>
+        <p>LTSC 的解决方案很简单：<strong class="hl">不要功能更新，只要安全补丁</strong>。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 第三章：LTSC 定义（不折叠） ====== -->
+  <h2>解决方案：什么是 LTSC？</h2>
+  <div class="conclusion" style="margin-bottom:18px;">
+    <span class="label">定义</span>
+    <p><strong>LTSC</strong>（Long-Term Servicing Channel）是微软的"长期服务版"，专为稳定第一的场景设计。</p>
+  </div>
+
+  <div class="benefits">
+    <div class="benefit-card">
+      <span class="n">核心 1</span>
+      <p><strong>没有功能更新</strong><br>不存在"更新后蓝屏/SSD消失"的风险</p>
+    </div>
+    <div class="benefit-card">
+      <span class="n">核心 2</span>
+      <p><strong>干净安静</strong><br>没有 Copilot、Cortana 后台，内存占用低</p>
+    </div>
+    <div class="benefit-card">
+      <span class="n">核心 3</span>
+      <p><strong>行为可预期</strong><br>系统十年不变，不会突然多了 AI 助手</p>
+    </div>
+  </div>
+
+  <p class="edition-note">Enterprise LTSC（5 年）与 IoT Enterprise LTSC（10 年），功能一样，推荐个人用户选 IoT 版。</p>
+
+  <hr>
+
+  <!-- ====== 第四章：LTSC 自身 bug（折叠） ====== -->
+  <div class="collapse">
+    <div class="collapse-header" onclick="toggle(this)">
+      <span>⚖️ LTSC 自己有没有翻过车？ <span class="badge-count">7+1 条</span></span>
+      <span class="arrow">▾</span>
+    </div>
+    <div class="collapse-body">
+      <p style="font-size:13px; color:#6e7681; margin-bottom:10px;">微软官方 Release Health 记录，近两年全部已知问题：</p>
+      <div class="small-cards">
+        <div class="small-card"><span class="tag-l">2026-06</span><strong>回收站显示内部文件名</strong> — UI 问题，次月修复</div>
+        <div class="small-card"><span class="tag-l">2026-01</span><strong>部分设备无法关机</strong> — 仅限 Secure Launch 特定 PC，次月修复</div>
+        <div class="small-card"><span class="tag-l">2026-01</span><strong>Outlook+OneDrive 卡死</strong> — 仅企业场景，2 周热修复</div>
+        <div class="small-card"><span class="tag-l">2026-01</span><strong>Azure 虚拟桌面认证失败</strong> — 仅企业场景，1 周修复</div>
+        <div class="small-card"><span class="tag-l">2025-12</span><strong>MSMQ 消息队列失败</strong> — 仅企业场景，9 天修复</div>
+        <div class="small-card"><span class="tag-l">2025-10</span><strong>"终止支持"文案错误</strong> — 纯 UI bug</div>
+        <div class="small-card"><span class="tag-l">2025-08</span><strong>UAC 弹窗问题</strong> — 仅影响 MSI 推送场景</div>
+      </div>
+      <p style="font-size:13px; color:#6e7681; margin-top:10px;">社区报告：Win10 LTSC 2021 初始版<strong>缺少 VCLibs 依赖库</strong>，导致 CPU 高占用、输入法无候选框。安装 Store 或部署 VCLibs 即可解决。</p>
+      <div class="conclusion-red" style="margin-top:14px; margin-bottom:0;">
+        <span class="label">关键对比</span>
+        <p>✅ <strong>LTSC</strong>：UI 错误、企业场景故障、缺库 — <strong class="hl">没有蓝屏/SSD 消失</strong><br>
+        ❌ <strong>标准版</strong>：蓝屏、无限重启、BitLocker 锁死、SSD 消失 — <strong class="hl">每年致命翻车</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 第五章：LTSC 安全更新（折叠） ====== -->
+  <div class="collapse">
+    <div class="collapse-header" onclick="toggle(this)">
+      <span>🛡️ LTSC 的安全更新也不绝对安全</span>
+      <span class="arrow">▾</span>
+    </div>
+    <div class="collapse-body">
+      <p style="font-size:13px; color:#6e7681; margin-bottom:12px;">LTSC 每月安全补丁与标准版共享代码基座，偶有波及：</p>
+      <div class="card-grid">
+        <div class="bug-card"><span class="time">2026-04</span><div class="body"><strong>BitLocker 弹窗</strong> — 特定组策略下触发</div></div>
+        <div class="bug-card"><span class="time">2026-04</span><div class="body"><strong>RDP 安全警告错位</strong> — 多屏场景 UI 异常，次月修复</div></div>
+        <div class="bug-card"><span class="time">2026-04</span><div class="body"><strong>备份软件失效</strong> — 驱动黑名单误杀旧版工具</div></div>
+        <div class="bug-card"><span class="time">2026-03</span><div class="body"><strong>微软账号登录报错</strong> — 网络正常却显示"无 Internet"</div></div>
+      </div>
+      <div class="conclusion" style="margin-top:12px; margin-bottom:0;">
+        <span class="label">应对策略</span>
+        <p>LTSC 安全更新<strong class="hl">延迟 1-2 个月再打</strong>，等社区反馈确认无问题。甚至一直不更新也没问题——家庭用户安全风险极低。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 第六章：取舍（折叠） ====== -->
+  <div class="collapse">
+    <div class="collapse-header" onclick="toggle(this)">
+      <span>📦 LTSC 的取舍 <span class="badge-count">8 项</span></span>
+      <span class="arrow">▾</span>
+    </div>
+    <div class="collapse-body">
+      <p style="font-size:13px; color:#6e7681; margin-bottom:8px;">按影响范围从大到小：</p>
+      <ul class="missing-list">
+        <li><strong>功能更新</strong> — 永不接收大版本，新硬件优化滞后</li>
+        <li><strong>新硬件优化滞后</strong> — 新 CPU/GPU 调度优化需等下个 LTSC 版本</li>
+        <li><strong>UWP 内置应用</strong> — 日历、邮件、相机等需自行安装</li>
+        <li><strong>Microsoft Store</strong> — 默认没有，可手动安装</li>
+        <li><strong>Copilot / AI 功能</strong> — 不含 Recall、实时字幕等</li>
+        <li><strong>Edge 版本滞后</strong> — 自带但非最新版</li>
+        <li><strong>Xbox / PC Game Pass</strong> — 无集成，手柄驱动正常</li>
+        <li><strong>Windows Ink</strong> — 触控笔功能受限</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ====== 最终决策（不折叠） ====== -->
+  <h2>那到底怎么选？</h2>
+
+  <div class="edition-grid">
+    <div class="edition-card">
+      <span class="tag">老旧机器</span>
+      <h3>Win10 LTSC 2021</h3>
+      <div class="spec">CPU: 1GHz / 内存: <strong>2GB</strong> / 存储: <strong>20GB</strong></div>
+      <div class="spec">TPM 2.0: <strong>不强制</strong></div>
+      <table class="lt">
+        <tr><td>企业版</td><td>2027-01-12</td></tr>
+        <tr class="rec"><td>IoT 版 ✅</td><td>2032-01-13</td></tr>
+      </table>
+    </div>
+    <div class="edition-card highlight">
+      <span class="tag">新机器</span>
+      <h3>Win11 LTSC 2024</h3>
+      <div class="spec">CPU: 1GHz 2核+ / 内存: <strong>4GB</strong> / 存储: <strong>64GB</strong></div>
+      <div class="spec">TPM 2.0: <strong>强制</strong></div>
+      <table class="lt">
+        <tr><td>企业版</td><td>2029-10-09</td></tr>
+        <tr class="rec"><td>IoT 版 ✅</td><td>2034-10-10</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="tree">
+    <code>
+电脑是否支持 TPM 2.0？
+<span class="g">├── 否</span> → <span class="r">Win10 IoT LTSC 2021</span>（到 2032）
+<span class="g">└── 是</span> → <span class="r">Win11 IoT LTSC 2024</span>（到 2034）</code>
+  </div>
+
+  <div class="conclusion">
+    <span class="label">最终建议</span>
+    <p>选 LTSC，<strong class="hl">延迟或跳过安全更新</strong>。回头看上面的更新时间线——那些蓝屏、SSD 消失、WinRE 键鼠失灵……<strong class="hl">LTSC 用户一个都碰不到</strong>。</p>
+  </div>
+
+  <p class="fn">
+    数据来源：<a href="https://learn.microsoft.com/zh-cn/windows/release-health/" target="_blank">Microsoft Windows 发布运行状况</a>、
+    Windows Latest、PCWorld、Reddit，交叉验证于 2026-07-28
+  </p>
+
+</div>
+
+<script>
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.arrow');
+  const isOpen = body.classList.contains('open');
+
+  if (!isOpen) {
+    // 展开
+    body.classList.add('open');
+    arrow.classList.add('open');
+    // 临时移除 overflow hidden 以量取真实完整高度
+    body.style.overflow = 'visible';
+    body.style.maxHeight = 'none';
+    const h = body.scrollHeight;
+    // 重置并触发回流
+    body.style.maxHeight = '0';
+    body.style.overflow = '';
+    void body.offsetHeight; // 强制回流
+    // 以实际高度展开
+    body.style.maxHeight = h + 'px';
+  } else {
+    // 收起：锁定当前高度后再归零
+    body.style.maxHeight = body.scrollHeight + 'px';
+    arrow.classList.remove('open');
+    void body.offsetHeight;
+    body.style.maxHeight = '0';
+    // 等过渡结束后再移除 .open（否则 padding 先变会导致跳动）
+    setTimeout(() => {
+      body.classList.remove('open');
+    }, 400);
+  }
+}
+</script>
+
+</body>
+</html>
