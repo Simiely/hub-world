@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Windows系统Bug频发，怎么选更稳定</title>
 <link rel="icon" href="https://simiely.github.io/hub-world/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -221,6 +224,51 @@
   .hub-back:hover { color: #e6edf3; }
   .hub-back__logo { height: 20px; width: auto; vertical-align: middle; }
   .hub-back__inner { display: flex; align-items: center; gap: 6px; }
+
+  /* Hub World 返回链接（与模板一致） */
+  .hub-back {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 0;
+    pointer-events: none;
+    text-decoration: none;
+    mix-blend-mode: difference;
+    color: #fff;
+  }
+  .hub-back__inner {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 3px;
+    font-family: "Bricolage Grotesque", "Segoe UI", sans-serif;
+    font-weight: 600;
+    font-size: 19px;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    transition: opacity 0.3s;
+  }
+  .hub-back__inner:hover { opacity: 0.7; }
+  .hub-back__logo {
+    height: 1.12rem;
+    width: auto;
+    display: block;
+    vertical-align: middle;
+  }
+  .container { padding-top: 60px; }
+
+  @media (max-width: 768px) {
+    .hub-back {
+      justify-content: flex-start;
+      padding: 14px clamp(20px, 4vw, 40px);
+    }
+  }
 
   @media (max-width: 640px) {
     body { padding: 20px 14px; }
