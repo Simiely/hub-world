@@ -56,4 +56,6 @@ sources:
 - [完整踩坑库: homekeeper](../../archive/homekeeper/docs/03-踩坑与排错.md)
 - [完整踩坑库: obsidian-agent](../../archive/obsidian-agent/docs/08-踩坑记录.md)
 - [完整踩坑库: learning-platform DEV.md](../../archive/learning-platform/DEV.md)
+- [M4-01 Python 后端开发指南](../M4-开发指南/01-Python后端.md)
+- [M1 部署与快速上手](../M1-部署与快速上手.md)(部署类坑的对应流程)
 - [返回 M5 索引](README.md)
