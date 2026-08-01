@@ -1,14 +1,49 @@
 # Hub World · 开发文档
 
+> 面向维护者:如何添加项目、理解架构、排障。使用/导航请见 [README.md](./README.md)。
+
 ## 项目结构
 
 ```
 hub-world/
 ├── index.html              # 主入口（单文件应用）
 ├── projects.json           # 项目数据（外部 JSON）
+├── docs/                   # 📚 开发帮助文档中心（详见 docs/ABOUT.md）
+├── DEVELOPMENT.md          # 本文件：开发文档
 ├── .nojekyll               # GitHub Pages 跳过 Jekyll
 └── <project-name>/         # 各子项目目录（对应 path）
 ```
+
+## 添加 / 修改项目
+
+编辑 `projects.json` 文件，在 `projects` 数组中添加条目：
+
+```json
+{
+  "name": "项目名",
+  "desc": "项目简介",
+  "icon": "📄",
+  "path": "subdir",
+  "tags": ["标签1", "标签2"],
+  "category": "web"
+}
+```
+
+**字段说明：**
+
+| 字段 | 必填 | 说明 |
+|------|------|------|
+| `name` | ✅ | 项目名称，显示在卡片上 |
+| `desc` | ❌ | 项目描述 |
+| `icon` | ❌ | 图标（emoji 或文字），默认 📄 |
+| `path` | ✅ | 子项目目录名，对应仓库内的文件夹 |
+| `tags` | ❌ | 标签列表（如 `["旅行","定制"]`） |
+| `category` | ❌ | 分类标识，需与导航 tab 的 `data-cat` 一致 |
+
+**支持分类：** `web`（网页）/ `tool`（工具）/ `design`（设计）
+
+> ⚠️ 每次修改 `projects.json` 后推送至 GitHub，Pages 构建完成后即自动更新。
+> 新增**仓库项目**时，同时建议在 `docs/` 文档中心登记（流程见 [docs/ABOUT.md](docs/ABOUT.md)）。
 
 ## 架构说明
 
