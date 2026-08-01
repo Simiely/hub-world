@@ -3,6 +3,8 @@
 > 汇总 Simiely 全部 **35 个项目**(33 公开 + 2 私有)的文档,按主题模块化组织,互相链接、可追溯来源。
 > 源仓库: [github.com/Simiely](https://github.com/Simiely) · 本中心主页: [hub-world 导航](https://simiely.github.io/hub-world/)
 
+> 🧑‍🔧 **维护者请先读** [📖 文档中心总说明(ABOUT)](ABOUT.md) —— 含目录分工、更新流程、编写规范与避坑清单。
+
 ---
 
 ## 🧭 快速定位

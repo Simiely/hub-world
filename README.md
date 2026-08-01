@@ -22,6 +22,7 @@
 | 看版本更新 | [M6 更新日志](docs/modules/M6-更新日志.md) |
 | 找某个项目的全部资料 | [项目索引](docs/projects/README.md) |
 | 看原始文档快照 | [归档区](docs/archive/README.md) |
+| **维护文档中心(更新/规范/避坑)** | [📖 总说明 ABOUT](docs/ABOUT.md) |
 
 ---
 
