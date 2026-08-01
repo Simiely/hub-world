@@ -1,27 +1,21 @@
+---
+module: archive
+title: README.md
+tags: [hub-world]
+source:
+  project: hub-world
+  repo: https://github.com/Simiely/hub-world
+  file: README.md
+  branch: main
+  synced_at: 2026-08-01
+---
+> 🔗 [查看 GitHub 原文](https://github.com/Simiely/hub-world/blob/main/README.md)
+
 # Hub World · 导航中心
 
 > 探索所有项目 — Powered by Simiely / 世界的风吹向你
 
 🌐 在线访问：https://simiely.github.io/hub-world/
-
----
-
-## 📚 开发帮助文档中心
-
-**35 个项目的完整文档,模块化组织、可追溯来源。**
-
-👉 **[进入开发帮助文档中心](docs/README.md)**
-
-| 你想… | 去这里 |
-|---|---|
-| 快速跑起某个项目 | [M1 部署与快速上手](docs/modules/M1-部署与快速上手.md) |
-| 了解项目怎么设计 | [M2 架构与设计](docs/modules/M2-架构与设计.md) |
-| 查接口 / API | [M3 API 参考](docs/modules/M3-API参考.md) |
-| 写代码前看规范 | [M4 开发指南](docs/modules/M4-开发指南/README.md) |
-| 遇到报错 | [M5 踩坑记录](docs/modules/M5-踩坑记录/README.md) |
-| 看版本更新 | [M6 更新日志](docs/modules/M6-更新日志.md) |
-| 找某个项目的全部资料 | [项目索引](docs/projects/README.md) |
-| 看原始文档快照 | [归档区](docs/archive/README.md) |
 
 ---
 

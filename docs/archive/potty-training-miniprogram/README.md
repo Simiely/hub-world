@@ -1,0 +1,129 @@
+---
+module: archive
+title: README.md
+tags: [potty-training-miniprogram]
+source:
+  project: potty-training-miniprogram
+  repo: https://github.com/Simiely/potty-training-miniprogram
+  file: README.md
+  branch: main
+  synced_at: 2026-08-01
+---
+> 🔗 [查看 GitHub 原文](https://github.com/Simiely/potty-training-miniprogram/blob/main/README.md)
+
+# 宝宝如厕训练助手 · 微信小程序
+
+帮助家长记录和分析宝宝如厕训练进度的微信小程序。支持本地存储和云开发（跨设备共享）两种模式。
+
+## 快速开始
+
+```bash
+# 1. 克隆项目
+git clone https://github.com/Simiely/potty-training-miniprogram.git
+
+# 2. 微信开发者工具 → 导入项目 → 选择本目录
+
+# 3. 修改配置（3 个必改项）
+#    config.js:        LOCK_PASSWORD → 你的 4 位密码
+#    config.js:        CLOUD.ENV     → 你的云环境 ID（不用云就跳过）
+#    project.config.json: appid      → touristappid（本地调试）或真实 AppID
+
+# 4. 编译运行
+```
+
+> **仅本地使用**：不改云配置也能跑，数据存手机本地。
+> **跨设备共享**：需要配置云开发环境，见 [CLOUD_GUIDE.md](./CLOUD_GUIDE.md)。
+
+## 📋 从 GitHub 下载后 · 配置清单
+
+仓库默认是「开箱即跑」的占位配置，**无需任何改动就能在开发者工具里预览（本地模式）**。按需填写以下三项即可启用对应能力：
+
+| 配置项 | 文件 | 默认值（占位） | 你要做的 |
+| --- | --- | --- | --- |
+| 小程序 AppID | `project.config.json` → `appid` | `touristappid` | 游客模式可预览；要真机/云能力就换成你的真实 AppID |
+| 锁屏密码 | `config.js` → `LOCK_PASSWORD` | `0000` | 改成你自己的 4 位密码再发布 |
+| 云环境 ID | `config.js` → `CLOUD.ENV` | `''`（空） | 填 `cloud1-xxxx`；并把下面的 `USE_CLOUD` 改为 `true` |
+
+> 说明：当前 `USE_CLOUD = false`，数据只存在本机。填好 `ENV` 并把 `USE_CLOUD` 改成 `true` 后，记录会同步到微信云开发（跨设备共享）。集合名固定为 `potty_records`，首次使用需在云控制台建集合并设权限「所有用户可读，仅创建者可写」。详细步骤见 [CLOUD_GUIDE.md](./CLOUD_GUIDE.md)。
+
+---
+
+## 功能
+
+### 启动锁屏
+微信授权后输入 4 位固定密码（仅首次），验证通过后不再弹出。支持指纹/面容解锁（非鸿蒙设备）。错误密码红点抖动提示。
+
+### 记录页面
+- 一键记录 4 种事件：小便 / 大便 / 换小内裤 / 换尿不湿
+- 今日统计面板 + 时间线视图
+- **预测面板**：根据历史间隔推算下次排便时间窗口，含置信度
+- 撤销功能（5 秒内可撤回）
+- 多记录人管理（家庭成员可切换，头像昵称快照存入记录）
+
+### 分析页面
+- 排便间隔趋势（线性回归，判断是缩短/稳定/变长）
+- 常见排便时段热力图
+- 近 7 天四类事件堆叠柱状图
+
+### 历史页面
+- 按日期分组，可展开折叠
+- 编辑记录时间（支持修改日期和钟点）
+- 单条删除 / 清空全部（3 次确认防误删）
+- **账号级权限隔离**：云端模式下只有自己创建的记录才显示编辑/删除按钮
+
+---
+
+## 大屏 / iPad 适配
+
+在 iPad / 大屏设备上，小程序以真实逻辑尺寸运行并自动切换为「仪表盘」布局，充分利用大屏空间：
+
+- **记录页**：顶部 4 列 KPI（今日统计）+ 下方 2 列主体（左 = 快速记录 + 预测，右 = 今日时间线）
+- **分析页**：双栏（左 = 排便规律，右 = 近 7 天图表）
+- **历史页**：日期分组双列网格，一屏看更多
+- **密码锁屏**：居中限宽，指纹 / 面容解锁
+
+实现要点（详细踩坑见 [DEV.md](./DEV.md) #16）：`app.json` 启用 `"resizable": true`；用 `screenWidth`（物理屏宽，iPad 横屏≈1366 / 竖屏≈1024）判定平板并挂 `.tablet` 类；平板样式全部用 `.tablet` 后代选择器 + **px** 覆盖（微信小程序内 CSS `@media` 在 iPad 上不命中，且 `windowWidth` 返回的是手机比例绘制区宽度，均不可靠）。
+
+---
+
+## 目录结构
+
+```
+├── app.js / app.json / app.wxss    # 应用入口及全局配置
+├── config.js                        # 密码、存储 key、云配置、类型语义色
+├── theme.json                       # 深浅色主题变量
+├── pages/
+│   ├── lock/          # 启动锁屏（微信授权 + 密码验证 + 生物认证）
+│   ├── record/        # 记录 Tab（快速记录、统计、预测、记录人管理）
+│   ├── analysis/      # 分析 Tab（趋势、时段、7 天堆叠图）
+│   └── history/       # 历史 Tab（分组展开、编辑时间、删除、权限隔离）
+├── custom-tab-bar/     # 自定义底部导航栏（暖橙主题）
+├── utils/
+│   ├── storage.js     # 本地存储 CRUD
+│   ├── cloud.js       # 云开发 CRUD + openid 检测
+│   ├── store.js       # 统一数据层（本地/云端自动切换）
+│   ├── analysis.js    # 预测算法、趋势分析、时段统计
+│   ├── profile.js     # 照顾者档案管理（头像上传）
+│   ├── device.js      # 设备标识生成
+│   └── platform.js    # 鸿蒙/平台检测
+└── assets/             # Tab 图标
+```
+
+---
+
+## 技术栈
+
+- **原生微信小程序**（WXML / WXSS / JS），无需 npm 构建
+- 双模式存储：本地 `wx.Storage` + 云端 `wx.cloud.database`
+- 深色模式支持（CSS 变量 + `prefers-color-scheme`）
+- 自定义导航栏 + 自定义 TabBar（暖橙渐变主题）
+- HarmonyOS 兼容（`wx.getDeviceInfo()` 平台检测）
+- SOTER 生物认证（指纹/面容）
+- 数据层开放：`store.js` 一行配置切换本地/云端
+- iPad / 大屏自适应：`resizable` + JS 响应式 `.tablet` 类 + px 覆盖（绕过 CSS 媒体查询在 iPad 不命中的坑）
+
+---
+
+## 开发参考
+
+关键问题的排查记录和架构决策见 [DEV.md](./DEV.md)。

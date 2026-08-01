@@ -1,0 +1,87 @@
+---
+module: archive
+title: README.md
+tags: [edge-multi-account-cookie]
+source:
+  project: edge-multi-account-cookie
+  repo: https://github.com/Simiely/edge-multi-account-cookie
+  file: README.md
+  branch: main
+  synced_at: 2026-08-01
+---
+> 🔗 [查看 GitHub 原文](https://github.com/Simiely/edge-multi-account-cookie/blob/main/README.md)
+
+# Edge Multi-Account Cookie Switcher
+
+> 安全的 Edge 多账号 Cookie 切换器 — 本地加密存储、密码锁保护，一键切换网站账号。
+
+---
+
+### 简介
+
+一款基于 **Manifest V3** 的 Edge/Chrome 浏览器扩展，让你在同一浏览器中**保存和切换多个网站账号**，无需反复登录退出。
+
+**AES-256-GCM 加密**存储 Cookie、密码锁保护、域名白名单、纯原生 JS 零第三方依赖。
+
+### 核心功能
+
+| 功能 | 说明 |
+|------|------|
+| 🔄 **一键切换** | 保存当前网站的 Cookie + localStorage，点击卡片即可切换到目标账号 |
+| 💾 **保存账号** | 自动抓取当前登录状态的 Cookie（含 httpOnly）和 localStorage 数据 |
+| 🔒 **AES-GCM 加密** | Cookie value 使用 Web Crypto API 加密存储，即使本地数据被读取也无法解密 |
+| 🔐 **密码锁** | 自定义密码保护，关闭需验证原密码 |
+| 🌐 **域名白名单** | 可配置允许操作的域名，避免误操作 |
+| 📦 **加密备份** | 数据使用密码锁密码加密导出/导入，无需额外设置 |
+| ⌨️ **快捷键** | `Alt+Shift+S` 快速打开弹窗 |
+| 🖱️ **右键菜单** | 右键页面 → "清除此站点 Cookie 并重新登录" |
+
+### 权限说明
+
+| 权限 | 用途 |
+|------|------|
+| `cookies` | 读写网站登录 Cookie |
+| `storage` | 本地加密存储账号数据 |
+| `activeTab` | 获取当前标签页的域名 |
+| `scripting` | 读写页面 localStorage |
+| `contextMenus` | 右键菜单 |
+
+扩展默认不申请任何网站权限，仅在点击弹窗时通过 `activeTab` 获得临时权限。如果需要长期保留对某个网站的访问，弹窗会引导你按需授权。
+
+### 安装方法
+
+1. 从 [Releases](https://github.com/Simiely/edge-multi-account-cookie/releases) 下载最新 ZIP
+2. 解压到任意目录
+3. 打开 Edge 浏览器，进入 `edge://extensions/`
+4. 打开右上角的 **"开发人员模式"**
+5. 点击 **"加载解压缩的扩展"**
+6. 选择解压后的文件夹
+
+### 使用方法
+
+1. 登录你的网站账号
+2. 按 `Alt+Shift+S` 打开扩展弹窗
+3. 如果弹窗显示授权横幅，点击「授权访问此网站」
+4. 输入账号名称，点击「保存当前账号」
+5. 登录第二个账号，重复步骤 2-4
+6. 之后在弹窗中点击账号卡片即可一键切换
+
+> ⚠️ **注意**：切换账号时使用扩展的「切换到该账号」功能，不要使用网站自带的"退出登录"，否则已保存的 Cookie 会被服务器端作废。
+
+### 常见问题
+
+**Q: 保存了 0 个 Cookie？**
+A: 未获得当前网站的访问权限。弹窗顶部会显示授权按钮，点击「授权访问此网站」即可。
+
+**Q: 点击"登录新账号"后还是登录状态？**
+A: 更新到最新版本即可。
+
+**Q: 密码锁能干什么？**
+A: 开启后打开弹窗需输入密码。导出备份时自动使用密码锁密码加密，无需额外设置。
+
+**Q: 重装扩展后密码和账号数据还在吗？**
+A: 从 v2.1.0 开始，manifest 中加入了 `key` 字段，扩展 ID 固定，重装后数据保留。
+
+---
+
+**License**: MIT

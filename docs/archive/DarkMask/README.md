@@ -1,0 +1,71 @@
+---
+module: archive
+title: README.md
+tags: [DarkMask]
+source:
+  project: DarkMask
+  repo: https://github.com/Simiely/DarkMask
+  file: README.md
+  branch: main
+  synced_at: 2026-08-01
+---
+> 🔗 [查看 GitHub 原文](https://github.com/Simiely/DarkMask/blob/main/README.md)
+
+# 夜深模式
+
+全屏降亮护眼工具。在前台绘制可调节透明度与颜色的蒙版，覆盖整个屏幕（包括状态栏与刘海区），有效降低屏幕亮度，适合夜间使用。
+
+## 功能
+
+- **全屏蒙版** — 覆盖状态栏与刘海，支持自定义颜色 × 透明度（5%–95%）
+- **悬浮按钮** — 点按弹出控制面板，长按切换蒙版开关，可拖动/靠边吸附
+- **3 个颜色预设** — 快速切换常用颜色；长按存当前色，双击/三击重置黑色
+- **HSL 调色** — 色相(0–360) × 饱和度(0–100) × 亮度(0–100)，调色时预设实时对分预览。拖色相时若饱和度或亮度为 0 则自动提到 50
+- **通知栏快捷操作** — 常驻通知置顶显示，支持切换/设置/关闭
+- **下拉快捷磁贴** — 点按即可开关蒙版
+- **深色界面** — 适配夜间使用场景
+
+## 安装
+
+从 [GitHub Releases](https://github.com/Simiely/DarkMask/releases) 下载最新 `yeshen-mode-*.apk`。
+
+首次安装需授予：
+1. **悬浮窗权限** — 点击主界面「悬浮窗权限」按钮跳转开启
+2. **通知权限**（Android 13+）— 点击「启动蒙版」自动弹出申请
+
+之后所有版本可直接覆盖安装（固定签名）。
+
+## 使用
+
+| 操作 | 效果 |
+|---|---|
+| 点按悬浮按钮 | 打开/关闭控制面板 |
+| 长按悬浮按钮 | 切换蒙版开关 |
+| 拖动悬浮按钮 | 自由移动，靠近屏幕边缘自动收边 |
+| 点击预设色块 | 应用该颜色并选中 |
+| 长按预设色块 | 把当前颜色存入该预设 |
+| 双击预设色块 | HSL 归零（预览左存色/右黑色，不修改预设存储） |
+| 点击「保存颜色预设」 | 将当前颜色存入选中的预设 |
+
+## 构建
+
+```bash
+git clone https://github.com/Simiely/DarkMask.git
+cd DarkMask
+./gradlew assembleDebug
+```
+
+APK 输出至 `app/build/outputs/apk/debug/`。
+
+CI 使用 GitHub Actions 自动构建（JDK 17 + Android SDK 35 + Gradle 8.9）。每次推送 `main` 自动触发，产物可在 Actions 页面下载。
+
+## 技术栈
+
+- Kotlin 1.9.24 · AGP 8.5.2 · compileSdk 35 · minSdk 23
+- 纯前台服务实现（`OverlayService`），无后台进程
+- 全屏蒙版使用 `TYPE_APPLICATION_OVERLAY` + `WindowManager`
+- 预设颜色存储使用 `SharedPreferences`
+
+## 许可
+
+MIT

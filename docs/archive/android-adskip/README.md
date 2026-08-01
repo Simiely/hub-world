@@ -1,0 +1,55 @@
+---
+module: archive
+title: README.md
+tags: [android-adskip]
+source:
+  project: android-adskip
+  repo: https://github.com/Simiely/android-adskip
+  file: README.md
+  branch: main
+  synced_at: 2026-08-01
+---
+> 🔗 [查看 GitHub 原文](https://github.com/Simiely/android-adskip/blob/main/README.md)
+
+# AdSkip — Android 智能广告跳过工具
+
+基于 Android 无障碍服务（AccessibilityService），自动识别并点击广告跳过按钮。无需 Root，无需 ADB。
+
+## 核心功能
+
+- **关键词匹配** — 默认匹配 "跳过"、"关闭广告" 等按钮，可自定义
+- **自动规则捕获** — 首次点击成功后自动记录 App + 按钮特征，下次秒过
+- **屏蔽规则** — 不想点的按钮可屏蔽，文字包含匹配
+- **黑白名单过滤** — 黑名单/白名单独立管理，控制哪些 App 执行跳过
+- **悬浮胶囊** — 可拖拽的浮球，显示/隐藏/取消操作
+- **点击统计** — 按天/月/年统计点击量，最近记录带规则标记
+- **GitHub 同步** — 规则和关键词可备份到 GitHub 仓库，多设备共享
+
+## 快速开始
+
+1. **安装 APK** — 从 [Releases](https://github.com/Simiely/android-adskip/releases) 下载
+2. **开启无障碍** — 设置 → 无障碍 → 已安装的应用 → AdSkip → 开启
+3. **开启悬浮窗权限** — 设置 → 权限 → 悬浮窗 → 允许
+4. 打开任意有广告的 App，自动开始工作
+
+## 使用说明
+
+| 操作 | 方法 |
+|------|------|
+| 自定义关键词 | 首页 "关键词" 面板 → 输入 + 添加 |
+| 手动捕获规则 | 点击悬浮球 → 捕获模式 → 点想捕获的按钮 |
+| 屏蔽按钮 | 最近记录 → 点 "屏蔽" |
+| 管理黑白名单 | "应用过滤" 面板 → 展开黑名单/白名单 |
+| GitHub 同步 | "规则同步" 面板 → 解锁 → 设置仓库 → 同步 |
+
+## 权限需求
+
+- 无障碍服务：核心功能，检测并点击按钮
+- 悬浮窗：显示浮动胶囊和点击反馈
+- 通知权限：前台保活服务
+- 开机自启（可选）：重启后自动恢复
+
+## 系统要求
+
+- Android 8.0+
+- Xiaomi/OPPO/Vivo 等需手动开启"自启动"和"省电无限制"
