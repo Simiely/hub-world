@@ -200,5 +200,6 @@ hub-world/
 - [导航首页(读者入口)](README.md)
 - [来源标注规范](_templates/SOURCE_TEMPLATE.md)
 - [维护指南(命令详解)](_scripts/README.md)
+- [🤖 更新提示词模板(发给 AI 用)](_templates/UPDATE-PROMPTS.md)
 - [项目索引](projects/README.md)
 - [归档区索引](archive/README.md)

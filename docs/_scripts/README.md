@@ -1,6 +1,7 @@
 # 文档中心维护指南
 
 > 如何更新 hub-world 里的开发帮助文档中心,保证"更新不乱"。
+> 🤖 **用 AI 更新?直接复制 [_templates/UPDATE-PROMPTS.md](../_templates/UPDATE-PROMPTS.md) 里对应场景的提示词发给 AI。**
 
 ## 目录速览
 
