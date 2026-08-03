@@ -3,6 +3,10 @@
 > **探索所有项目 — Powered by Simiely**
 > Simiely 全部 **35 个项目**(33 公开 + 2 私有)的统一入口:项目导航站 + 开发帮助文档中心。
 
+🔗 **管理仓库互链**（三个仓库各司其职，互相引用）：
+- **[knowledge-base](https://github.com/Simiely/knowledge-base)**（经验库）——跨项目踩坑与解决方案，本仓管"项目在哪"，那边管"踩过什么坑"
+- **[codebuddy-skills](https://github.com/Simiely/codebuddy-skills)**（技能库）——AI 技能集合，本仓管"项目展示"，那边管"能做什么"
+
 - 🌐 **项目导航站**(HTML): https://simiely.github.io/hub-world/
 - 📚 **开发帮助文档中心**: [进入 docs/README.md](docs/README.md)
 
@@ -44,7 +48,7 @@
 |---|---|
 | [collab-plan-miniprogram](docs/projects/collab-plan-miniprogram.md) 🔒 | 协作计划小程序(云开发 + 增量同步) |
 | [potty-training-miniprogram](docs/projects/potty-training-miniprogram.md) | 宝宝如厕训练助手 |
-| [miniprogram-item-expiry](docs/projects/miniprogram-item-expiry.md) | 物品有效期小程序(云开发 + 腾讯文档同步) |
+| ~~miniprogram-item-expiry~~（已删除） | 物品有效期小程序（经验已提炼入 knowledge-base） |
 
 ### 🖥 桌面 / 资源(2)
 
@@ -59,7 +63,7 @@
 |---|---|
 | [AE-Lyrics-Animator](docs/projects/AE-Lyrics-Animator.md) | AE 歌词逐字动画工具 |
 | [AudioScale](docs/projects/AudioScale.md) | AE 音频驱动缩放面板 |
-| [CircleDiffusion](docs/projects/CircleDiffusion.md) | AE 圆形扩散生成器 |
+| ~~CircleDiffusion~~（已删除） | AE 圆形扩散生成器（经验已提炼入 knowledge-base） |
 | [starry-sky-generator](docs/projects/starry-sky-generator.md) | AE 星空粒子生成器 |
 | [c4d-mesh-face-sorter](docs/projects/c4d-mesh-face-sorter.md) | C4D 网格面数排序插件 |
 | [c4d-userdata-manager](docs/projects/c4d-userdata-manager.md) | C4D 用户数据管理插件 |
@@ -76,7 +80,7 @@
 |---|---|
 | [hub-world](docs/projects/hub-world.md) | 本仓库 · 项目导航中心 |
 | [windows-ltsc-guide](docs/projects/windows-ltsc-guide.md) | Windows LTSC 选购指南 |
-| [ntlite-windows-guide-2](docs/projects/ntlite-windows-guide-2.md) | NTLite 精简 Windows 指南 |
+| [ntlite-windows-guide](docs/projects/ntlite-windows-guide.md) | NTLite 精简 Windows 指南 |
 | [vmware-install-guide](docs/projects/vmware-install-guide.md) | VMware 虚拟机安装教程 |
 | [meituan-bike-reminder](docs/projects/meituan-bike-reminder.md) | 美团骑车锁车提醒 |
 | [baby-hair-braiding-guide](docs/projects/baby-hair-braiding-guide.md) | 宝宝扎辫子指南 |

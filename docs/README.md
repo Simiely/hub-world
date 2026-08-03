@@ -40,11 +40,10 @@
 |---|---|
 | 🐍 Python 后端 | homekeeper、obsidian-agent、learning-platform、codebuddy-skills、blender-car-mesh-optimizer |
 | 🤖 Android | android-adskip、DarkMask |
-| 📱 微信小程序 | collab-plan-miniprogram(私有)、potty-training-miniprogram、miniprogram-item-expiry |
+| 📱 微信小程序 | collab-plan-miniprogram(私有)、potty-training-miniprogram、~~miniprogram-item-expiry~~(已删除) |
 | 🖥 桌面工具 | WindowTinter(C#)、resources(私有) |
-| 🎬 设计插件 / 脚本 | AE 系列(AE-Lyrics-Animator、AudioScale、CircleDiffusion、starry-sky-generator)、C4D 系列(c4d-mesh-face-sorter、c4d-userdata-manager、oc-plugin-activator)、Blender(blender-mesh-face-sorter)、3ds Max(vray-material-replacer)、Maya(ARTv2 属 Epic,不收录) |
-| 🌐 网页 / 指南 | hub-world、windows-ltsc-guide、ntlite-windows-guide-2、vmware-install-guide、car-model-decimation、edge-multi-account-cookie、ExplorerBlurMica-whitebar-fix、windows-explorer-refresh-fix、meituan-bike-reminder、baby-hair-braiding-guide、travel-1.0、carselection、TopoGun3-Chinese-Localization |
-| 📄 纯文档(空仓库) | ntlite-windows-guide(size=0,已废弃,以 -2 版为准) |
+| 🎬 设计插件 / 脚本 | AE 系列(AE-Lyrics-Animator、AudioScale、~~CircleDiffusion~~(已删除)、starry-sky-generator)、C4D 系列(c4d-mesh-face-sorter、c4d-userdata-manager、oc-plugin-activator)、Blender(blender-mesh-face-sorter)、3ds Max(vray-material-replacer)、Maya(ARTv2 属 Epic,不收录) |
+| 🌐 网页 / 指南 | hub-world、windows-ltsc-guide、ntlite-windows-guide、vmware-install-guide、car-model-decimation、edge-multi-account-cookie、ExplorerBlurMica-whitebar-fix、windows-explorer-refresh-fix、meituan-bike-reminder、baby-hair-braiding-guide、travel-1.0、carselection、TopoGun3-Chinese-Localization |
 
 ## 📌 来源与更新机制
 

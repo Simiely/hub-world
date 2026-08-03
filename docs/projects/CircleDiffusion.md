@@ -1,7 +1,7 @@
 ---
 module: project
-title: CircleDiffusion - AE 圆形扩散生成器
-tags: [设计插件, JavaScript]
+title: CircleDiffusion - AE 圆形扩散生成器（已删除）
+tags: [设计插件, JavaScript, 已删除]
 project:
   name: CircleDiffusion
   repo: https://github.com/Simiely/CircleDiffusion
@@ -9,10 +9,13 @@ project:
   language: JavaScript
   branch: main
   description: AE 圆形扩散生成器 - After Effects 2026 插件。线扩散/粒子扩散/组合模式，密度渐变控制
+  status: 已删除
   synced_at: 2026-08-01
 ---
 
 # CircleDiffusion · AE 圆形扩散生成器
+
+> ⚠️ **仓库已于 2026-08-03 删除**。经验已提炼入 [knowledge-base](../../README.md)（ShapeLayer 速查/跨语言兼容/粒子分布/时间基准 4 条），本页与归档快照保留作历史存档。
 
 ## 项目简介
 

@@ -1,10 +1,10 @@
 ---
 module: project
-title: ntlite-windows-guide-2 - NTLite 精简 Windows 指南
+title: ntlite-windows-guide - NTLite 精简 Windows 指南
 tags: [网页指南, HTML]
 project:
-  name: ntlite-windows-guide-2
-  repo: https://github.com/Simiely/ntlite-windows-guide-2
+  name: ntlite-windows-guide
+  repo: https://github.com/Simiely/ntlite-windows-guide
   private: false
   language: HTML
   branch: main
@@ -12,7 +12,7 @@ project:
   synced_at: 2026-08-01
 ---
 
-# ntlite-windows-guide-2 · NTLite 精简 Windows 指南
+# ntlite-windows-guide · NTLite 精简 Windows 指南
 
 ## 项目简介
 
@@ -25,7 +25,7 @@ project:
 | 语言 | HTML |
 | 可见性 | 公开 |
 | 默认分支 | main |
-| GitHub | [Simiely/ntlite-windows-guide-2](https://github.com/Simiely/ntlite-windows-guide-2) |
+| GitHub | [Simiely/ntlite-windows-guide](https://github.com/Simiely/ntlite-windows-guide) |
 
 ## 文档入口(归档快照)
 

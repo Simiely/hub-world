@@ -12,7 +12,7 @@ tags: [归档, 原文]
 ## 同步信息
 
 - **同步日期**:2026-08-01
-- **覆盖项目**:33 个(2 个纯 HTML 项目无 markdown 文档:ntlite-windows-guide-2 的说明在仓库 HTML 中)
+- **覆盖项目**:33 个(2 个纯 HTML 项目无 markdown 文档:ntlite-windows-guide 的说明在仓库 HTML 中)
 - **文件总数**:110
 
 ## 项目归档列表

@@ -33,7 +33,7 @@ tags: [项目, 索引]
 |---|---|---|
 | collab-plan-miniprogram 🔒 | 协作计划小程序(私有) | [→](collab-plan-miniprogram.md) |
 | potty-training-miniprogram | 宝宝如厕训练助手 | [→](potty-training-miniprogram.md) |
-| miniprogram-item-expiry | 物品有效期小程序 | [→](miniprogram-item-expiry.md) |
+| ~~miniprogram-item-expiry~~（已删除） | 物品有效期小程序 | [→](miniprogram-item-expiry.md) |
 
 ### 🖥 桌面 / 资源(2)
 
@@ -48,7 +48,7 @@ tags: [项目, 索引]
 |---|---|---|
 | AE-Lyrics-Animator | AE 歌词逐字动画 | [→](AE-Lyrics-Animator.md) |
 | AudioScale | AE 音频驱动缩放 | [→](AudioScale.md) |
-| CircleDiffusion | AE 圆形扩散生成器 | [→](CircleDiffusion.md) |
+| ~~CircleDiffusion~~（已删除） | AE 圆形扩散生成器 | [→](CircleDiffusion.md) |
 | starry-sky-generator | AE 星空粒子 | [→](starry-sky-generator.md) |
 | c4d-mesh-face-sorter | C4D 面数排序 | [→](c4d-mesh-face-sorter.md) |
 | c4d-userdata-manager | C4D 用户数据管理 | [→](c4d-userdata-manager.md) |
@@ -65,7 +65,7 @@ tags: [项目, 索引]
 |---|---|---|
 | hub-world | 项目导航中心(本仓库) | [→](hub-world.md) |
 | windows-ltsc-guide | Windows LTSC 选购指南 | [→](windows-ltsc-guide.md) |
-| ntlite-windows-guide-2 | NTLite 精简 Windows 指南 | [→](ntlite-windows-guide-2.md) |
+| ntlite-windows-guide | NTLite 精简 Windows 指南 | [→](ntlite-windows-guide.md) |
 | vmware-install-guide | VMware 虚拟机安装教程 | [→](vmware-install-guide.md) |
 | meituan-bike-reminder | 美团骑车锁车提醒 | [→](meituan-bike-reminder.md) |
 | baby-hair-braiding-guide | 宝宝扎辫子指南 | [→](baby-hair-braiding-guide.md) |
@@ -74,7 +74,7 @@ tags: [项目, 索引]
 | windows-explorer-refresh-fix | 资源管理器刷新修复 | [→](windows-explorer-refresh-fix.md) |
 | travel-1.0 | 琅勃拉邦旅行规划 | [→](travel-1.0.md) |
 
-> 注:`ntlite-windows-guide`(旧版)为空仓库,已废弃,以 `ntlite-windows-guide-2` 为准,不再建卡片页。
+> 注:`ntlite-windows-guide`(旧版)为空仓库,已废弃,以 `ntlite-windows-guide` 为准,不再建卡片页。
 
 ---
 

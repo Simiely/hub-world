@@ -1,7 +1,7 @@
 ---
 module: project
-title: miniprogram-item-expiry - 物品有效期小程序
-tags: [微信小程序, JavaScript]
+title: miniprogram-item-expiry - 物品有效期小程序（已删除）
+tags: [微信小程序, JavaScript, 已删除]
 project:
   name: miniprogram-item-expiry
   repo: https://github.com/Simiely/miniprogram-item-expiry
@@ -9,10 +9,13 @@ project:
   language: JavaScript
   branch: main
   description: 物品有效期小程序：微信云开发 + 腾讯文档智能表双向同步
+  status: 已删除
   synced_at: 2026-08-01
 ---
 
 # miniprogram-item-expiry · 物品有效期小程序
+
+> ⚠️ **仓库已于 2026-08-03 删除**。经验已提炼入 [knowledge-base](../../README.md)（域名硬约束/双向同步防循环/变更检测优化 3 条），本页与归档快照保留作历史存档。
 
 ## 项目简介
 
