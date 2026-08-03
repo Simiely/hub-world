@@ -16,15 +16,23 @@ sources:
 # M5 踩坑记录
 
 > 按平台聚合的踩坑与排错经验。遇到问题先翻这里,再翻对应项目的原始踩坑文档。
+> 🔗 **完整经验库**:跨项目沉淀的 54+ 条经验(含本页摘录的完整版)在 [knowledge-base](https://github.com/Simiely/knowledge-base)(经验提炼层),按需直达。
 
 ## 分册导航
 
-| 分册 | 覆盖平台 | 来源项目 |
+| 分册 | 覆盖平台 | 来源 |
 |---|---|---|
 | [01-微信小程序坑](01-微信小程序坑.md) | 小程序 / 云开发 | potty-training、collab-plan、item-expiry |
 | [02-Android坑](02-Android坑.md) | Android / Kotlin | android-adskip、DarkMask |
 | [03-Python坑](03-Python坑.md) | FastAPI / Django / 后端 | homekeeper、obsidian-agent、learning-platform |
 | [04-桌面与脚本坑](04-桌面与脚本坑.md) | C# / AE / C4D / Blender / Max | WindowTinter、AE 系列、vray 等 |
+| [05-AE脚本坑](05-AE脚本坑.md) | AE / ExtendScript / ScriptUI | knowledge-base（ES3/matchName/布局/表达式） |
+| [06-C4D插件坑](06-C4D插件坑.md) | C4D / Python SDK | knowledge-base（2026 迁移/对话框/用户数据） |
+| [07-Blender坑](07-Blender坑.md) | Blender / bpy | knowledge-base（面板/UNDO/CJK） |
+| [08-Web前端坑](08-Web前端坑.md) | Web / Django / Safari | knowledge-base（Safari 布局/JS/Node 工具） |
+| [09-浏览器扩展坑](09-浏览器扩展坑.md) | 浏览器扩展 / MV3 | knowledge-base（权限/SW/存储） |
+
+> 05-09 分册摘录自 knowledge-base,只保留要点 + 链接,完整内容在经验库。
 
 ## 使用方式
 
